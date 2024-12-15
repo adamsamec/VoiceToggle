@@ -8,5 +8,7 @@ python %scripts%\msgfmt.py -o nvda.mo nvda
 cd %scripts%\..\source\locale\sk\LC_MESSAGES
 python %scripts%\msgfmt.py -o nvda.mo nvda
 
+cd %scripts%
+
 title MO language files generation completed
 pause

@@ -5,7 +5,7 @@
 # Minimally patched to make it even more xgettext compatible
 # by Peter Funk <pf@artcom-gmbh.de>
 #
-# 2002-11-22 Jürgen Hermann <jh@web.de>
+# 2002-11-22 Jï¿½rgen Hermann <jh@web.de>
 # Added checks that _() only contains string literals, and
 # command line args are resolved to module lists, i.e. you
 # can now pass a filename, a module or package name, or a
@@ -178,19 +178,20 @@ EMPTYSTRING = ''
 # The normal pot-file header. msgmerge and Emacs's po-mode work better if it's
 # there.
 pot_header = _('''\
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR ORGANIZATION
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# VoiceToggle - NVDA add-on for easy voice toggling.
+# Copyright (C) 2024 Adam Samec
+# Adam Samec <adam.samec@gmail.com>, 2024.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\\n"
+"Project-Id-Version: VoiceToggle 1.0.0\\n"
 "POT-Creation-Date: %(time)s\\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\\n"
-"Language-Team: LANGUAGE <LL@li.org>\\n"
+"PO-Revision-Date: %(time)s\\n"
+"Last-Translator: Adam Samec <adam.samec@gmail.com>\\n"
+"Language-Team: Czech <adam.samec@gmail.com>\\n"
+"Language: cs\\n"
 "MIME-Version: 1.0\\n"
-"Content-Type: text/plain; charset=%(charset)s\\n"
+"Content-Type: text/plain; charset=UTF-8\\n"
 "Content-Transfer-Encoding: %(encoding)s\\n"
 "Generated-By: pygettext.py %(version)s\\n"
 
@@ -209,7 +210,7 @@ def make_escapes(pass_nonascii):
     global escapes, escape
     if pass_nonascii:
         # Allow non-ascii characters to pass through so that e.g. 'msgid
-        # "Höhe"' would result not result in 'msgid "H\366he"'.  Otherwise we
+        # "Hï¿½he"' would result not result in 'msgid "H\366he"'.  Otherwise we
         # escape any character outside the 32..126 range.
         mod = 128
         escape = escape_ascii
