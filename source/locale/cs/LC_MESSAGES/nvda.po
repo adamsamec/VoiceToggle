@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2024-12-14 16:31+0100\n"
+"POT-Creation-Date: 2024-12-15 15:31+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,32 +16,32 @@ msgstr ""
 
 
 msgid "Toggles to the next voice."
-msgstr ""
+msgstr "Přepne na následující hlas"
 
-msgid "Voice Toggle Settings"
+msgid "VoiceToggle"
 msgstr ""
 
 msgid "Voices"
-msgstr ""
+msgstr "Hlasy"
 
 msgid "Add voice"
-msgstr ""
+msgstr "Přidat hlas"
 
 msgid "Remove voice"
-msgstr ""
+msgstr "Odstranit hlas"
 
 msgid "No voices added yet"
-msgstr ""
+msgstr "Žádné hlasy zatím nebyly přidány"
 
-msgid "Synthesiser"
-msgstr ""
+msgid "Synthesizer"
+msgstr "Syntezátor"
 
 msgid "Voice"
-msgstr ""
+msgstr "Hlas"
 
 msgid "Add"
-msgstr ""
+msgstr "Přidat"
 
 msgid "Cancel"
-msgstr ""
+msgstr "Zrušit"
 

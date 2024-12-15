@@ -6,6 +6,7 @@ try:
 	from speech import getSynth, setSynth
 except ImportError:
 	from synthDriverHandler import getSynth, setSynth, getSynthList, getSynthInstance
+import addonHandler
 import config
 import ui
 import gui
@@ -41,7 +42,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	}
 
 class OptionsPanel(gui.SettingsPanel):
-	title = _("Voice Toggle Settings")
+	title = _("VoiceToggle")
 
 	def makeSettings(self, settingsSizer):
 		self.loadVoiceSettings()
@@ -132,7 +133,7 @@ class AddVoiceDialog(wx.Dialog):
 		mainSizer = wx.BoxSizer(wx.VERTICAL)
 		sHelper = gui.guiHelper.BoxSizerHelper(self, wx.VERTICAL)
 
-		# Synthesiser ComboBox
+		# Synthesizer ComboBox
 		# Filter out the "oneCore" synth which sometimes throws exception for getSynthInstance("oneCore") call
 		allSynthsInfos = getSynthList()
 		self.synthsInfos = []
@@ -141,7 +142,7 @@ class AddVoiceDialog(wx.Dialog):
 				self.synthsInfos.append(synthInfo)
 		
 		synthsNames = [synthInfo[1]for synthInfo in self.synthsInfos]
-		self.synthComboBox = sHelper.addLabeledControl(_("Synthesiser"), wx.Choice, choices=synthsNames)
+		self.synthComboBox = sHelper.addLabeledControl(_("Synthesizer"), wx.Choice, choices=synthsNames)
 		self.synthComboBox.Select(0)
 		self.synthComboBox.Bind(wx.EVT_CHOICE, self.onSynthChange)
 
@@ -270,4 +271,5 @@ class VoiceToggle:
 	def setConfig(self, key, value):
 		config.conf["VoiceToggle"][key] = value
 
+addonHandler.initTranslation()
 voiceToggle = VoiceToggle()
