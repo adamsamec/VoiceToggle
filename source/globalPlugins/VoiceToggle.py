@@ -13,12 +13,14 @@ import ui
 import gui
 
 import json
+import requests
 from threading import Thread
 import wx
 
 addonHandler.initTranslation()
 
 # Constants
+APP_VERSION = "1.2.0"
 SILENCE_VOICE_NAME = _("Silence")
 ONECORE_SYNTH_ID = "oneCore"
 CONFIG_SPEC = {
@@ -72,7 +74,11 @@ class OptionsPanel(gui.SettingsPanel):
 		self.removeVoiceButton = buttons.addButton(self, label=_("Remove voice"))
 		self.removeVoiceButton.Bind(wx.EVT_BUTTON, self.onRemoveVoiceButtonClick)
 		self.updateRemoveButtonState()
-		
+
+		# Check for update button
+		checkForUpdateButton = sHelper.addItem(wx.Button(self, label=_("Check for update")))
+		checkForUpdateButton.Bind(wx.EVT_BUTTON, self.onCheckForUpdateButtonClick)
+
 		sHelper.addItem(buttons)
 
 	def loadVoiceSettings(self):
@@ -118,6 +124,12 @@ class OptionsPanel(gui.SettingsPanel):
 		self.updateRemoveButtonState()
 		self.isVoiceSettingsModified = True
 
+	def onCheckForUpdateButtonClick(self, event):
+		parent = event.GetEventObject().GetParent()
+		updateAvailableDialog = UpdateAvailableDialog(parent)
+		updateAvailableDialog.ShowModal()
+
+
 	def updateRemoveButtonState(self):
 		if len(self.voiceSettings) > 0:
 			self.removeVoiceButton.Enable()
@@ -138,7 +150,6 @@ class AddVoiceDialog(wx.Dialog):
 
 		self.Bind(wx.EVT_CHAR_HOOK, self.charHook)
 		self.addWidgets()
-		self.synthComboBox.SetFocus()
 
 	def addWidgets(self):
 		mainSizer = wx.BoxSizer(wx.VERTICAL)
@@ -149,6 +160,7 @@ class AddVoiceDialog(wx.Dialog):
 		self.synthComboBox = sHelper.addLabeledControl(_("Synthesizer"), wx.Choice, choices=synthsNames)
 		self.synthComboBox.Select(0)
 		self.synthComboBox.Bind(wx.EVT_CHOICE, self.onSynthChange)
+		self.synthComboBox.SetFocus()
 
 		# Voice ComboBox
 		self.voiceComboBox = sHelper.addLabeledControl(_("Voice"), wx.Choice, choices=[])
@@ -165,7 +177,6 @@ class AddVoiceDialog(wx.Dialog):
 		# Cancel button
 		cancelButton = buttons.addButton(self, label=_("Cancel"))
 		cancelButton.Bind(wx.EVT_BUTTON, self.onCancelButtonClick)
-		cancelButton.SetFocus()
 		
 		sHelper.addItem(buttons)
 		mainSizer.Add(sHelper.sizer, border=10, flag=wx.ALL)
@@ -210,6 +221,58 @@ class AddVoiceDialog(wx.Dialog):
 		}
 		self.plugin.addVoiceSetting(voiceSetting)
 		self.close()
+
+	def onCancelButtonClick(self, event):
+		self.close()
+
+	def close(self):
+		self.Destroy()
+
+class UpdateAvailableDialog(wx.Dialog):
+
+	def __init__(self, parent):
+		super().__init__(parent, title=_("Update available"))
+
+		self.Bind(wx.EVT_CHAR_HOOK, self.charHook)
+		self.addWidgets()
+
+	def addWidgets(self):
+		mainSizer = wx.BoxSizer(wx.VERTICAL)
+		sHelper = gui.guiHelper.BoxSizerHelper(self, wx.VERTICAL)
+
+		# Update available text
+		newVersion = "1.2.1"
+		updateAvailableLabel = _(f"VoiceToggle version {newVersion} is available, you have {APP_VERSION}. Do you want to download and install the update now?")
+		updateAvailableText = sHelper.addItem(wx.StaticText(self, label=updateAvailableLabel))
+
+		# Buttons group
+		buttons = gui.guiHelper.ButtonHelper(wx.VERTICAL)
+
+		# Update button
+		self.updateButton = buttons.addButton(self, label=_("Update"))
+		self.updateButton.Bind(wx.EVT_BUTTON, self.onUpdateButtonClick)
+		self.updateButton.SetDefault()
+		self.updateButton.SetFocus()
+
+		# Cancel button
+		cancelButton = buttons.addButton(self, label=_("Cancel"))
+		cancelButton.Bind(wx.EVT_BUTTON, self.onCancelButtonClick)
+		
+		sHelper.addItem(buttons)
+		mainSizer.Add(sHelper.sizer, border=10, flag=wx.ALL)
+		mainSizer.Fit(self)
+		self.SetSizer(mainSizer)
+
+	def charHook(self, event):
+		key = event.GetKeyCode()
+		if key == wx.WXK_ESCAPE:
+			self.close()
+		else:
+			event.Skip()
+
+	def onUpdateButtonClick(self, event):
+		pass
+		# toggleVoice.update}]
 
 	def onCancelButtonClick(self, event):
 		self.close()
