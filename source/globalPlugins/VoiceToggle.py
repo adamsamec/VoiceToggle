@@ -84,8 +84,8 @@ class OptionsPanel(gui.SettingsPanel):
 		checkForUpdateButton = sHelper.addItem(wx.Button(self, label=_("Check for update")))
 		checkForUpdateButton.Bind(wx.EVT_BUTTON, self.onCheckForUpdateButtonClick)
 
-# Check for update on NVDA start checkbox
-		self.checkUpdateOnStartCheckbox = sHelper.addItem(wx.CheckBox(self, label=_("Check for update on NVDA start")))
+		# Check for update on NVDA start checkbox
+		self.checkUpdateOnStartCheckbox = sHelper.addItem(wx.CheckBox(self, label=_("Automatically check for update on NVDA start")))
 		self.checkUpdateOnStartCheckbox.SetValue(voiceToggle.isCheckUpdateOnStart)
 
 		sHelper.addItem(buttons)
@@ -136,15 +136,15 @@ class OptionsPanel(gui.SettingsPanel):
 	def onCheckForUpdateButtonClick(self, event):
 		parent = event.GetEventObject().GetParent()
 		update = voiceToggle.checkForUpdate()
-		if isinstance(update, dir):
-			updateAvailableDialog = UpdateAvailableDialog(update)
+		if isinstance(update, dict):
+			updateAvailableDialog = UpdateAvailableDialog(voiceToggle, update)
 			updateAvailableDialog.Show()
 		elif update == True:
-			upToDateDialog = UpToDateDialog(parent)
-			upToDateDialog.ShowModal()
+			upToDateDialog = UpToDateDialog()
+			upToDateDialog.Show()
 		elif update == False:
-			updateCheckErrorDialog = UpdateCheckErrorDialog ()
-			updateCheckErrorDialog.ShowModal()
+			updateCheckErrorDialog = UpdateCheckErrorDialog()
+			updateCheckErrorDialog.Show()
 
 	def updateRemoveButtonState(self):
 		if len(self.voiceSettings) > 0:
@@ -247,9 +247,11 @@ class AddVoiceDialog(wx.Dialog):
 
 class UpdateAvailableDialog(wx.Dialog):
 
-	def __init__(self, update):
-		super().__init__(None, style=wx.DIALOG_NO_PARENT, title=_("VoiceToggle Update available"))
+	def __init__(self, app, update, displayCheckOnStartCheckbox=False):
+		super().__init__(None, style=wx.DIALOG_NO_PARENT, title=_("VoiceToggle update available"))
+		self.app= app
 		self.update = update
+		self.displayCheckOnStartCheckbox = displayCheckOnStartCheckbox
 
 		self.Bind(wx.EVT_CHAR_HOOK, self.charHook)
 		self.addWidgets()
@@ -262,6 +264,12 @@ class UpdateAvailableDialog(wx.Dialog):
 		updateAvailableLabel = _("VoiceToggle add-on for NVDA version {} is available, you have {}. Do you want to download and install the update now?").format(self.update["version"], APP_VERSION)
 		updateAvailableText = sHelper.addItem(wx.StaticText(self, label=updateAvailableLabel))
 
+		# Check for update on NVDA start checkbox
+		if self.displayCheckOnStartCheckbox:
+			self.checkUpdateOnStartCheckbox = sHelper.addItem(wx.CheckBox(self, label=_("Automatically check for update on NVDA start")))
+			self.checkUpdateOnStartCheckbox.Bind(wx.EVT_CHECKBOX, self.onCheckUpdateOnStartCheckChange)
+			self.checkUpdateOnStartCheckbox.SetValue(self.app.isCheckUpdateOnStart)
+
 		# Buttons group
 		buttons = gui.guiHelper.ButtonHelper(wx.VERTICAL)
 
@@ -271,9 +279,9 @@ class UpdateAvailableDialog(wx.Dialog):
 		self.updateButton.SetDefault()
 		self.updateButton.SetFocus()
 
-		# Cancel button
-		cancelButton = buttons.addButton(self, label=_("Cancel"))
-		cancelButton.Bind(wx.EVT_BUTTON, self.onCancelButtonClick)
+		# Close button
+		closeButton = buttons.addButton(self, label=_("Close"))
+		closeButton.Bind(wx.EVT_BUTTON, self.onCloseButtonClick)
 		
 		sHelper.addItem(buttons)
 		mainSizer.Add(sHelper.sizer, border=10, flag=wx.ALL)
@@ -287,11 +295,88 @@ class UpdateAvailableDialog(wx.Dialog):
 		else:
 			event.Skip()
 
+	def onCheckUpdateOnStartCheckChange(self, event):
+		self.app.isCheckUpdateOnStart = self.checkUpdateOnStartCheckbox.GetValue()
+
 	def onUpdateButtonClick(self, event):
-		voiceToggle.downloadAndRunUpdate(self.update["addonUrl"])
+		self.app.downloadAndRunUpdate(self.update["addonUrl"])
 		self.close()
 
-	def onCancelButtonClick(self, event):
+	def onCloseButtonClick(self, event):
+		self.close()
+
+	def close(self):
+		self.Destroy()
+
+class UpToDateDialog(wx.Dialog):
+
+	def __init__(self):
+		super().__init__(None, style=wx.DIALOG_NO_PARENT, title=_("VoiceToggle is up to date"))
+
+		self.Bind(wx.EVT_CHAR_HOOK, self.charHook)
+		self.addWidgets()
+
+	def addWidgets(self):
+		mainSizer = wx.BoxSizer(wx.VERTICAL)
+		sHelper = gui.guiHelper.BoxSizerHelper(self, wx.VERTICAL)
+
+		# Up to date text
+		upToDateLabel = _("VoiceToggle version {} is up to date.").format(APP_VERSION)
+		upToDateText = sHelper.addItem(wx.StaticText(self, label=upToDateLabel))
+
+		closeButton = sHelper.addItem(wx.Button(self, label=_("Close")))
+		closeButton.Bind(wx.EVT_BUTTON, self.onCloseButtonClick)
+		closeButton.SetDefault()
+		
+		mainSizer.Add(sHelper.sizer, border=10, flag=wx.ALL)
+		mainSizer.Fit(self)
+		self.SetSizer(mainSizer)
+
+	def charHook(self, event):
+		key = event.GetKeyCode()
+		if key == wx.WXK_ESCAPE:
+			self.close()
+		else:
+			event.Skip()
+
+	def onCloseButtonClick(self, event):
+		self.close()
+
+	def close(self):
+		self.Destroy()
+
+class UpdateCheckErrorDialog(wx.Dialog):
+
+	def __init__(self):
+		super().__init__(None, style=wx.DIALOG_NO_PARENT, title=_("Check for update failed for VoiceToggle"))
+
+		self.Bind(wx.EVT_CHAR_HOOK, self.charHook)
+		self.addWidgets()
+
+	def addWidgets(self):
+		mainSizer = wx.BoxSizer(wx.VERTICAL)
+		sHelper = gui.guiHelper.BoxSizerHelper(self, wx.VERTICAL)
+
+		# Update check error text
+		errorLabel = _("Check for update for the VoiceToggle add-on was not successful. Please verify that you are connected to the Internet.")
+		errorText = sHelper.addItem(wx.StaticText(self, label=errorLabel))
+
+		closeButton = sHelper.addItem(wx.Button(self, label=_("Close")))
+		closeButton.Bind(wx.EVT_BUTTON, self.onCloseButtonClick)
+		closeButton.SetDefault()
+		
+		mainSizer.Add(sHelper.sizer, border=10, flag=wx.ALL)
+		mainSizer.Fit(self)
+		self.SetSizer(mainSizer)
+
+	def charHook(self, event):
+		key = event.GetKeyCode()
+		if key == wx.WXK_ESCAPE:
+			self.close()
+		else:
+			event.Skip()
+
+	def onCloseButtonClick(self, event):
 		self.close()
 
 	def close(self):
@@ -365,7 +450,7 @@ class VoiceToggle:
 		if self.isCheckUpdateOnStart:
 			update = self.checkForUpdate()
 			if isinstance(update, dict):
-				updateAvailableDialog = UpdateAvailableDialog(update)
+				updateAvailableDialog = UpdateAvailableDialog(self, update, displayCheckOnStartCheckbox=True)
 				updateAvailableDialog.Show()
 				updateAvailableDialog.Raise()
 
