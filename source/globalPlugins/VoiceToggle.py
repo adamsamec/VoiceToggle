@@ -30,6 +30,7 @@ ONECORE_SYNTH_ID = "oneCore"
 CONFIG_SPEC = {
 	"voiceSettings": "string_list(default=list())",
 	"currentVoiceSettingsIndex": "integer(default=0)",
+	"checkUpdateOnStart": "boolean(default=True)",
 }
 SAVED_PARAMS = ["volume", "rate", "pitch"]
 
@@ -63,7 +64,7 @@ class OptionsPanel(gui.SettingsPanel):
 
 		sHelper = gui.guiHelper.BoxSizerHelper(self, sizer=settingsSizer)
 
-		# Voices ListBox
+		# Voices listbox
 		self.voicesListBox = sHelper.addLabeledControl(_("Voices"), wx.ListBox, choices=[])
 		self.updateVoicesListBox()
 		
@@ -82,6 +83,10 @@ class OptionsPanel(gui.SettingsPanel):
 		# Check for update button
 		checkForUpdateButton = sHelper.addItem(wx.Button(self, label=_("Check for update")))
 		checkForUpdateButton.Bind(wx.EVT_BUTTON, self.onCheckForUpdateButtonClick)
+
+# Check for update on NVDA start checkbox
+		self.checkUpdateOnStartCheckbox = sHelper.addItem(wx.CheckBox(self, label=_("Check for update on NVDA start")))
+		self.checkUpdateOnStartCheckbox.SetValue(voiceToggle.isCheckUpdateOnStart)
 
 		sHelper.addItem(buttons)
 
@@ -131,15 +136,15 @@ class OptionsPanel(gui.SettingsPanel):
 	def onCheckForUpdateButtonClick(self, event):
 		parent = event.GetEventObject().GetParent()
 		update = voiceToggle.checkForUpdate()
-		if update == True:
+		if isinstance(update, dir):
+			updateAvailableDialog = UpdateAvailableDialog(update)
+			updateAvailableDialog.Show()
+		elif update == True:
 			upToDateDialog = UpToDateDialog(parent)
 			upToDateDialog.ShowModal()
 		elif update == False:
 			updateCheckErrorDialog = UpdateCheckErrorDialog ()
 			updateCheckErrorDialog.ShowModal()
-		else:
-			updateAvailableDialog = UpdateAvailableDialog(parent, update)
-			updateAvailableDialog.ShowModal()
 
 	def updateRemoveButtonState(self):
 		if len(self.voiceSettings) > 0:
@@ -152,6 +157,7 @@ class OptionsPanel(gui.SettingsPanel):
 			voiceToggle.markVoiceSettingsAsModified()
 			self.isVoiceSettingsModified = False
 		voiceToggle.setVoiceSettings(self.voiceSettings)
+		voiceToggle.isCheckUpdateOnStart = self.checkUpdateOnStartCheckbox.GetValue()
 
 class AddVoiceDialog(wx.Dialog):
 
@@ -166,14 +172,14 @@ class AddVoiceDialog(wx.Dialog):
 		mainSizer = wx.BoxSizer(wx.VERTICAL)
 		sHelper = gui.guiHelper.BoxSizerHelper(self, wx.VERTICAL)
 
-		# Synth ComboBox
+		# Synth combobox
 		synthsNames = [instance["name"] for instance in voiceToggle.getSynthsInstances()]
 		self.synthComboBox = sHelper.addLabeledControl(_("Synthesizer"), wx.Choice, choices=synthsNames)
 		self.synthComboBox.Select(0)
 		self.synthComboBox.Bind(wx.EVT_CHOICE, self.onSynthChange)
 		self.synthComboBox.SetFocus()
 
-		# Voice ComboBox
+		# Voice combobox
 		self.voiceComboBox = sHelper.addLabeledControl(_("Voice"), wx.Choice, choices=[])
 		self.updateVoiceComboBox()
 
@@ -241,8 +247,8 @@ class AddVoiceDialog(wx.Dialog):
 
 class UpdateAvailableDialog(wx.Dialog):
 
-	def __init__(self, parent, update):
-		super().__init__(parent, title=_("VoiceToggle Update available"))
+	def __init__(self, update):
+		super().__init__(None, style=wx.DIALOG_NO_PARENT, title=_("VoiceToggle Update available"))
 		self.update = update
 
 		self.Bind(wx.EVT_CHAR_HOOK, self.charHook)
@@ -301,14 +307,10 @@ class VoiceToggle:
 		self.preloadSynthInstances()
 		self.voiceSettings = []
 		self.isVoiceSettingsModified = False
-		self.loadVoiceSettingsFromConfig()
 
-		# Create the default voice setting if does not exist, but only for other than OneCore synths
-		if len(self.voiceSettings) == 0:
-			self.currentVoiceSettingsIndex = 0
-			voiceSetting = self.getFreshVoiceSetting()
-			if voiceSetting != None:
-				self.voiceSettings.append(voiceSetting)
+		self.loadSettingsFromConfig()
+		self.checkForUpdateOnStart()
+		self.addDefaultVoiceSetting()
 
 	def preloadSynthInstances(self):
 		origSynthId = getSynth().name
@@ -346,23 +348,58 @@ class VoiceToggle:
 	def getSynthsInstances(self):
 		return self.synthsInstances
 
-	def loadVoiceSettingsFromConfig(self):
+	def loadSettingsFromConfig(self):
 		self.voiceSettings = [json.loads(voiceSetting) for voiceSetting in self.getConfig("voiceSettings")]
 		self.currentVoiceSettingsIndex = self.getConfig("currentVoiceSettingsIndex")
+		self.isCheckUpdateOnStart = self.getConfig("checkUpdateOnStart")
 		if len(self.voiceSettings) == 0:
 			self.currentVoiceSettingsIndex = -1
 
-	def saveVoiceSettingsTOConfig(self):
+	def saveSettingsTOConfig(self):
 		voiceSettingsJson = [json.dumps(voiceSetting) for voiceSetting in self.voiceSettings] 
 		self.setConfig("voiceSettings", voiceSettingsJson)
 		self.setConfig("currentVoiceSettingsIndex", self.currentVoiceSettingsIndex)
+		self.setConfig("checkUpdateOnStart", self.isCheckUpdateOnStart)
+
+	def checkForUpdateOnStart(self):
+		if self.isCheckUpdateOnStart:
+			update = self.checkForUpdate()
+			if isinstance(update, dict):
+				updateAvailableDialog = UpdateAvailableDialog(update)
+				updateAvailableDialog.Show()
+				updateAvailableDialog.Raise()
+
+	def checkForUpdate(self):
+		try:
+			response = urlopen(UPDATE_API_URL)
+			update = json.loads(response.read())
+
+			# Compare the latest version with the current version
+			if self.isUpdateAvailable(update["version"]):
+				return update
+
+			# True means we are up to date
+			return True
+		except URLError:
+			pass
+			
+		# False means a request error occurred, such as no Internet
+		return False
+
+	def addDefaultVoiceSetting(self):
+		# Create and add the default voice setting if does not exist, but only for other than OneCore synths
+		if len(self.voiceSettings) == 0:
+			self.currentVoiceSettingsIndex = 0
+			voiceSetting = self.getFreshVoiceSetting()
+			if voiceSetting != None:
+				self.voiceSettings.append(voiceSetting)
 
 	def getVoiceSettings(self):
 		return self.voiceSettings.copy()
 
 	def setVoiceSettings(self, settings):
 		self.voiceSettings = settings.copy()
-		self.saveVoiceSettingsTOConfig()
+		self.saveSettingsTOConfig()
 
 	def markVoiceSettingsAsModified(self):
 		self.isVoiceSettingsModified = True
@@ -550,23 +587,6 @@ class VoiceToggle:
 	def setConfig(self, key, value):
 		config.conf["VoiceToggle"][key] = value
 
-	def checkForUpdate(self):
-		try:
-			response = urlopen(UPDATE_API_URL)
-			update = json.loads(response.read())
-
-			# Compare the latest version with the current version
-			if self.isUpdateAvailable(update["version"]):
-				return update
-
-			# True means we are up to date
-			return True
-		except URLError:
-			pass
-			
-		# False means a request error occurred, such as no Internet
-		return False
-
 	def isUpdateAvailable(self, latestVersion):
 		current = [int(part) for part in APP_VERSION.split(".")]
 		latest = [int(part) for part in latestVersion.split(".")]
@@ -612,7 +632,7 @@ class VoiceToggle:
 		if len(self.voiceSettings) > 0 and not self.isVoiceSettingsModified:
 			self.updateVoiceSetting()
 			
-		self.saveVoiceSettingsTOConfig()
+		self.saveSettingsTOConfig()
 		self.deleteTempFiles()
 
 voiceToggle = VoiceToggle()
