@@ -184,7 +184,7 @@ pot_header = _('''\
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: VoiceToggle 1.1.0\\n"
+"Project-Id-Version: VoiceToggle 1.2.0\\n"
 "POT-Creation-Date: %(time)s\\n"
 "PO-Revision-Date: %(time)s\\n"
 "Last-Translator: Adam Samec <adam.samec@gmail.com>\\n"

@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: VoiceToggle 1.1.0\n"
-"POT-Creation-Date: 2024-12-20 17:22+0100\n"
-"PO-Revision-Date: 2024-12-20 17:22+0100\n"
+"Project-Id-Version: VoiceToggle 1.2.0\n"
+"POT-Creation-Date: 2024-12-21 16:54+0100\n"
+"PO-Revision-Date: 2024-12-21 16:54+0100\n"
 "Last-Translator: Adam Samec <adam.samec@gmail.com>\n"
 "Language-Team: Czech <adam.samec@gmail.com>\n"
 "Language: cs\n"
@@ -34,6 +34,12 @@ msgstr ""
 msgid "Remove voice"
 msgstr ""
 
+msgid "Check for update"
+msgstr ""
+
+msgid "Automatically check for update on NVDA start"
+msgstr ""
+
 msgid "No voices added yet"
 msgstr ""
 
@@ -53,5 +59,29 @@ msgid "Add"
 msgstr ""
 
 msgid "Cancel"
+msgstr ""
+
+msgid "VoiceToggle add-on update available"
+msgstr ""
+
+msgid "VoiceToggle add-on for NVDA version {} is available, you have {}. Do you want to download and install the update now?"
+msgstr ""
+
+msgid "Update"
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "VoiceToggle is up to date"
+msgstr ""
+
+msgid "VoiceToggle version {} is up to date."
+msgstr ""
+
+msgid "Check for update failed for VoiceToggle"
+msgstr ""
+
+msgid "Check for update for the VoiceToggle add-on was not successful. Please verify that you are connected to the Internet."
 msgstr ""
 

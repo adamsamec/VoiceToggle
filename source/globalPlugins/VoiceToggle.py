@@ -248,7 +248,7 @@ class AddVoiceDialog(wx.Dialog):
 class UpdateAvailableDialog(wx.Dialog):
 
 	def __init__(self, app, update, displayCheckOnStartCheckbox=False):
-		super().__init__(None, style=wx.DIALOG_NO_PARENT, title=_("VoiceToggle update available"))
+		super().__init__(None, style=wx.DIALOG_NO_PARENT, title=_("VoiceToggle add-on update available"))
 		self.app= app
 		self.update = update
 		self.displayCheckOnStartCheckbox = displayCheckOnStartCheckbox

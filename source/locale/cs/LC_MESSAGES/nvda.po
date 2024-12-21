@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: VoiceToggle 1.1.0\n"
-"POT-Creation-Date: 2024-12-20 17:22+0100\n"
-"PO-Revision-Date: 2024-12-20 17:22+0100\n"
+"Project-Id-Version: VoiceToggle 1.2.0\n"
+"POT-Creation-Date: 2024-12-21 16:54+0100\n"
+"PO-Revision-Date: 2024-12-21 16:54+0100\n"
 "Last-Translator: Adam Samec <adam.samec@gmail.com>\n"
 "Language-Team: Czech <adam.samec@gmail.com>\n"
 "Language: cs\n"
@@ -34,6 +34,12 @@ msgstr "Přidat hlas"
 msgid "Remove voice"
 msgstr "Odstranit hlas"
 
+msgid "Check for update"
+msgstr "Zkontrolovat aktualizaci"
+
+msgid "Automatically check for update on NVDA start"
+msgstr "Automaticky kontrolvat aktualizaci při startu NVDA"
+
 msgid "No voices added yet"
 msgstr "Žádné hlasy zatím nebyly přidány"
 
@@ -55,3 +61,26 @@ msgstr "Přidat"
 msgid "Cancel"
 msgstr "Zrušit"
 
+msgid "VoiceToggle add-on update available"
+msgstr "Dostupná aktualizace doplňku VoiceToggle"
+
+msgid "VoiceToggle add-on for NVDA version {} is available, you have {}. Do you want to download and install the update now?"
+msgstr "Je dostupná aktualizace doplňku VoiceToggle verze {} pro NVDA, vaše verze je {}. Přejete si stáhnout a nainstalovat aktualizaci nyní?"
+
+msgid "Update"
+msgstr "Aktualizovat"
+
+msgid "Close"
+msgstr "Zavřít"
+
+msgid "VoiceToggle is up to date"
+msgstr "VoiceToggle je aktuální"
+
+msgid "VoiceToggle version {} is up to date."
+msgstr "VoiceToggle verze {} je aktuální."
+
+msgid "Check for update failed for VoiceToggle"
+msgstr "Kontrola aktualizace VoiceToggle selhala"
+
+msgid "Check for update for the VoiceToggle add-on was not successful. Please verify that you are connected to the Internet."
+msgstr "Kontrola aktualizace doplňku VoiceToggle nebyla úspěšná. Prosím, zkontrolujte, zda jste připojeni k Internetu."
