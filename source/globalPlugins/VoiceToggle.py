@@ -13,14 +13,18 @@ import ui
 import gui
 
 import json
-import requests
-from threading import Thread
+import os
+import shutil
+from urllib.request import urlopen, urlretrieve, URLError
 import wx
 
 addonHandler.initTranslation()
 
 # Constants
 APP_VERSION = "1.2.0"
+UPDATE_API_URL = "http://api.adamsamec.cz/nvda/VoiceToggle/Update.json"
+TEMP_DIR = "..\\temp\\"
+
 SILENCE_VOICE_NAME = _("Silence")
 ONECORE_SYNTH_ID = "oneCore"
 CONFIG_SPEC = {
@@ -126,9 +130,16 @@ class OptionsPanel(gui.SettingsPanel):
 
 	def onCheckForUpdateButtonClick(self, event):
 		parent = event.GetEventObject().GetParent()
-		updateAvailableDialog = UpdateAvailableDialog(parent)
-		updateAvailableDialog.ShowModal()
-
+		update = voiceToggle.checkForUpdate()
+		if update == True:
+			upToDateDialog = UpToDateDialog(parent)
+			upToDateDialog.ShowModal()
+		elif update == False:
+			updateCheckErrorDialog = UpdateCheckErrorDialog ()
+			updateCheckErrorDialog.ShowModal()
+		else:
+			updateAvailableDialog = UpdateAvailableDialog(parent, update)
+			updateAvailableDialog.ShowModal()
 
 	def updateRemoveButtonState(self):
 		if len(self.voiceSettings) > 0:
@@ -230,8 +241,9 @@ class AddVoiceDialog(wx.Dialog):
 
 class UpdateAvailableDialog(wx.Dialog):
 
-	def __init__(self, parent):
-		super().__init__(parent, title=_("Update available"))
+	def __init__(self, parent, update):
+		super().__init__(parent, title=_("VoiceToggle Update available"))
+		self.update = update
 
 		self.Bind(wx.EVT_CHAR_HOOK, self.charHook)
 		self.addWidgets()
@@ -241,8 +253,7 @@ class UpdateAvailableDialog(wx.Dialog):
 		sHelper = gui.guiHelper.BoxSizerHelper(self, wx.VERTICAL)
 
 		# Update available text
-		newVersion = "1.2.1"
-		updateAvailableLabel = _(f"VoiceToggle version {newVersion} is available, you have {APP_VERSION}. Do you want to download and install the update now?")
+		updateAvailableLabel = _("VoiceToggle add-on for NVDA version {} is available, you have {}. Do you want to download and install the update now?").format(self.update["version"], APP_VERSION)
 		updateAvailableText = sHelper.addItem(wx.StaticText(self, label=updateAvailableLabel))
 
 		# Buttons group
@@ -271,8 +282,8 @@ class UpdateAvailableDialog(wx.Dialog):
 			event.Skip()
 
 	def onUpdateButtonClick(self, event):
-		pass
-		# toggleVoice.update}]
+		voiceToggle.downloadAndRunUpdate(self.update["addonUrl"])
+		self.close()
 
 	def onCancelButtonClick(self, event):
 		self.close()
@@ -284,6 +295,9 @@ class VoiceToggle:
 
 	def __init__(self):
 		config.conf.spec["VoiceToggle"] = CONFIG_SPEC
+
+		currentDir = os.path.dirname(os.path.realpath(__file__))
+		self.tempDirPath = os.path.join(currentDir, TEMP_DIR)
 		self.preloadSynthInstances()
 		self.voiceSettings = []
 		self.isVoiceSettingsModified = False
@@ -295,7 +309,7 @@ class VoiceToggle:
 			voiceSetting = self.getFreshVoiceSetting()
 			if voiceSetting != None:
 				self.voiceSettings.append(voiceSetting)
-		
+
 	def preloadSynthInstances(self):
 		origSynthId = getSynth().name
 		self.synthsInstances = []
@@ -530,17 +544,75 @@ class VoiceToggle:
 		}
 		return voiceSetting
 
+	def getConfig(self, key):
+		return config.conf["VoiceToggle"][key]
+
+	def setConfig(self, key, value):
+		config.conf["VoiceToggle"][key] = value
+
+	def checkForUpdate(self):
+		try:
+			response = urlopen(UPDATE_API_URL)
+			update = json.loads(response.read())
+
+			# Compare the latest version with the current version
+			if self.isUpdateAvailable(update["version"]):
+				return update
+
+			# True means we are up to date
+			return True
+		except URLError:
+			pass
+			
+		# False means a request error occurred, such as no Internet
+		return False
+
+	def isUpdateAvailable(self, latestVersion):
+		current = [int(part) for part in APP_VERSION.split(".")]
+		latest = [int(part) for part in latestVersion.split(".")]
+		isAvailable = latest[0] > current[0] or latest[1] > current[1] or latest[2] > current[2]
+		return isAvailable
+
+	def downloadAndRunUpdate(self, url):
+		try:
+			response = urlopen(url)
+
+			# Get the filename from URL after redirect
+			newFilename = os.path.basename(response.geturl())
+
+			response = urlretrieve(url)
+
+			# Copy the downloaded file from download directory to plugin temp directory
+			downloadPath = response[0]
+			newPath = os.path.join(self.tempDirPath, newFilename)
+			shutil.copy2(downloadPath, newPath)
+			
+			# Run the file
+			os.startfile(newPath)
+			return True
+		except Exception:
+			pass
+		return False
+
+	def deleteTempFiles(self):
+		for filename in os.listdir(self.tempDirPath):
+			path = os.path.join(self.tempDirPath, filename)
+			try:
+				if os.path.isfile(path) or os.path.islink(path):
+					os.unlink(path)
+				elif os.path.isdir(path):
+					shutil.rmtree(path)
+					return True
+			except Exception:
+				pass
+		return False
+
 	def terminate(self):
 		# Save current synth, voice and speech params before terminating
 		if len(self.voiceSettings) > 0 and not self.isVoiceSettingsModified:
 			self.updateVoiceSetting()
 			
 		self.saveVoiceSettingsTOConfig()
-
-	def getConfig(self, key):
-		return config.conf["VoiceToggle"][key]
-
-	def setConfig(self, key, value):
-		config.conf["VoiceToggle"][key] = value
+		self.deleteTempFiles()
 
 voiceToggle = VoiceToggle()
