@@ -1,6 +1,7 @@
 # Copyright 2024 Adam Samec <adam.samec@gmail.com>
 
 import globalPluginHandler
+import appModuleHandler
 import speech
 try:
 	from speech import getSynth, setSynth
@@ -8,6 +9,7 @@ except ImportError:
 	from synthDriverHandler import getSynth, setSynth, getSynthList, getSynthInstance
 	from synthDrivers.silence import SynthDriver as SilenceSynthDriver
 import addonHandler
+import api
 import config
 import ui
 import gui
@@ -27,9 +29,11 @@ TEMP_DIR = "..\\temp\\"
 
 SILENCE_VOICE_NAME = _("Silence")
 ONECORE_SYNTH_ID = "oneCore"
+
+DEFAULT_APP_ID = "[default]"
 CONFIG_SPEC = {
 	"voiceSettings": "string_list(default=list())",
-	"currentVoiceSettingsIndex": "integer(default=0)",
+	"appsVoiceSettingsIndeces": "string(default='{}')",
 	"checkUpdateOnStart": "boolean(default=True)",
 }
 SAVED_PARAMS = ["volume", "rate", "pitch"]
@@ -39,6 +43,12 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	def __init__(self):
 		super(GlobalPlugin, self).__init__()
 		gui.settingsDialogs.NVDASettingsDialog.categoryClasses.append(OptionsPanel)
+		appModuleHandler.post_appSwitch.register(self.handleAppSwitch)
+
+	def handleAppSwitch(self):
+		foreground = api.getForegroundObject()
+		appId = foreground.appModule.appName
+		voiceToggle.handleAppSwitch(appId)
 
 	def terminate(self):
 		voiceToggle.terminate()
@@ -389,13 +399,22 @@ class VoiceToggle:
 
 		currentDir = os.path.dirname(os.path.realpath(__file__))
 		self.tempDirPath = os.path.join(currentDir, TEMP_DIR)
-		self.preloadSynthInstances()
-		self.voiceSettings = []
+		self.appsVoiceSettingsIndeces = {}
+		self.currentAppId = DEFAULT_APP_ID
 		self.isVoiceSettingsModified = False
+		self.preloadSynthInstances()
 
 		self.loadSettingsFromConfig()
 		self.checkForUpdateOnStart()
 		self.addDefaultVoiceSetting()
+
+	@property
+	def currentVoiceSettingsIndex(self):
+		return self.appsVoiceSettingsIndeces[self.currentAppId]
+
+	@currentVoiceSettingsIndex.setter
+	def currentVoiceSettingsIndex(self, value):
+		self.appsVoiceSettingsIndeces[self.currentAppId] = value
 
 	def preloadSynthInstances(self):
 		origSynthId = getSynth().name
@@ -435,15 +454,23 @@ class VoiceToggle:
 
 	def loadSettingsFromConfig(self):
 		self.voiceSettings = [json.loads(voiceSetting) for voiceSetting in self.getConfig("voiceSettings")]
-		self.currentVoiceSettingsIndex = self.getConfig("currentVoiceSettingsIndex")
+		self.appsVoiceSettingsIndeces = json.loads(self.getConfig("appsVoiceSettingsIndeces"))
 		self.isCheckUpdateOnStart = self.getConfig("checkUpdateOnStart")
-		if len(self.voiceSettings) == 0:
-			self.currentVoiceSettingsIndex = -1
+
+		voiceSettingsLength = len(self.voiceSettings)
+		if not (DEFAULT_APP_ID in self.appsVoiceSettingsIndeces):
+			if voiceSettingsLength > 0:
+				self.appsVoiceSettingsIndeces[DEFAULT_APP_ID] = 0
+			else:
+				self.appsVoiceSettingsIndeces[DEFAULT_APP_ID] = -1
+		if voiceSettingsLength == 0:
+			for appId in self.appsVoiceSettingsIndeces:
+				self.appsVoiceSettingsIndeces[appId] = -1
 
 	def saveSettingsTOConfig(self):
 		voiceSettingsJson = [json.dumps(voiceSetting) for voiceSetting in self.voiceSettings] 
 		self.setConfig("voiceSettings", voiceSettingsJson)
-		self.setConfig("currentVoiceSettingsIndex", self.currentVoiceSettingsIndex)
+		self.setConfig("appsVoiceSettingsIndeces", json.dumps(self.appsVoiceSettingsIndeces))
 		self.setConfig("checkUpdateOnStart", self.isCheckUpdateOnStart)
 
 	def checkForUpdateOnStart(self):
@@ -488,6 +515,9 @@ class VoiceToggle:
 
 	def markVoiceSettingsAsModified(self):
 		self.isVoiceSettingsModified = True
+
+	def handleAppSwitch(self, appId):
+			pass
 
 	def toggleVoice(self):
 		if len(self.voiceSettings) == 0:
@@ -720,4 +750,5 @@ class VoiceToggle:
 		self.saveSettingsTOConfig()
 		self.deleteTempFiles()
 
+# Create the app
 voiceToggle = VoiceToggle()
