@@ -1,5 +1,8 @@
 # VoiceToggle - Changelog
 
+## Version 1.2.1
+* Small bug fixes.
+
 ## Version 1.2.0
 * Added check for update feature.
 

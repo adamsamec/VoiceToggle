@@ -1,4 +1,4 @@
-7z a -tzip ..\dist\VoiceToggle-1.2.0.nvda-addon ..\source\*
+7z a -tzip ..\dist\VoiceToggle-1.2.1.nvda-addon ..\source\*
 
 title ZIP created
 pause

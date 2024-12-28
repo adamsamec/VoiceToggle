@@ -1,13 +1,12 @@
-# Copyright 2024 Adam Samec <adam.samec@gmail.com>
+# Copyright 2025 Adam Samec <adam.samec@gmail.com>
 
 import globalPluginHandler
-import appModuleHandler
 import speech
-try:
-	from speech import getSynth, setSynth
-except ImportError:
-	from synthDriverHandler import getSynth, setSynth, getSynthList, getSynthInstance
-	from synthDrivers.silence import SynthDriver as SilenceSynthDriver
+# try:
+	# from speech import getSynth, setSynth
+# except ImportError:
+from synthDriverHandler import getSynth, setSynth, getSynthList, getSynthInstance
+from synthDrivers.silence import SynthDriver as SilenceSynthDriver
 import addonHandler
 import api
 import config
@@ -23,17 +22,16 @@ import wx
 addonHandler.initTranslation()
 
 # Constants
-APP_VERSION = "1.2.0"
+APP_VERSION = "1.2.1"
 UPDATE_API_URL = "http://api.adamsamec.cz/nvda/VoiceToggle/Update.json"
 TEMP_DIR = "..\\temp\\"
 
 SILENCE_VOICE_NAME = _("Silence")
 ONECORE_SYNTH_ID = "oneCore"
 
-DEFAULT_APP_ID = "[default]"
 CONFIG_SPEC = {
 	"voiceSettings": "string_list(default=list())",
-	"appsVoiceSettingsIndeces": "string(default='{}')",
+	"currentVoiceSettingsIndex": "integer(default=0)",
 	"checkUpdateOnStart": "boolean(default=True)",
 }
 SAVED_PARAMS = ["volume", "rate", "pitch"]
@@ -43,12 +41,6 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	def __init__(self):
 		super(GlobalPlugin, self).__init__()
 		gui.settingsDialogs.NVDASettingsDialog.categoryClasses.append(OptionsPanel)
-		appModuleHandler.post_appSwitch.register(self.handleAppSwitch)
-
-	def handleAppSwitch(self):
-		foreground = api.getForegroundObject()
-		appId = foreground.appModule.appName
-		voiceToggle.handleAppSwitch(appId)
 
 	def terminate(self):
 		voiceToggle.terminate()
@@ -90,6 +82,8 @@ class OptionsPanel(gui.SettingsPanel):
 		self.removeVoiceButton.Bind(wx.EVT_BUTTON, self.onRemoveVoiceButtonClick)
 		self.updateRemoveButtonState()
 
+		sHelper.addItem(buttons)
+
 		# Check for update button
 		checkForUpdateButton = sHelper.addItem(wx.Button(self, label=_("Check for update")))
 		checkForUpdateButton.Bind(wx.EVT_BUTTON, self.onCheckForUpdateButtonClick)
@@ -97,8 +91,6 @@ class OptionsPanel(gui.SettingsPanel):
 		# Check for update on NVDA start checkbox
 		self.checkUpdateOnStartCheckbox = sHelper.addItem(wx.CheckBox(self, label=_("Automatically check for update on NVDA start")))
 		self.checkUpdateOnStartCheckbox.SetValue(voiceToggle.isCheckUpdateOnStart)
-
-		sHelper.addItem(buttons)
 
 	def loadVoiceSettings(self):
 		voiceToggle.deleteInvalidVoiceSettings()
@@ -399,22 +391,12 @@ class VoiceToggle:
 
 		currentDir = os.path.dirname(os.path.realpath(__file__))
 		self.tempDirPath = os.path.join(currentDir, TEMP_DIR)
-		self.appsVoiceSettingsIndeces = {}
-		self.currentAppId = DEFAULT_APP_ID
 		self.isVoiceSettingsModified = False
-		self.preloadSynthInstances()
 
+		self.preloadSynthInstances()
 		self.loadSettingsFromConfig()
 		self.checkForUpdateOnStart()
 		self.addDefaultVoiceSetting()
-
-	@property
-	def currentVoiceSettingsIndex(self):
-		return self.appsVoiceSettingsIndeces[self.currentAppId]
-
-	@currentVoiceSettingsIndex.setter
-	def currentVoiceSettingsIndex(self, value):
-		self.appsVoiceSettingsIndeces[self.currentAppId] = value
 
 	def preloadSynthInstances(self):
 		origSynthId = getSynth().name
@@ -454,23 +436,15 @@ class VoiceToggle:
 
 	def loadSettingsFromConfig(self):
 		self.voiceSettings = [json.loads(voiceSetting) for voiceSetting in self.getConfig("voiceSettings")]
-		self.appsVoiceSettingsIndeces = json.loads(self.getConfig("appsVoiceSettingsIndeces"))
+		self.currentVoiceSettingsIndex = self.getConfig("currentVoiceSettingsIndex")
 		self.isCheckUpdateOnStart = self.getConfig("checkUpdateOnStart")
-
-		voiceSettingsLength = len(self.voiceSettings)
-		if not (DEFAULT_APP_ID in self.appsVoiceSettingsIndeces):
-			if voiceSettingsLength > 0:
-				self.appsVoiceSettingsIndeces[DEFAULT_APP_ID] = 0
-			else:
-				self.appsVoiceSettingsIndeces[DEFAULT_APP_ID] = -1
-		if voiceSettingsLength == 0:
-			for appId in self.appsVoiceSettingsIndeces:
-				self.appsVoiceSettingsIndeces[appId] = -1
+		if len(self.voiceSettings) == 0:
+			self.currentVoiceSettingsIndex = -1
 
 	def saveSettingsTOConfig(self):
 		voiceSettingsJson = [json.dumps(voiceSetting) for voiceSetting in self.voiceSettings] 
 		self.setConfig("voiceSettings", voiceSettingsJson)
-		self.setConfig("appsVoiceSettingsIndeces", json.dumps(self.appsVoiceSettingsIndeces))
+		self.setConfig("currentVoiceSettingsIndex", self.currentVoiceSettingsIndex)
 		self.setConfig("checkUpdateOnStart", self.isCheckUpdateOnStart)
 
 	def checkForUpdateOnStart(self):
@@ -516,9 +490,6 @@ class VoiceToggle:
 	def markVoiceSettingsAsModified(self):
 		self.isVoiceSettingsModified = True
 
-	def handleAppSwitch(self, appId):
-			pass
-
 	def toggleVoice(self):
 		if len(self.voiceSettings) == 0:
 			return
@@ -531,7 +502,7 @@ class VoiceToggle:
 		if voiceSettingsLength == 0:
 			return -1
 		
-		# If index out of list bounds and not empty, return zero
+		# If index is out of list bounds and list is not empty, return zero
 		if index < 0 or index >= voiceSettingsLength:
 			return 0
 		newIndex = (index + 1) % voiceSettingsLength
@@ -615,6 +586,9 @@ class VoiceToggle:
 		return newValidIndex
 
 	def findNextInvalid(self, startIndex):
+		if len(self.voiceSettings) == 0:
+			return -1
+			
 		# If start index is out of list bounds, start at zero
 		if startIndex < 0 or startIndex >= len(self.voiceSettings):
 			startIndex = 0
@@ -630,7 +604,6 @@ class VoiceToggle:
 			if index == startIndex:
 				return -1
 		return index
-
 
 	def synthAndVoiceExist(self, voiceSetting):
 		synthExists = False
