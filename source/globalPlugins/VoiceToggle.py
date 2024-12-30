@@ -2,10 +2,7 @@
 
 import globalPluginHandler
 import speech
-# try:
-	# from speech import getSynth, setSynth
-# except ImportError:
-from synthDriverHandler import getSynth, setSynth, getSynthList, getSynthInstance
+from synthDriverHandler import getSynth, setSynth, getSynthList, getSynthInstance, synthDoneSpeaking
 from synthDrivers.silence import SynthDriver as SilenceSynthDriver
 import addonHandler
 import api
@@ -29,9 +26,10 @@ TEMP_DIR = "..\\temp\\"
 SILENCE_VOICE_NAME = _("Silence")
 ONECORE_SYNTH_ID = "oneCore"
 
+NORMAL_PROFILE_NAME = "[normal]"
 CONFIG_SPEC = {
 	"voiceSettings": "string_list(default=list())",
-	"currentVoiceSettingsIndex": "integer(default=0)",
+	"profilesVoiceSettingsIndeces": "string(default='{}')",
 	"checkUpdateOnStart": "boolean(default=True)",
 }
 SAVED_PARAMS = ["volume", "rate", "pitch"]
@@ -41,6 +39,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	def __init__(self):
 		super(GlobalPlugin, self).__init__()
 		gui.settingsDialogs.NVDASettingsDialog.categoryClasses.append(OptionsPanel)
+		synthDoneSpeaking.register(voiceToggle.handleVoiceSettingChange)
 
 	def terminate(self):
 		voiceToggle.terminate()
@@ -392,11 +391,42 @@ class VoiceToggle:
 		currentDir = os.path.dirname(os.path.realpath(__file__))
 		self.tempDirPath = os.path.join(currentDir, TEMP_DIR)
 		self.isVoiceSettingsModified = False
+		self.currentProfileName = NORMAL_PROFILE_NAME
 
 		self.preloadSynthInstances()
 		self.loadSettingsFromConfig()
 		self.checkForUpdateOnStart()
 		self.addDefaultVoiceSetting()
+		self.alignCurrentVoiceSettingsIndex()
+
+	@property
+	def currentVoiceSettingsIndex(self):
+		return self.profilesVoiceSettingsIndeces[self.currentProfileName]
+
+	@currentVoiceSettingsIndex.setter
+	def currentVoiceSettingsIndex(self, value):
+		self.profilesVoiceSettingsIndeces[self.currentProfileName] = value
+
+	def handleVoiceSettingChange(self):
+		currentProfileName = config.conf.profiles[-1].name
+		if not currentProfileName:
+			currentProfileName = NORMAL_PROFILE_NAME
+		if not (currentProfileName in self.profilesVoiceSettingsIndeces):
+			self.profilesVoiceSettingsIndeces[currentProfileName] = self.currentVoiceSettingsIndex
+		if currentProfileName != self.currentProfileName:
+			self.currentProfileName = currentProfileName
+			self.alignCurrentVoiceSettingsIndex()
+		# self.updateVoiceSetting()
+
+	def alignCurrentVoiceSettingsIndex(self):
+		# This is an imperfect fix for cases when after switching to another profile or starting NVDA, the current synth and voice does not match the current voice setting
+		synth = getSynth()
+		currentVoiceSetting = self.voiceSettings[self.currentVoiceSettingsIndex]
+		if currentVoiceSetting["synthId"] != synth.name or currentVoiceSetting["voiceId"] != synth.voice:
+			for index, voiceSetting in enumerate(self.voiceSettings):
+				if voiceSetting["synthId"] == synth.name and voiceSetting["voiceId"] == synth.voice:
+					self.currentVoiceSettingsIndex = index
+					break
 
 	def preloadSynthInstances(self):
 		origSynthId = getSynth().name
@@ -436,15 +466,22 @@ class VoiceToggle:
 
 	def loadSettingsFromConfig(self):
 		self.voiceSettings = [json.loads(voiceSetting) for voiceSetting in self.getConfig("voiceSettings")]
-		self.currentVoiceSettingsIndex = self.getConfig("currentVoiceSettingsIndex")
+		self.profilesVoiceSettingsIndeces = json.loads(self.getConfig("profilesVoiceSettingsIndeces"))
 		self.isCheckUpdateOnStart = self.getConfig("checkUpdateOnStart")
-		if len(self.voiceSettings) == 0:
-			self.currentVoiceSettingsIndex = -1
+		voiceSettingsLength = len(self.voiceSettings)
+		if not (NORMAL_PROFILE_NAME in self.profilesVoiceSettingsIndeces):
+			if voiceSettingsLength > 0:
+				self.profilesVoiceSettingsIndeces[NORMAL_PROFILE_NAME] = 0
+			else:
+				self.profilesVoiceSettingsIndeces[NORMAL_PROFILE_NAME] = -1
+		if voiceSettingsLength == 0:
+			for profileName in self.profilesVoiceSettingsIndeces:
+				self.profilesVoiceSettingsIndeces[profileName] = -1
 
 	def saveSettingsTOConfig(self):
 		voiceSettingsJson = [json.dumps(voiceSetting) for voiceSetting in self.voiceSettings] 
 		self.setConfig("voiceSettings", voiceSettingsJson)
-		self.setConfig("currentVoiceSettingsIndex", self.currentVoiceSettingsIndex)
+		self.setConfig("profilesVoiceSettingsIndeces", json.dumps(self.profilesVoiceSettingsIndeces))
 		self.setConfig("checkUpdateOnStart", self.isCheckUpdateOnStart)
 
 	def checkForUpdateOnStart(self):
@@ -515,6 +552,8 @@ class VoiceToggle:
 				return 0
 			else:
 				return -1
+		
+		# Determine the next voice setting
 		newVoiceSetting = self.voiceSettings[newIndex]
 
 		# Delete all invalid voice settings starting from the new index, and update the new index if necessary
@@ -588,7 +627,7 @@ class VoiceToggle:
 	def findNextInvalid(self, startIndex):
 		if len(self.voiceSettings) == 0:
 			return -1
-			
+
 		# If start index is out of list bounds, start at zero
 		if startIndex < 0 or startIndex >= len(self.voiceSettings):
 			startIndex = 0
