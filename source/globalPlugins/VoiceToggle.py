@@ -38,7 +38,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	def __init__(self):
 		super(GlobalPlugin, self).__init__()
 		gui.settingsDialogs.NVDASettingsDialog.categoryClasses.append(OptionsPanel)
-		synthDoneSpeaking.register(voiceToggle.handleVoiceSettingChange)
+		synthDoneSpeaking.register(voiceToggle.handleDoneSpeaking)
 
 	def terminate(self):
 		voiceToggle.terminate()
@@ -406,7 +406,7 @@ class VoiceToggle:
 	def currentVoiceSettingsIndex(self, value):
 		self.profilesVoiceSettingsIndeces[self.currentProfileName] = value
 
-	def handleVoiceSettingChange(self):
+	def handleDoneSpeaking(self):
 		newProfileName = config.conf.profiles[-1].name
 		if not newProfileName:
 			newProfileName = NORMAL_PROFILE_NAME
