@@ -414,6 +414,7 @@ class VoiceToggle:
 			self.profilesVoiceSettingsIndeces[newProfileName] = self.currentVoiceSettingsIndex
 		self.currentProfileName = newProfileName
 		self.alignCurrentVoiceSettingsIndex()
+		self.updateVoiceSetting()
 
 	def alignCurrentVoiceSettingsIndex(self):
 		# This is an imperfect fix for cases when after switching to another profile or starting NVDA, the current synth and voice does not match the current voice setting
@@ -752,8 +753,8 @@ class VoiceToggle:
 
 	def terminate(self):
 		# Save current synth, voice and speech params before terminating
-		if len(self.voiceSettings) > 0 and not self.isVoiceSettingsModified:
-			self.updateVoiceSetting()
+		# if len(self.voiceSettings) > 0 and not self.isVoiceSettingsModified:
+			# self.updateVoiceSetting()
 			
 		self.saveSettingsTOConfig()
 		self.deleteTempFiles()
