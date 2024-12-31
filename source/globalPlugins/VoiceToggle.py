@@ -1,7 +1,6 @@
 # Copyright 2025 Adam Samec <adam.samec@gmail.com>
 
 import globalPluginHandler
-import speech
 from synthDriverHandler import getSynth, setSynth, getSynthList, getSynthInstance, synthDoneSpeaking
 from synthDrivers.silence import SynthDriver as SilenceSynthDriver
 import addonHandler
@@ -408,15 +407,13 @@ class VoiceToggle:
 		self.profilesVoiceSettingsIndeces[self.currentProfileName] = value
 
 	def handleVoiceSettingChange(self):
-		currentProfileName = config.conf.profiles[-1].name
-		if not currentProfileName:
-			currentProfileName = NORMAL_PROFILE_NAME
-		if not (currentProfileName in self.profilesVoiceSettingsIndeces):
-			self.profilesVoiceSettingsIndeces[currentProfileName] = self.currentVoiceSettingsIndex
-		if currentProfileName != self.currentProfileName:
-			self.currentProfileName = currentProfileName
-			self.alignCurrentVoiceSettingsIndex()
-		# self.updateVoiceSetting()
+		newProfileName = config.conf.profiles[-1].name
+		if not newProfileName:
+			newProfileName = NORMAL_PROFILE_NAME
+		if not (newProfileName in self.profilesVoiceSettingsIndeces):
+			self.profilesVoiceSettingsIndeces[newProfileName] = self.currentVoiceSettingsIndex
+		self.currentProfileName = newProfileName
+		self.alignCurrentVoiceSettingsIndex()
 
 	def alignCurrentVoiceSettingsIndex(self):
 		# This is an imperfect fix for cases when after switching to another profile or starting NVDA, the current synth and voice does not match the current voice setting
@@ -676,7 +673,6 @@ class VoiceToggle:
 		if isChangeToSilence or isSynthOrVoiceChange:
 			freshVoiceSetting = self.getFreshVoiceSetting()
 			self.voiceSettings[self.currentVoiceSettingsIndex] = {**currentVoiceSetting, **freshVoiceSetting}
-
 		return currentVoiceSetting
 
 	def getFreshVoiceSetting(self):
