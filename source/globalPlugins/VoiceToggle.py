@@ -391,8 +391,8 @@ class VoiceToggle:
 		self.tempDirPath = os.path.join(currentDir, TEMP_DIR)
 		self.isVoiceSettingsModified = False
 		self.currentProfileName = NORMAL_PROFILE_NAME
+		self.synthsInstances = None
 
-		self.preloadSynthInstances()
 		self.loadSettingsFromConfig()
 		self.checkForUpdateOnStart()
 		self.addDefaultVoiceSetting()
@@ -429,6 +429,11 @@ class VoiceToggle:
 					self.currentVoiceSettingsIndex = index
 					break
 
+	def getSynthsInstances(self):
+		if self.synthsInstances == None:
+			self.preloadSynthInstances()
+		return self.synthsInstances
+
 	def preloadSynthInstances(self):
 		origSynthId = getSynth().name
 		self.synthsInstances = []
@@ -461,9 +466,6 @@ class VoiceToggle:
 
 		# Resetting synth fixes the bug of broken ring after calling getSynthInstance()
 		setSynth(origSynthId)
-
-	def getSynthsInstances(self):
-		return self.synthsInstances
 
 	def loadSettingsFromConfig(self):
 		self.voiceSettings = [json.loads(voiceSetting) for voiceSetting in self.getConfig("voiceSettings")]
