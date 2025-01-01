@@ -18,7 +18,7 @@ import wx
 addonHandler.initTranslation()
 
 # Constants
-APP_VERSION = "1.3.0"
+APP_VERSION = "1.3.1"
 UPDATE_API_URL = "http://api.adamsamec.cz/nvda/VoiceToggle/Update.json"
 TEMP_DIR = "..\\temp\\"
 
@@ -417,6 +417,9 @@ class VoiceToggle:
 		self.updateVoiceSetting()
 
 	def alignCurrentVoiceSettingsIndex(self):
+		if len(self.voiceSettings) == 0:
+			return
+
 		# This is an imperfect fix for cases when after switching to another profile or starting NVDA, the current synth and voice does not match the current voice setting
 		synth = getSynth()
 		currentVoiceSetting = self.voiceSettings[self.currentVoiceSettingsIndex]
