@@ -3,6 +3,7 @@
 
 import globalPluginHandler
 import addonHandler
+import scriptHandler
 from synthDrivers.silence import SynthDriver as SilenceSynthDriver
 import ui
 import gui
@@ -23,13 +24,12 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		super(GlobalPlugin, self).__terminate__()
 		gui.settingsDialogs.NVDASettingsDialog.categoryClasses.remove(OptionsPanel)
 
+	@scriptHandler.script(
+		gesture="kb:NVDA+Alt+V",
+		description=_("Toggles to the next voice."),
+	)
 	def script_toggleVoice(self, gesture):
 		voiceToggle.toggleVoice()
-
-	script_toggleVoice.__doc__ = _("Toggles to the next voice.")
-	__gestures={
-		"kb:NVDA+Alt+V": "toggleVoice"
-	}
 
 class OptionsPanel(gui.SettingsPanel):
 	title = _("VoiceToggle")
