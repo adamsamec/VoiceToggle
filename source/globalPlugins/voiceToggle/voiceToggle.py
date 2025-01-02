@@ -85,31 +85,24 @@ class VoiceToggle:
 		origSynthId = getSynth().name
 		self.synthsInstances = []
 		synthsInfos = getSynthList()
-
-		# setSynth("oneCore") throws strange error, so skip it
-		"""
-		# getSynthInstance("oneCore")throws strange error if retrieved after another getSynthinstance call, so call it first
-		synthInstance = getSynthInstance(ONECORE_SYNTH_ID, asDefault=True)
-		self.synthsInstances.append({
-			"id": ONECORE_SYNTH_ID,
-			"name": next(synthInfo[1] for synthInfo in synthsInfos if synthInfo[0] == ONECORE_SYNTH_ID),
-			"instance": synthInstance
-		})
-"""
-
-		# Save other synth instances
 		for synthInfo in synthsInfos:
 			synthId = synthInfo[0]
 			isSilence = synthId == SilenceSynthDriver.name
 			synthName = SILENCE_VOICE_NAME if isSilence else synthInfo[1]
+			
+			# setSynth("oneCore") throws strange error, so skip it
 			if synthId == ONECORE_SYNTH_ID:
 				continue
-			instance = None if isSilence else getSynthInstance(synthId)
-			self.synthsInstances.append({
-				"id": synthId,
-				"name": synthName,
-				"instance": instance
-			})
+
+			try:
+				instance = None if isSilence else getSynthInstance(synthId)
+				self.synthsInstances.append({
+					"id": synthId,
+					"name": synthName,
+					"instance": instance
+				})
+			except:
+				pass
 
 		# Resetting synth fixes the bug of broken ring after calling getSynthInstance()
 		setSynth(origSynthId)
