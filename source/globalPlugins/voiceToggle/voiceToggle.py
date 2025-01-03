@@ -409,3 +409,6 @@ class VoiceToggle:
 			
 		self.saveSettingsTOConfig()
 		self.deleteTempFiles()
+
+# Create the app
+voiceToggle = VoiceToggle()

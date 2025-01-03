@@ -1,5 +1,8 @@
 # VoiceToggle - Changelog
 
+## Version 1.3.2
+* Bug fixes mainly for silent voice.
+
 ## Version 1.3.1
 * Faster start of NVDA. Note that first toggle of voice now might take more time.
 * Bug fix for Microsoft OneCore voice if active during first start with no other voices added.
