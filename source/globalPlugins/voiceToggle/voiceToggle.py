@@ -22,7 +22,7 @@ ONECORE_SYNTH_ID = "oneCore"
 NORMAL_PROFILE_NAME = "[normal]"
 CONFIG_SPEC = {
 	"voiceSettings": "string_list(default=list())",
-	"profilesVoiceSettingsIndeces": "string(default='{}')",
+	"profilesVoiceSettingsIndices": "string(default='{}')",
 	"checkUpdateOnStart": "boolean(default=True)",
 }
 SAVED_PARAMS = ["volume", "rate", "pitch"]
@@ -47,18 +47,18 @@ class VoiceToggle:
 
 	@property
 	def currentVoiceSettingsIndex(self):
-		return self.profilesVoiceSettingsIndeces[self.currentProfileName]
+		return self.profilesVoiceSettingsIndices[self.currentProfileName]
 
 	@currentVoiceSettingsIndex.setter
 	def currentVoiceSettingsIndex(self, value):
-		self.profilesVoiceSettingsIndeces[self.currentProfileName] = value
+		self.profilesVoiceSettingsIndices[self.currentProfileName] = value
 
 	def handleDoneSpeaking(self):
 		newProfileName = config.conf.profiles[-1].name
 		if not newProfileName:
 			newProfileName = NORMAL_PROFILE_NAME
-		if not (newProfileName in self.profilesVoiceSettingsIndeces):
-			self.profilesVoiceSettingsIndeces[newProfileName] = self.currentVoiceSettingsIndex
+		if not (newProfileName in self.profilesVoiceSettingsIndices):
+			self.profilesVoiceSettingsIndices[newProfileName] = self.currentVoiceSettingsIndex
 		self.currentProfileName = newProfileName
 		self.alignCurrentVoiceSettingsIndex()
 		self.updateVoiceSetting()
@@ -109,22 +109,22 @@ class VoiceToggle:
 
 	def loadSettingsFromConfig(self):
 		self.voiceSettings = [json.loads(voiceSetting) for voiceSetting in self.getConfig("voiceSettings")]
-		self.profilesVoiceSettingsIndeces = json.loads(self.getConfig("profilesVoiceSettingsIndeces"))
+		self.profilesVoiceSettingsIndices = json.loads(self.getConfig("profilesVoiceSettingsIndices"))
 		self.isCheckUpdateOnStart = self.getConfig("checkUpdateOnStart")
 		voiceSettingsLength = len(self.voiceSettings)
-		if not (NORMAL_PROFILE_NAME in self.profilesVoiceSettingsIndeces):
+		if not (NORMAL_PROFILE_NAME in self.profilesVoiceSettingsIndices):
 			if voiceSettingsLength > 0:
-				self.profilesVoiceSettingsIndeces[NORMAL_PROFILE_NAME] = 0
+				self.profilesVoiceSettingsIndices[NORMAL_PROFILE_NAME] = 0
 			else:
-				self.profilesVoiceSettingsIndeces[NORMAL_PROFILE_NAME] = -1
+				self.profilesVoiceSettingsIndices[NORMAL_PROFILE_NAME] = -1
 		if voiceSettingsLength == 0:
-			for profileName in self.profilesVoiceSettingsIndeces:
-				self.profilesVoiceSettingsIndeces[profileName] = -1
+			for profileName in self.profilesVoiceSettingsIndices:
+				self.profilesVoiceSettingsIndices[profileName] = -1
 
 	def saveSettingsTOConfig(self):
 		voiceSettingsJson = [json.dumps(voiceSetting) for voiceSetting in self.voiceSettings] 
 		self.setConfig("voiceSettings", voiceSettingsJson)
-		self.setConfig("profilesVoiceSettingsIndeces", json.dumps(self.profilesVoiceSettingsIndeces))
+		self.setConfig("profilesVoiceSettingsIndices", json.dumps(self.profilesVoiceSettingsIndices))
 		self.setConfig("checkUpdateOnStart", self.isCheckUpdateOnStart)
 
 	def checkForUpdateOnStart(self):
