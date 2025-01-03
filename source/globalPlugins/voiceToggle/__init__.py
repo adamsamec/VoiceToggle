@@ -17,8 +17,11 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		super(GlobalPlugin, self).__init__()
 		gui.settingsDialogs.NVDASettingsDialog.categoryClasses.append(OptionsPanel)
 
+		addonHandler.initTranslation()
+		self.voiceToggle = VoiceToggle()
+
 	def terminate(self):
-		voiceToggle.terminate()
+		self.voiceToggle.terminate()
 
 	def __terminate__(self):
 		super(GlobalPlugin, self).__terminate__()
@@ -29,7 +32,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		description=_("Toggles to the next voice."),
 	)
 	def script_toggleVoice(self, gesture):
-		voiceToggle.toggleVoice()
+		self.voiceToggle.toggleVoice()
 
 class OptionsPanel(gui.SettingsPanel):
 	title = _("VoiceToggle")
@@ -357,6 +360,3 @@ class UpdateCheckErrorDialog(wx.Dialog):
 
 	def close(self):
 		self.Destroy()
-
-addonHandler.initTranslation()
-voiceToggle = VoiceToggle()
