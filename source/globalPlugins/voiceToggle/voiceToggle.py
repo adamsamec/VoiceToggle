@@ -1,6 +1,7 @@
 # Copyright 2025 Adam Samec <adam.samec@gmail.com>
 # This add-on is free software, licensed under the terms of the GNU General Public License (version 2). see <https://www.gnu.org/licenses/>.
 
+import addonHandler
 from synthDriverHandler import getSynth, setSynth, getSynthList, getSynthInstance, synthDoneSpeaking
 from synthDrivers.silence import SynthDriver as SilenceSynthDriver
 import config
@@ -10,6 +11,8 @@ import json
 import os
 import shutil
 from urllib.request import urlopen, urlretrieve, URLError
+
+addonHandler.initTranslation()
 
 # Constants
 APP_VERSION = "1.3.1"
@@ -224,7 +227,7 @@ class VoiceToggle:
 					setattr(synth, param, newVoiceSetting[param])
 			if synth != None:
 				synth.saveSettings()
-		if announceChange:
+		if announceChange and newVoiceSetting["synthId"] != SilenceSynthDriver.name:
 			ui.message(newVoiceSetting["voiceName"])
 		self.isVoiceSettingsModified = False
 		return newIndex
@@ -294,6 +297,9 @@ class VoiceToggle:
 		for instance in synthInstances:
 			if instance["id"] == voiceSetting["synthId"]:
 				synthExists = True
+				if voiceSetting["synthId"] == SilenceSynthDriver.name:
+					voiceExists = True
+					break
 				for voiceId in instance["instance"].availableVoices:
 					if voiceId == voiceSetting["voiceId"]:
 						voiceExists = True

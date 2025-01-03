@@ -9,7 +9,7 @@ import ui
 import gui
 
 import wx
-from .voiceToggle import VoiceToggle, APP_VERSION
+from .voiceToggle import VoiceToggle, APP_VERSION, SILENCE_VOICE_NAME
 
 class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
