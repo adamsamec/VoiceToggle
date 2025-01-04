@@ -357,8 +357,7 @@ class VoiceToggle:
 		return isAvailable
 
 	def downloadAndRunUpdate(self, url):
-		# try:
-		if True:
+		try:
 			response = urlopen(url)
 
 			# Get the filename from URL after redirect
@@ -374,8 +373,8 @@ class VoiceToggle:
 			# Run the file
 			os.startfile(newPath)
 			return True
-		# except Exception:
-			# pass
+		except Exception:
+			pass
 		return False
 
 	def deleteTempFiles(self):
