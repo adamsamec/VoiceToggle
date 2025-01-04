@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 'voiceToggle' '1.3.3'\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@groups.io'\n"
-"POT-Creation-Date: 2025-01-04 17:29+0100\n"
+"POT-Creation-Date: 2025-01-04 22:44+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,76 +21,80 @@ msgstr ""
 msgid "Toggles to the next voice."
 msgstr ""
 
+#: addon\globalPlugins\voiceToggle\consts.py:12
+msgid "Silence"
+msgstr ""
+
 #. Add-on summary, usually the user visible name of the addon.
 #. Translators: Summary for this add-on
 #. to be shown on installation and add-on information found in Add-ons Manager.
-#: addon\globalPlugins\voiceToggle\dialogs.py:15 buildVars.py:23
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:18 buildVars.py:23
 msgid "VoiceToggle"
 msgstr ""
 
 #. Voices listbox
-#: addon\globalPlugins\voiceToggle\dialogs.py:24
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:27
 msgid "Voices"
 msgstr ""
 
 #. Add voice button
-#: addon\globalPlugins\voiceToggle\dialogs.py:31
-#: addon\globalPlugins\voiceToggle\dialogs.py:121
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:34
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:124
 msgid "Add voice"
 msgstr ""
 
 #. Remove voice button
-#: addon\globalPlugins\voiceToggle\dialogs.py:35
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:38
 msgid "Remove voice"
 msgstr ""
 
 #. Check for update button
-#: addon\globalPlugins\voiceToggle\dialogs.py:42
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:45
 msgid "Check for update"
 msgstr ""
 
 #. Check for update on NVDA start checkbox
-#: addon\globalPlugins\voiceToggle\dialogs.py:46
-#: addon\globalPlugins\voiceToggle\dialogs.py:226
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:49
+#: addon\globalPlugins\voiceToggle\updateDialogs.py:33
 msgid "Automatically check for update on NVDA start"
 msgstr ""
 
-#: addon\globalPlugins\voiceToggle\dialogs.py:57
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:60
 msgid "No voices added yet"
 msgstr ""
 
-#: addon\globalPlugins\voiceToggle\dialogs.py:65
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:68
 msgid "Default"
 msgstr ""
 
-#: addon\globalPlugins\voiceToggle\dialogs.py:84
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:87
 msgid "Default voice cannot be removed"
 msgstr ""
 
-#: addon\globalPlugins\voiceToggle\dialogs.py:133
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:136
 msgid "Synthesizer"
 msgstr ""
 
 #. Voice combobox
-#: addon\globalPlugins\voiceToggle\dialogs.py:139
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:142
 msgid "Voice"
 msgstr ""
 
 #. Add button
-#: addon\globalPlugins\voiceToggle\dialogs.py:146
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:149
 msgid "Add"
 msgstr ""
 
 #. Cancel button
-#: addon\globalPlugins\voiceToggle\dialogs.py:151
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:154
 msgid "Cancel"
 msgstr ""
 
-#: addon\globalPlugins\voiceToggle\dialogs.py:207
+#: addon\globalPlugins\voiceToggle\updateDialogs.py:14
 msgid "VoiceToggle add-on update available"
 msgstr ""
 
-#: addon\globalPlugins\voiceToggle\dialogs.py:221
+#: addon\globalPlugins\voiceToggle\updateDialogs.py:28
 #, python-brace-format
 msgid ""
 "VoiceToggle add-on for NVDA version {latestVersion} is available, you have "
@@ -98,39 +102,35 @@ msgid ""
 msgstr ""
 
 #. Update button
-#: addon\globalPlugins\voiceToggle\dialogs.py:234
+#: addon\globalPlugins\voiceToggle\updateDialogs.py:41
 msgid "Update"
 msgstr ""
 
 #. Close button
-#: addon\globalPlugins\voiceToggle\dialogs.py:240
-#: addon\globalPlugins\voiceToggle\dialogs.py:285
-#: addon\globalPlugins\voiceToggle\dialogs.py:322
+#: addon\globalPlugins\voiceToggle\updateDialogs.py:47
+#: addon\globalPlugins\voiceToggle\updateDialogs.py:92
+#: addon\globalPlugins\voiceToggle\updateDialogs.py:129
 msgid "Close"
 msgstr ""
 
-#: addon\globalPlugins\voiceToggle\dialogs.py:271
+#: addon\globalPlugins\voiceToggle\updateDialogs.py:78
 msgid "VoiceToggle is up to date"
 msgstr ""
 
-#: addon\globalPlugins\voiceToggle\dialogs.py:282
+#: addon\globalPlugins\voiceToggle\updateDialogs.py:89
 #, python-brace-format
 msgid "VoiceToggle version {currentVersion} is up to date."
 msgstr ""
 
-#: addon\globalPlugins\voiceToggle\dialogs.py:309
+#: addon\globalPlugins\voiceToggle\updateDialogs.py:116
 msgid "Check for update failed for VoiceToggle"
 msgstr ""
 
 #. Update check error text
-#: addon\globalPlugins\voiceToggle\dialogs.py:319
+#: addon\globalPlugins\voiceToggle\updateDialogs.py:126
 msgid ""
 "Check for update for the VoiceToggle add-on was not successful. Please "
 "verify that you are connected to the Internet."
-msgstr ""
-
-#: addon\globalPlugins\voiceToggle\voiceToggle.py:21
-msgid "Silence"
 msgstr ""
 
 #. Add-on description

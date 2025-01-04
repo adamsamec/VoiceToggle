@@ -367,6 +367,7 @@ class VoiceToggle:
 
 			# Copy the downloaded file from download directory to plugin temp directory
 			downloadPath = response[0]
+			os.makedirs(os.path.dirname(self.tempDirPath), exist_ok=True)
 			newPath = os.path.join(self.tempDirPath, newFilename)
 			shutil.copy2(downloadPath, newPath)
 			
