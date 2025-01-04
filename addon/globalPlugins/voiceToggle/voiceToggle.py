@@ -12,33 +12,20 @@ import os
 import shutil
 from urllib.request import urlopen, urlretrieve, URLError
 
+import globalPlugins.voiceToggle.consts as consts
+from .updateDialogs import UpdateAvailableDialog
+
 addonHandler.initTranslation()
-
-# Constants
-APP_VERSION = "1.3.2"
-UPDATE_API_URL = "http://api.adamsamec.cz/nvda/VoiceToggle/Update.json"
-TEMP_DIR = "..\\temp\\"
-
-SILENCE_VOICE_NAME = _("Silence")
-ONECORE_SYNTH_ID = "oneCore"
-
-NORMAL_PROFILE_NAME = "[normal]"
-CONFIG_SPEC = {
-	"voiceSettings": "string_list(default=list())",
-	"profilesVoiceSettingsIndices": "string(default='{}')",
-	"checkUpdateOnStart": "boolean(default=True)",
-}
-SAVED_PARAMS = ["volume", "rate", "pitch"]
 
 class VoiceToggle:
 
 	def __init__(self):
-		config.conf.spec["VoiceToggle"] = CONFIG_SPEC
+		config.conf.spec["VoiceToggle"] = consts.CONFIG_SPEC
 
 		currentDir = os.path.dirname(os.path.realpath(__file__))
-		self.tempDirPath = os.path.join(currentDir, TEMP_DIR)
+		self.tempDirPath = os.path.join(currentDir, consts.TEMP_DIR)
 		self.isVoiceSettingsModified = False
-		self.currentProfileName = NORMAL_PROFILE_NAME
+		self.currentProfileName = consts.NORMAL_PROFILE_NAME
 		self.synthsInstances = None
 
 		self.loadSettingsFromConfig()
@@ -59,7 +46,7 @@ class VoiceToggle:
 	def handleDoneSpeaking(self):
 		newProfileName = config.conf.profiles[-1].name
 		if not newProfileName:
-			newProfileName = NORMAL_PROFILE_NAME
+			newProfileName = consts.NORMAL_PROFILE_NAME
 		if not (newProfileName in self.profilesVoiceSettingsIndices):
 			self.profilesVoiceSettingsIndices[newProfileName] = self.currentVoiceSettingsIndex
 		self.currentProfileName = newProfileName
@@ -91,10 +78,10 @@ class VoiceToggle:
 		for synthInfo in synthsInfos:
 			synthId = synthInfo[0]
 			isSilence = synthId == SilenceSynthDriver.name
-			synthName = SILENCE_VOICE_NAME if isSilence else synthInfo[1]
+			synthName = consts.SILENCE_VOICE_NAME if isSilence else synthInfo[1]
 			
 			# setSynth("oneCore") throws strange error, so skip it
-			if synthId == ONECORE_SYNTH_ID:
+			if synthId == consts.ONECORE_SYNTH_ID:
 				continue
 
 			try:
@@ -115,11 +102,11 @@ class VoiceToggle:
 		self.profilesVoiceSettingsIndices = json.loads(self.getConfig("profilesVoiceSettingsIndices"))
 		self.isCheckUpdateOnStart = self.getConfig("checkUpdateOnStart")
 		voiceSettingsLength = len(self.voiceSettings)
-		if not (NORMAL_PROFILE_NAME in self.profilesVoiceSettingsIndices):
+		if not (consts.NORMAL_PROFILE_NAME in self.profilesVoiceSettingsIndices):
 			if voiceSettingsLength > 0:
-				self.profilesVoiceSettingsIndices[NORMAL_PROFILE_NAME] = 0
+				self.profilesVoiceSettingsIndices[consts.NORMAL_PROFILE_NAME] = 0
 			else:
-				self.profilesVoiceSettingsIndices[NORMAL_PROFILE_NAME] = -1
+				self.profilesVoiceSettingsIndices[consts.NORMAL_PROFILE_NAME] = -1
 		if voiceSettingsLength == 0:
 			for profileName in self.profilesVoiceSettingsIndices:
 				self.profilesVoiceSettingsIndices[profileName] = -1
@@ -140,7 +127,7 @@ class VoiceToggle:
 
 	def checkForUpdate(self):
 		try:
-			response = urlopen(UPDATE_API_URL)
+			response = urlopen(consts.UPDATE_API_URL)
 			update = json.loads(response.read())
 
 			# Compare the latest version with the current version
@@ -212,7 +199,7 @@ class VoiceToggle:
 		currentVoiceSetting = None if self.isVoiceSettingsModified else self.updateVoiceSetting()
 		
 		# Only apply new synth if voice settings have been modified in add-on settings, if changed from previous one, or if is OneCore voice and new is not
-		if (currentVoiceSetting == None) or (newVoiceSetting["synthId"] != currentVoiceSetting["synthId"]) or (newVoiceSetting["synthId"] != ONECORE_SYNTH_ID and synth.name == ONECORE_SYNTH_ID):
+		if (currentVoiceSetting == None) or (newVoiceSetting["synthId"] != currentVoiceSetting["synthId"]) or (newVoiceSetting["synthId"] != consts.ONECORE_SYNTH_ID and synth.name == consts.ONECORE_SYNTH_ID):
 			if newVoiceSetting["synthId"] == SilenceSynthDriver.name:
 				setSynth(None)
 			else:
@@ -222,7 +209,7 @@ class VoiceToggle:
 		# Apply new voice setting
 		if newVoiceSetting["synthId"] != SilenceSynthDriver.name:
 			synth.voice = newVoiceSetting["voiceId"]
-			for param in SAVED_PARAMS:
+			for param in consts.SAVED_PARAMS:
 				if param in newVoiceSetting:
 					setattr(synth, param, newVoiceSetting[param])
 			if synth != None:
@@ -316,7 +303,7 @@ class VoiceToggle:
 		synth = getSynth()
 		isSilenceFresh = synth == None
 		if not isSilenceFresh:
-			for param in SAVED_PARAMS:
+			for param in consts.SAVED_PARAMS:
 				currentVoiceSetting[param] = getattr(synth, param)
 
 		# Determine and update fresh synth and voice names only when synth or voice ID changed
@@ -329,7 +316,7 @@ class VoiceToggle:
 
 	def getFreshVoiceSetting(self):
 		synth = getSynth()
-		if synth.name == ONECORE_SYNTH_ID:
+		if synth.name == consts.ONECORE_SYNTH_ID:
 			if len(self.voiceSettings) == 0:
 				return None
 			currentVoiceSetting = self.voiceSettings[self.currentVoiceSettingsIndex]
@@ -340,9 +327,9 @@ class VoiceToggle:
 		synthInstance = next(instance for instance in self.getSynthsInstances() if instance["id"] == synthId)
 		if synthId == SilenceSynthDriver.name:
 			voiceId = SilenceSynthDriver.name
-			voiceName = SILENCE_VOICE_NAME
+			voiceName = consts.SILENCE_VOICE_NAME
 		else:
-			if synth.name == ONECORE_SYNTH_ID:
+			if synth.name == consts.ONECORE_SYNTH_ID:
 				voiceId = currentVoiceSetting["voiceId"]
 			else:
 				voiceId = synth.voice
@@ -363,13 +350,15 @@ class VoiceToggle:
 		config.conf["VoiceToggle"][key] = value
 
 	def isUpdateAvailable(self, latestVersion):
-		current = [int(part) for part in APP_VERSION.split(".")]
+		currentVersion = addonHandler.getCodeAddon().version
+		current = [int(part) for part in currentVersion.split(".")]
 		latest = [int(part) for part in latestVersion.split(".")]
 		isAvailable = latest[0] > current[0] or latest[1] > current[1] or latest[2] > current[2]
 		return isAvailable
 
 	def downloadAndRunUpdate(self, url):
-		try:
+		# try:
+		if True:
 			response = urlopen(url)
 
 			# Get the filename from URL after redirect
@@ -385,8 +374,8 @@ class VoiceToggle:
 			# Run the file
 			os.startfile(newPath)
 			return True
-		except Exception:
-			pass
+		# except Exception:
+			# pass
 		return False
 
 	def deleteTempFiles(self):

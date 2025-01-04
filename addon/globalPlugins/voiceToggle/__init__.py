@@ -6,7 +6,7 @@ import globalPluginHandler
 import scriptHandler
 import gui
 
-from .dialogs import OptionsPanel
+from .settingsDialogs import OptionsPanel
 from .voiceToggle import voiceToggle
 
 addonHandler.initTranslation()

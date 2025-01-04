@@ -1,0 +1,111 @@
+    # VoiceToggle - NVDA add-on for easy voice toggling.
+# Copyright (C) 2025 Adam Samec
+# This file is distributed under the same license as the 'voiceToggle' package.
+# Adam Samec <adam.samec@gmail.com>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 'voiceToggle' '1.3.3'\n"
+"POT-Creation-Date: 2025-01-04 17:29+0100\n"
+"PO-Revision-Date: 2025-01-04 17:29+0100\n"
+"Last-Translator: Adam Samec <adam.samec@gmail.com>\n"
+"Language-Team: Slovak <adam.samec@gmail.com>\n"
+"Language: sk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Toggles to the next voice."
+msgstr "Prepne na nasledujúci hlas"
+
+#. Add-on summary, usually the user visible name of the addon.
+#. Translators: Summary for this add-on
+#. to be shown on installation and add-on information found in Add-ons Manager.
+msgid "VoiceToggle"
+msgstr ""
+
+#. Voices listbox
+msgid "Voices"
+msgstr "Hlasy"
+
+#. Add voice button
+msgid "Add voice"
+msgstr "Pridať hlas"
+
+#. Remove voice button
+msgid "Remove voice"
+msgstr "Odstrániť hlas"
+
+#. Check for update button
+msgid "Check for update"
+msgstr "Skontrolovať aktualizáciu"
+
+#. Check for update on NVDA start checkbox
+msgid "Automatically check for update on NVDA start"
+msgstr "Automaticky kontrolovať aktualizáciu pri štarte NVDA"
+
+msgid "No voices added yet"
+msgstr "Žiadne hlasy zatiaľ neboli pridané"
+
+msgid "Default"
+msgstr "Predvolený"
+
+msgid "Default voice cannot be removed"
+msgstr "Predvolený hlas nie je možné odstrániť"
+
+msgid "Synthesizer"
+msgstr "Hlasový výstup"
+
+#. Voice combobox
+msgid "Voice"
+msgstr "Hlas"
+
+#. Add button
+msgid "Add"
+msgstr "Pridať"
+
+#. Cancel button
+msgid "Cancel"
+msgstr "Zrušiť"
+
+msgid "VoiceToggle add-on update available"
+msgstr "Dostupná aktualizácia doplnku VoiceToggle"
+
+msgid ""
+"VoiceToggle add-on for NVDA version {latestVersion} is available, you have "
+"{currentVersion}. Do you want to download and install the update now?"
+msgstr "Je dostupná aktualizácia doplnku VoiceToggle verzie {latestVersion} pre NVDA, vaša verzia je {currentVersion}. Prajete si stiahnuť a nainštalovať aktualizáciu teraz?"
+
+#. Update button
+msgid "Update"
+msgstr "Aktualizovať"
+
+#. Close button
+msgid "Close"
+msgstr "Zavrieť"
+
+msgid "VoiceToggle is up to date"
+msgstr "VoiceToggle je aktuálny"
+
+msgid "VoiceToggle version {currentVersion} is up to date."
+msgstr "VoiceToggle verzie {currentVersion} je aktuálny."
+
+msgid "Check for update failed for VoiceToggle"
+msgstr "Kontrola aktualizácie VoiceToggle zlyhala"
+
+#. Update check error text
+msgid ""
+"Check for update for the VoiceToggle add-on was not successful. Please "
+"verify that you are connected to the Internet."
+msgstr "Kontrola aktualizácie doplnku VoiceToggle nebola úspešná. Prosím, skontrolujte, či ste pripojení na Internet."
+
+msgid "Silence"
+msgstr "Bez reči"
+
+#. Add-on description
+#. Translators: Long description to be shown for this add-on on add-on information from add-ons manager
+msgid ""
+"Allows easy toggling between defined voices.\n"
+"Define voices in NVDA settings, then use NVDA + Alt + V anytime to toggle to "
+"the next voice."
+msgstr "Umožňuje ľahké prepínanie medzi definovanými hlasmi.\nDefinujte požadované hlasy v nastaveniach NVDA, a potom kedykoľvek použite skratku NVDA + Alt + V pre prepnutie na nasledujúci hlas."

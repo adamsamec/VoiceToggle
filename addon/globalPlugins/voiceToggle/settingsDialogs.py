@@ -7,7 +7,10 @@ import ui
 import gui
 
 import wx
-from .voiceToggle import voiceToggle, APP_VERSION, SILENCE_VOICE_NAME
+
+import globalPlugins.voiceToggle.consts as consts
+from .voiceToggle import voiceToggle
+from .updateDialogs import UpdateAvailableDialog, UpToDateDialog, UpdateCheckErrorDialog
 
 addonHandler.initTranslation()
 
@@ -170,7 +173,7 @@ class AddVoiceDialog(wx.Dialog):
 		# Special treatment for silence synth
 		if synthId == SilenceSynthDriver.name:
 			self.voicesIds.append(SilenceSynthDriver.name)
-			self.voiceComboBox.Append(SILENCE_VOICE_NAME)
+			self.voiceComboBox.Append(consts.SILENCE_VOICE_NAME)
 		else:
 			voices = next(instance["instance"].availableVoices  for instance in synthsInstances if instance["id"] == synthId)
 			for voiceId in voices:
@@ -196,143 +199,6 @@ class AddVoiceDialog(wx.Dialog):
 		self.close()
 
 	def onCancelButtonClick(self, event):
-		self.close()
-
-	def close(self):
-		self.Destroy()
-
-class UpdateAvailableDialog(wx.Dialog):
-
-	def __init__(self, app, update, displayCheckOnStartCheckbox=False):
-		super().__init__(None, style=wx.DIALOG_NO_PARENT, title=_("VoiceToggle add-on update available"))
-		self.app= app
-		self.update = update
-		self.displayCheckOnStartCheckbox = displayCheckOnStartCheckbox
-
-		self.Bind(wx.EVT_CHAR_HOOK, self.charHook)
-		self.addWidgets()
-
-	def addWidgets(self):
-		mainSizer = wx.BoxSizer(wx.VERTICAL)
-		sHelper = gui.guiHelper.BoxSizerHelper(self, wx.VERTICAL)
-
-		# Update available text
-		updateAvailableLabel = _("VoiceToggle add-on for NVDA version {} is available, you have {}. Do you want to download and install the update now?").format(self.update["version"], APP_VERSION)
-		updateAvailableText = sHelper.addItem(wx.StaticText(self, label=updateAvailableLabel))
-
-		# Check for update on NVDA start checkbox
-		if self.displayCheckOnStartCheckbox:
-			self.checkUpdateOnStartCheckbox = sHelper.addItem(wx.CheckBox(self, label=_("Automatically check for update on NVDA start")))
-			self.checkUpdateOnStartCheckbox.Bind(wx.EVT_CHECKBOX, self.onCheckUpdateOnStartCheckChange)
-			self.checkUpdateOnStartCheckbox.SetValue(self.app.isCheckUpdateOnStart)
-
-		# Buttons group
-		buttons = gui.guiHelper.ButtonHelper(wx.VERTICAL)
-
-		# Update button
-		self.updateButton = buttons.addButton(self, label=_("Update"))
-		self.updateButton.Bind(wx.EVT_BUTTON, self.onUpdateButtonClick)
-		self.updateButton.SetDefault()
-		self.updateButton.SetFocus()
-
-		# Close button
-		closeButton = buttons.addButton(self, label=_("Close"))
-		closeButton.Bind(wx.EVT_BUTTON, self.onCloseButtonClick)
-		
-		sHelper.addItem(buttons)
-		mainSizer.Add(sHelper.sizer, border=10, flag=wx.ALL)
-		mainSizer.Fit(self)
-		self.SetSizer(mainSizer)
-
-	def charHook(self, event):
-		key = event.GetKeyCode()
-		if key == wx.WXK_ESCAPE:
-			self.close()
-		else:
-			event.Skip()
-
-	def onCheckUpdateOnStartCheckChange(self, event):
-		self.app.isCheckUpdateOnStart = self.checkUpdateOnStartCheckbox.GetValue()
-
-	def onUpdateButtonClick(self, event):
-		self.app.downloadAndRunUpdate(self.update["addonUrl"])
-		self.close()
-
-	def onCloseButtonClick(self, event):
-		self.close()
-
-	def close(self):
-		self.Destroy()
-
-class UpToDateDialog(wx.Dialog):
-
-	def __init__(self):
-		super().__init__(None, style=wx.DIALOG_NO_PARENT, title=_("VoiceToggle is up to date"))
-
-		self.Bind(wx.EVT_CHAR_HOOK, self.charHook)
-		self.addWidgets()
-
-	def addWidgets(self):
-		mainSizer = wx.BoxSizer(wx.VERTICAL)
-		sHelper = gui.guiHelper.BoxSizerHelper(self, wx.VERTICAL)
-
-		# Up to date text
-		upToDateLabel = _("VoiceToggle version {} is up to date.").format(APP_VERSION)
-		upToDateText = sHelper.addItem(wx.StaticText(self, label=upToDateLabel))
-
-		closeButton = sHelper.addItem(wx.Button(self, label=_("Close")))
-		closeButton.Bind(wx.EVT_BUTTON, self.onCloseButtonClick)
-		closeButton.SetDefault()
-		
-		mainSizer.Add(sHelper.sizer, border=10, flag=wx.ALL)
-		mainSizer.Fit(self)
-		self.SetSizer(mainSizer)
-
-	def charHook(self, event):
-		key = event.GetKeyCode()
-		if key == wx.WXK_ESCAPE:
-			self.close()
-		else:
-			event.Skip()
-
-	def onCloseButtonClick(self, event):
-		self.close()
-
-	def close(self):
-		self.Destroy()
-
-class UpdateCheckErrorDialog(wx.Dialog):
-
-	def __init__(self):
-		super().__init__(None, style=wx.DIALOG_NO_PARENT, title=_("Check for update failed for VoiceToggle"))
-
-		self.Bind(wx.EVT_CHAR_HOOK, self.charHook)
-		self.addWidgets()
-
-	def addWidgets(self):
-		mainSizer = wx.BoxSizer(wx.VERTICAL)
-		sHelper = gui.guiHelper.BoxSizerHelper(self, wx.VERTICAL)
-
-		# Update check error text
-		errorLabel = _("Check for update for the VoiceToggle add-on was not successful. Please verify that you are connected to the Internet.")
-		errorText = sHelper.addItem(wx.StaticText(self, label=errorLabel))
-
-		closeButton = sHelper.addItem(wx.Button(self, label=_("Close")))
-		closeButton.Bind(wx.EVT_BUTTON, self.onCloseButtonClick)
-		closeButton.SetDefault()
-		
-		mainSizer.Add(sHelper.sizer, border=10, flag=wx.ALL)
-		mainSizer.Fit(self)
-		self.SetSizer(mainSizer)
-
-	def charHook(self, event):
-		key = event.GetKeyCode()
-		if key == wx.WXK_ESCAPE:
-			self.close()
-		else:
-			event.Skip()
-
-	def onCloseButtonClick(self, event):
 		self.close()
 
 	def close(self):

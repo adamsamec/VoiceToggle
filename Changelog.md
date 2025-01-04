@@ -1,5 +1,9 @@
 # VoiceToggle - Changelog
 
+## Version 1.3.3
+* Fixed broken check for update feature.
+* Added documentation.
+
 ## Version 1.3.2
 * Bug fixes mainly for silent voice.
 

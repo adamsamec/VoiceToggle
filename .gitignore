@@ -1,2 +1,4 @@
 dist
-source/globalPlugins/voiceToggle/__pycache__
+addon/globalPlugins/voiceToggle/__pycache__
+*.nvda-addon
+.sconsign.dblite
