@@ -369,7 +369,7 @@ class VoiceToggle:
 			downloadPath = response[0]
 			os.makedirs(os.path.dirname(self.tempDirPath), exist_ok=True)
 			newPath = os.path.join(self.tempDirPath, newFilename)
-			shutil.copy2(downloadPath, newPath)
+			shutil.move(downloadPath, newPath)
 			
 			# Run the file
 			os.startfile(newPath)
