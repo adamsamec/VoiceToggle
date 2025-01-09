@@ -29,11 +29,12 @@ class VoiceToggle:
 		self.synthsInstances = None
 
 		self.loadSettingsFromConfig()
+		self.currentVoiceSettingsIndex = self.deleteInvalidVoiceSettings(startIndex=self.currentVoiceSettingsIndex, dontChangeVoice=True)
 		self.addDefaultVoiceSetting()
 		self.alignCurrentVoiceSettingsIndex()
 		self.checkForUpdateOnStart()
 
-		synthDoneSpeaking.register(self.handleDoneSpeaking)
+		# synthDoneSpeaking.register(self.handleDoneSpeaking)
 
 	@property
 	def currentVoiceSettingsIndex(self):
@@ -112,7 +113,7 @@ class VoiceToggle:
 				self.profilesVoiceSettingsIndices[profileName] = -1
 
 	def saveSettingsTOConfig(self):
-		voiceSettingsJson = [json.dumps(voiceSetting) for voiceSetting in self.voiceSettings] 
+		voiceSettingsJson = [json.dumps(voiceSetting) for voiceSetting in self.voiceSettings]
 		self.setConfig("voiceSettings", voiceSettingsJson)
 		self.setConfig("profilesVoiceSettingsIndices", json.dumps(self.profilesVoiceSettingsIndices))
 		self.setConfig("checkUpdateOnStart", self.isCheckUpdateOnStart)
@@ -191,6 +192,8 @@ class VoiceToggle:
 
 		# Delete all invalid voice settings starting from the new index, and update the new index if necessary
 		newIndex = self.deleteInvalidVoiceSettings(startIndex=newIndex, dontChangeVoice=True)
+		if len(self.voiceSettings) == 0:
+			return -1
 		newVoiceSetting = self.voiceSettings[newIndex]
 
 		synth = getSynth()
