@@ -2,7 +2,7 @@
 # This add-on is free software, licensed under the terms of the GNU General Public License (version 2). see <https://www.gnu.org/licenses/>.
 
 import addonHandler
-from synthDriverHandler import getSynth, setSynth, getSynthList, getSynthInstance, synthDoneSpeaking
+from synthDriverHandler import getSynth, setSynth, getSynthList, getSynthInstance
 from synthDrivers.silence import SynthDriver as SilenceSynthDriver
 import config
 import ui
@@ -33,8 +33,6 @@ class VoiceToggle:
 		self.addDefaultVoiceSetting()
 		self.alignCurrentVoiceSettingsIndex()
 		self.checkForUpdateOnStart()
-
-		# synthDoneSpeaking.register(self.handleDoneSpeaking)
 
 	@property
 	def currentVoiceSettingsIndex(self):
