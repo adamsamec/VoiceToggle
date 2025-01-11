@@ -50,8 +50,8 @@ class OptionsPanel(gui.SettingsPanel):
 		self.checkUpdateOnStartCheckbox.SetValue(voiceToggle.isCheckUpdateOnStart)
 
 	def loadVoiceSettings(self):
-		voiceToggle.deleteInvalidVoiceSettings()
-		voiceToggle.updateVoiceSetting()
+		voiceToggle.cleanUpVoiceSettings()
+		# voiceToggle.updateVoiceSetting()
 		self.voiceSettings = voiceToggle.getVoiceSettings()
 
 	def updateVoicesListBox(self, selectionIndex=0):
@@ -61,10 +61,13 @@ class OptionsPanel(gui.SettingsPanel):
 			self.voicesListBox.SetSelection(0)
 			return
 		for index, voiceSetting in enumerate(self.voiceSettings):
-			choice = voiceSetting["synthName"] if voiceSetting["synthId"] == SilenceSynthDriver.name else f"{voiceSetting['voiceName']} ({voiceSetting['synthName']})"
+			synthName = voiceToggle.getSynthNameById(voiceSetting["synthId"])
+			voiceName = voiceToggle.getVoiceNameById(voiceSetting["synthId"], voiceSetting["voiceId"])
+			choice = synthName if voiceSetting["synthId"] == SilenceSynthDriver.name else f"{voiceName} ({synthName})"
 
 			# First voice is the default one
 			if index == 0:
+				# Translators: Default text prepended to the voice and synth name in listbox
 				choice = _("Default") + ": " + choice
 			self.voicesListBox.Append(choice)
 		self.voicesListBox.SetSelection(selectionIndex)
@@ -93,7 +96,6 @@ class OptionsPanel(gui.SettingsPanel):
 		self.isVoiceSettingsModified = True
 
 	def onCheckForUpdateButtonClick(self, event):
-		parent = event.GetEventObject().GetParent()
 		update = voiceToggle.checkForUpdate()
 		if isinstance(update, dict):
 			updateAvailableDialog = UpdateAvailableDialog(voiceToggle, update)
@@ -132,7 +134,10 @@ class AddVoiceDialog(wx.Dialog):
 		sHelper = gui.guiHelper.BoxSizerHelper(self, wx.VERTICAL)
 
 		# Synth combobox
-		synthsNames = [instance["name"] for instance in voiceToggle.getSynthsInstances()]
+		voiceToggle.updateSynthsWithVoices()
+		synthsWithVoices = voiceToggle.getSynthsWithVoices()
+		self.synthsIds = [synthWithVoices["id"] for synthWithVoices in synthsWithVoices]
+		synthsNames = [synthWithVoices["name"] for synthWithVoices in synthsWithVoices]
 		self.synthComboBox = sHelper.addLabeledControl(_("Synthesizer"), wx.Choice, choices=synthsNames)
 		self.synthComboBox.Select(0)
 		self.synthComboBox.Bind(wx.EVT_CHOICE, self.onSynthChange)
@@ -165,20 +170,17 @@ class AddVoiceDialog(wx.Dialog):
 	def updateVoiceComboBox(self):
 		self.voiceComboBox.Clear()
 		synthSelection = self.synthComboBox.GetSelection()
-		self.voicesIds = []
-		synthsInstances = voiceToggle.getSynthsInstances()
-		self.synthsIds = [instance["id"] for instance in synthsInstances ]
 		synthId = self.synthsIds[synthSelection]		
-
-		# Special treatment for silence synth
+		self.voicesIds = []
 		if synthId == SilenceSynthDriver.name:
+		# Special treatment for silence synth
 			self.voicesIds.append(SilenceSynthDriver.name)
 			self.voiceComboBox.Append(consts.SILENCE_VOICE_NAME)
 		else:
-			voices = next(instance["instance"].availableVoices  for instance in synthsInstances if instance["id"] == synthId)
-			for voiceId in voices:
-				self.voicesIds.append(voiceId)
-				self.voiceComboBox.Append(voices[voiceId].displayName)
+			voices = voiceToggle.getVoicesForSynth(synthId)
+			for voice in voices:
+				self.voicesIds.append(voice["id"])
+				self.voiceComboBox.Append(voice["name"])
 		self.voiceComboBox.Select(0)
 
 	def charHook(self, event):
@@ -191,9 +193,7 @@ class AddVoiceDialog(wx.Dialog):
 	def onAddButtonClick(self, event):
 		voiceSetting = {
 			"synthId": self.synthsIds[self.synthComboBox.GetSelection()],
-			"synthName": self.synthComboBox.GetStringSelection(),
 			"voiceId": self.voicesIds[self.voiceComboBox.GetSelection()],
-			"voiceName": self.voiceComboBox.GetStringSelection()
 		}
 		self.plugin.addVoiceSetting(voiceSetting)
 		self.close()

@@ -26,11 +26,9 @@ class VoiceToggle:
 		self.tempDirPath = os.path.join(currentDir, consts.TEMP_DIR)
 		self.isVoiceSettingsModified = False
 		self.currentProfileName = consts.NORMAL_PROFILE_NAME
-		self.synthsInstances = None
+		self.synthsWithVoices = []
 
 		self.loadSettingsFromConfig()
-		self.currentVoiceSettingsIndex = self.deleteInvalidVoiceSettings(startIndex=self.currentVoiceSettingsIndex, dontChangeVoice=True)
-		self.addDefaultVoiceSetting()
 		self.alignCurrentVoiceSettingsIndex()
 		self.checkForUpdateOnStart()
 
@@ -52,11 +50,161 @@ class VoiceToggle:
 		self.alignCurrentVoiceSettingsIndex()
 		self.updateVoiceSetting()
 
+	def cleanUpVoiceSettings(self):
+		self.updateSynthsWithVoices()
+		self.currentVoiceSettingsIndex = self.deleteInvalidVoiceSettings(startIndex=self.currentVoiceSettingsIndex)
+		self.addDefaultVoiceSetting()
+		self.alignCurrentVoiceSettingsIndex()
+
+	def deleteInvalidVoiceSettings(self, startIndex=0, dontChangeVoice=False):
+		newValidIndex = startIndex
+		doChangeVoice = False
+
+		# Start deleting from start index
+		index = self.findNextInvalid(startIndex)
+
+		voiceSettingsLength = len(self.voiceSettings)
+		while voiceSettingsLength > 0 and index >= 0:
+			del self.voiceSettings[index]
+			voiceSettingsLength = len(self.voiceSettings)
+
+			# If some setting before the current one has been deleted, shift the current index to the previous index and change the voice
+			if index < self.currentVoiceSettingsIndex:
+				self.currentVoiceSettingsIndex -= 1
+				doChangeVoice = True
+
+			# If setting at the same index as the current setting has been deleted, change the voice
+			elif index == self.currentVoiceSettingsIndex:
+				doChangeVoice = True
+				
+			# If some setting before the start index has been deleted, shift the new valid index to the previous index
+			if index < startIndex:
+				newValidIndex -= 1
+
+			index = self.findNextInvalid(index)
+
+		# Check if list has been deleted entirely or was originally empty
+		if voiceSettingsLength == 0:
+			self.currentVoiceSettingsIndex = -1
+			return -1
+		
+		if doChangeVoice and not dontChangeVoice:
+			self.isVoiceSettingsModified = True
+			self.changeVoice(self.currentVoiceSettingsIndex, announceChange=False)
+
+		return newValidIndex
+
+	def findNextInvalid(self, startIndex):
+		if len(self.voiceSettings) == 0:
+			return -1
+
+		# If start index is out of list bounds, start at zero
+		if startIndex < 0 or startIndex >= len(self.voiceSettings):
+			startIndex = 0
+
+		index = startIndex
+		while index >= 0 and self.synthAndVoiceExist(self.voiceSettings[index]):
+			# If list is empty, return not found
+			if len(self.voiceSettings) == 0:
+				return -1
+			index = self.getNextVoiceSettingsIndex(index)
+
+			# If we are back on start, we have traversed entire list, so return not found
+			if index == startIndex:
+				return -1
+		return index
+
+	def synthAndVoiceExist(self, voiceSetting):
+		synthExists = False
+		voiceExists = False
+		for synthWithVoices in self.synthsWithVoices:
+			synthId = voiceSetting["synthId"]
+			if synthWithVoices["id"] == synthId:
+				synthExists = True
+				if synthId == SilenceSynthDriver.name:
+					voiceExists = True
+					break
+				voices = self.getVoicesForSynth(synthId)
+				if voices == None:
+					return False
+				for voice in voices:
+					if voice["id"] == voiceSetting["voiceId"]:
+						voiceExists = True
+						break
+				else:
+					continue
+				break # Executed only if inner loop broke
+		return synthExists and voiceExists
+
+	def updateSynthsWithVoices(self):
+		newSynthsWithVoices = []
+		synthsInfos = getSynthList()
+		for synthInfo in synthsInfos:
+			synthId = synthInfo[0]
+			try:
+				# Try finding existing synth and voices dict and appending it
+				existingSynthWithVoices = next(synthWithVoices for synthWithVoices in self.synthsWithVoices if synthWithVoices["id"] == synthId)
+				newSynthsWithVoices.append(existingSynthWithVoices)
+			except StopIteration:
+				# If not already exists, append the new synth and voices dict
+				isSilence = synthId == SilenceSynthDriver.name
+				synthName = consts.SILENCE_VOICE_NAME if isSilence else synthInfo[1]
+				
+				# setSynth("oneCore") throws strange error, so skip it
+				if synthId == consts.ONECORE_SYNTH_ID:
+					continue
+
+				newSynthsWithVoices.append({
+					"id": synthId,
+					"name": synthName,
+					"voices": None
+				})
+		self.synthsWithVoices = newSynthsWithVoices
+
+	def getSynthsWithVoices(self):
+		return self.synthsWithVoices.copy()
+
+	def getVoicesForSynth(self, synthId):
+		if synthId == SilenceSynthDriver.name:
+			return None
+		for synthWithVoices in self.synthsWithVoices:
+			if synthWithVoices["id"] == synthId:
+				if synthWithVoices["voices"] == None:
+					try:
+						currentSynthId = getSynth().name
+						instance = getSynthInstance(synthId)
+						voices = instance.availableVoices
+						synthWithVoices["voices"] = [{"id": id, "name": voices[id].displayName} for id in voices]
+						if instance.name != currentSynthId:
+							instance.terminate()
+						setSynth(currentSynthId)
+					except:
+						return None
+				return synthWithVoices["voices"]
+		return None
+
+	def getSynthNameById(self, synthId):
+		try:
+			synthName = next(synthWithVoices["name"] for synthWithVoices in self.synthsWithVoices if synthWithVoices["id"] == synthId)
+			return synthName
+		except StopIteration:
+			return None
+
+	def getVoiceNameById(self, synthId, voiceId):
+		voices = self.getVoicesForSynth(synthId)
+		if voices == None:
+			return None
+		try:
+			voiceName = next(voice["name"] for voice in voices if voice["id"] == voiceId)
+			return voiceName
+		except StopIteration:
+			return None
+
 	def alignCurrentVoiceSettingsIndex(self):
 		if len(self.voiceSettings) == 0:
 			return
 
-		# This is an imperfect fix for cases when after switching to another profile or starting NVDA, the current synth and voice does not match the current voice setting
+		# This is an imperfect fix for cases when the current synth and voice does not match the current voice setting, e.g., after changing synth using NVDA settings or voice using speech param ring
 		synth = getSynth()
 		currentVoiceSetting = self.voiceSettings[self.currentVoiceSettingsIndex]
 		if currentVoiceSetting["synthId"] != synth.name or currentVoiceSetting["voiceId"] != synth.voice:
@@ -64,37 +212,6 @@ class VoiceToggle:
 				if voiceSetting["synthId"] == synth.name and voiceSetting["voiceId"] == synth.voice:
 					self.currentVoiceSettingsIndex = index
 					break
-
-	def getSynthsInstances(self):
-		if self.synthsInstances == None:
-			self.preloadSynthInstances()
-		return self.synthsInstances
-
-	def preloadSynthInstances(self):
-		origSynthId = getSynth().name
-		self.synthsInstances = []
-		synthsInfos = getSynthList()
-		for synthInfo in synthsInfos:
-			synthId = synthInfo[0]
-			isSilence = synthId == SilenceSynthDriver.name
-			synthName = consts.SILENCE_VOICE_NAME if isSilence else synthInfo[1]
-			
-			# setSynth("oneCore") throws strange error, so skip it
-			if synthId == consts.ONECORE_SYNTH_ID:
-				continue
-
-			try:
-				instance = None if isSilence else getSynthInstance(synthId)
-				self.synthsInstances.append({
-					"id": synthId,
-					"name": synthName,
-					"instance": instance
-				})
-			except:
-				pass
-
-		# Resetting synth fixes the bug of broken ring after calling getSynthInstance()
-		setSynth(origSynthId)
 
 	def loadSettingsFromConfig(self):
 		self.voiceSettings = [json.loads(voiceSetting) for voiceSetting in self.getConfig("voiceSettings")]
@@ -189,15 +306,26 @@ class VoiceToggle:
 		newVoiceSetting = self.voiceSettings[newIndex]
 
 		# Delete all invalid voice settings starting from the new index, and update the new index if necessary
+		self.updateSynthsWithVoices()
 		newIndex = self.deleteInvalidVoiceSettings(startIndex=newIndex, dontChangeVoice=True)
+		self.addDefaultVoiceSetting()
 		if len(self.voiceSettings) == 0:
+			# If after deleting all invalid voice settings there were no voice settings and we did not add a default one, return -1
 			return -1
+		elif newIndex == -1:
+			# If after deleting all invalid voice settings there were no voice settings and we added a default one, set index to this default voice setting index
+			newIndex = 0
+
 		newVoiceSetting = self.voiceSettings[newIndex]
 
 		synth = getSynth()
 
 		# To prevent mismatch, don't update current synth, voice and speech params if voice settings have been modified in NVDA settings, or if changed voice settings due to invalidation
-		currentVoiceSetting = None if self.isVoiceSettingsModified else self.updateVoiceSetting()
+		if self.isVoiceSettingsModified:
+			currentVoiceSetting = None
+		else:
+			self.alignCurrentVoiceSettingsIndex()
+			currentVoiceSetting = self.updateVoiceSetting()
 		
 		# Only apply new synth if voice settings have been modified in add-on settings, if changed from previous one, or if is OneCore voice and new is not
 		if (currentVoiceSetting == None) or (newVoiceSetting["synthId"] != currentVoiceSetting["synthId"]) or (newVoiceSetting["synthId"] != consts.ONECORE_SYNTH_ID and synth.name == consts.ONECORE_SYNTH_ID):
@@ -216,86 +344,10 @@ class VoiceToggle:
 			if synth != None:
 				synth.saveSettings()
 		if announceChange and newVoiceSetting["synthId"] != SilenceSynthDriver.name:
-			ui.message(newVoiceSetting["voiceName"])
+			voiceName = self.getVoiceNameById(newVoiceSetting["synthId"], newVoiceSetting["voiceId"])
+			ui.message(voiceName)
 		self.isVoiceSettingsModified = False
 		return newIndex
-
-	def deleteInvalidVoiceSettings(self, startIndex=0, dontChangeVoice=False):
-		newValidIndex = startIndex
-		doChangeVoice = False
-
-		# Start deleting from start index
-		index = self.findNextInvalid(startIndex)
-
-		voiceSettingsLength = len(self.voiceSettings)
-		while voiceSettingsLength > 0 and index >= 0:
-			del self.voiceSettings[index]
-			voiceSettingsLength = len(self.voiceSettings)
-
-			# If some setting before the current one has been deleted, shift the current index to the previous index and change the voice
-			if index < self.currentVoiceSettingsIndex:
-				self.currentVoiceSettingsIndex -= 1
-				doChangeVoice = True
-
-			# If setting at the same index as the current setting has been deleted, change the voice
-			elif index == self.currentVoiceSettingsIndex:
-				doChangeVoice = True
-				
-			# If some setting before the start index has been deleted, shift the new valid index to the previous index
-			if index < startIndex:
-				newValidIndex -= 1
-
-			index = self.findNextInvalid(index)
-
-		# Check if list has been deleted entirely or was originally empty
-		if voiceSettingsLength == 0:
-			self.currentVoiceSettingsIndex = -1
-			return -1
-		
-		if doChangeVoice and not dontChangeVoice:
-			self.isVoiceSettingsModified = True
-			self.changeVoice(self.currentVoiceSettingsIndex, announceChange=False)
-
-		return newValidIndex
-
-	def findNextInvalid(self, startIndex):
-		if len(self.voiceSettings) == 0:
-			return -1
-
-		# If start index is out of list bounds, start at zero
-		if startIndex < 0 or startIndex >= len(self.voiceSettings):
-			startIndex = 0
-
-		index = startIndex
-		while index >= 0 and self.synthAndVoiceExist(self.voiceSettings[index]):
-			# If list is empty, return not found
-			if len(self.voiceSettings) == 0:
-				return -1
-			index = self.getNextVoiceSettingsIndex(index)
-
-			# If we are back on start, we have traversed entire list, so return not found
-			if index == startIndex:
-				return -1
-		return index
-
-	def synthAndVoiceExist(self, voiceSetting):
-		synthExists = False
-		voiceExists = False
-		synthInstances = self.getSynthsInstances()
-		for instance in synthInstances:
-			if instance["id"] == voiceSetting["synthId"]:
-				synthExists = True
-				if voiceSetting["synthId"] == SilenceSynthDriver.name:
-					voiceExists = True
-					break
-				for voiceId in instance["instance"].availableVoices:
-					if voiceId == voiceSetting["voiceId"]:
-						voiceExists = True
-						break
-				else:
-					continue
-				break # Executed only if inner loop broke
-		return synthExists and voiceExists
 
 	def updateVoiceSetting(self):
 		if self.currentVoiceSettingsIndex < 0 or len(self.voiceSettings) <= self.currentVoiceSettingsIndex:
@@ -307,7 +359,7 @@ class VoiceToggle:
 			for param in consts.SAVED_PARAMS:
 				currentVoiceSetting[param] = getattr(synth, param)
 
-		# Determine and update fresh synth and voice names only when synth or voice ID changed
+		# Determine and update fresh synth and voice IDs and names only when synth or voice ID changed
 		isChangeToSilence = isSilenceFresh and currentVoiceSetting["synthId"] != SilenceSynthDriver.name
 		isSynthOrVoiceChange = not isSilenceFresh and (synth.name != currentVoiceSetting["synthId"] or synth.voice != currentVoiceSetting["voiceId"])
 		if isChangeToSilence or isSynthOrVoiceChange:
@@ -325,22 +377,16 @@ class VoiceToggle:
 		else:
 			currentVoiceSetting = None
 			synthId = SilenceSynthDriver.name if synth == None else synth.name
-		synthInstance = next(instance for instance in self.getSynthsInstances() if instance["id"] == synthId)
 		if synthId == SilenceSynthDriver.name:
 			voiceId = SilenceSynthDriver.name
-			voiceName = consts.SILENCE_VOICE_NAME
 		else:
 			if synth.name == consts.ONECORE_SYNTH_ID:
 				voiceId = currentVoiceSetting["voiceId"]
 			else:
 				voiceId = synth.voice
-			voices = synthInstance["instance"].availableVoices
-			voiceName = next(voices[id].displayName for id in voices if id == voiceId)
 		voiceSetting = {
 			"synthId": synthId,
-			"synthName": synthInstance["name"],
 			"voiceId": voiceId,
-			"voiceName": voiceName
 		}
 		return voiceSetting
 
@@ -393,10 +439,6 @@ class VoiceToggle:
 		return False
 
 	def terminate(self):
-		# Save current synth, voice and speech params before terminating
-		# if len(self.voiceSettings) > 0 and not self.isVoiceSettingsModified:
-			# self.updateVoiceSetting()
-			
 		self.saveSettingsTOConfig()
 		self.deleteTempFiles()
 
