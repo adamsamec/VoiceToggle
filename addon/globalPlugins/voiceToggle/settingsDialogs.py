@@ -5,6 +5,7 @@ import addonHandler
 from synthDrivers.silence import SynthDriver as SilenceSynthDriver
 import ui
 import gui
+from gui.settingsDialogs import SettingsPanel
 
 import wx
 
@@ -14,7 +15,7 @@ from .updateDialogs import UpdateAvailableDialog, UpToDateDialog, UpdateCheckErr
 
 addonHandler.initTranslation()
 
-class OptionsPanel(gui.SettingsPanel):
+class OptionsPanel(SettingsPanel):
 	title = _("VoiceToggle")
 
 	def makeSettings(self, settingsSizer):
