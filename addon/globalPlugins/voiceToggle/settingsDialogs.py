@@ -81,8 +81,7 @@ class OptionsPanel(SettingsPanel):
 		self.isVoiceSettingsModified = True
 
 	def onAddVoiceButtonClick(self, event):
-		parent = event.GetEventObject().GetParent()
-		addVoiceDialog = AddVoiceDialog(parent, self)
+		addVoiceDialog = AddVoiceDialog(self)
 		addVoiceDialog.ShowModal()
 
 	def onRemoveVoiceButtonClick(self, event):
@@ -123,9 +122,9 @@ class OptionsPanel(SettingsPanel):
 
 class AddVoiceDialog(wx.Dialog):
 
-	def __init__(self, parent, plugin):
+	def __init__(self, parent):
 		super().__init__(parent, title=_("Add voice"))
-		self.plugin = plugin
+		self.plugin = parent
 
 		self.Bind(wx.EVT_CHAR_HOOK, self.charHook)
 		self.addWidgets()
