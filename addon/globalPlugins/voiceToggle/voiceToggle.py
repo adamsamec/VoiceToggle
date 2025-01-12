@@ -11,6 +11,7 @@ import json
 import os
 import shutil
 from urllib.request import urlopen, urlretrieve, URLError
+from threading import Timer
 
 import globalPlugins.voiceToggle.consts as consts
 from .updateDialogs import UpdateAvailableDialog
@@ -92,6 +93,9 @@ class VoiceToggle:
 			self.isVoiceSettingsModified = True
 			self.changeVoice(self.currentVoiceSettingsIndex, announceChange=False)
 
+		# If we deleted voice settings at the start index and after it, move index to 0
+		if newValidIndex >= voiceSettingsLength:
+			newValidIndex = 0
 		return newValidIndex
 
 	def findNextInvalid(self, startIndex):
@@ -151,8 +155,8 @@ class VoiceToggle:
 				synthName = consts.SILENCE_VOICE_NAME if isSilence else synthInfo[1]
 				
 				# setSynth("oneCore") throws strange error, so skip it
-				if synthId == consts.ONECORE_SYNTH_ID:
-					continue
+				# if synthId == consts.ONECORE_SYNTH_ID:
+					# continue
 
 				newSynthsWithVoices.append({
 					"id": synthId,
@@ -164,6 +168,9 @@ class VoiceToggle:
 	def getSynthsWithVoices(self):
 		return self.synthsWithVoices.copy()
 
+	def switchToOneCore(self):
+		setSynth(consts.ONECORE_SYNTH_ID)
+
 	def getVoicesForSynth(self, synthId):
 		if synthId == SilenceSynthDriver.name:
 			return None
@@ -172,12 +179,24 @@ class VoiceToggle:
 				if synthWithVoices["voices"] == None:
 					try:
 						currentSynthId = getSynth().name
+						isGettingOneCoreAndIsCurrent = synthId == consts.ONECORE_SYNTH_ID and currentSynthId == consts.ONECORE_SYNTH_ID
+						if isGettingOneCoreAndIsCurrent:
+							setSynth("espeak")
+						print("testing: " + currentSynthId)
+						print("getting: " + synthId)
 						instance = getSynthInstance(synthId)
+						print("after instancing")
 						voices = instance.availableVoices
 						synthWithVoices["voices"] = [{"id": id, "name": voices[id].displayName} for id in voices]
-						if instance.name != currentSynthId:
+						print("voicing: " + str(synthWithVoices["voices"]))
+						if instance.name != currentSynthId or isGettingOneCoreAndIsCurrent:
 							instance.terminate()
-						setSynth(currentSynthId)
+							del instance
+							if False and currentSynthId == consts.ONECORE_SYNTH_ID:
+								timer = Timer(3, self.switchToOneCore, [])
+								timer.start()
+							else:
+								setSynth(currentSynthId)
 					except:
 						return None
 				return synthWithVoices["voices"]
@@ -201,7 +220,8 @@ class VoiceToggle:
 			return None
 
 	def alignCurrentVoiceSettingsIndex(self):
-		if len(self.voiceSettings) == 0:
+		voiceSettingsLength = len(self.voiceSettings)
+		if voiceSettingsLength == 0 or self.currentVoiceSettingsIndex < -1 or self.currentVoiceSettingsIndex >= voiceSettingsLength:
 			return
 
 		# This is an imperfect fix for cases when the current synth and voice does not match the current voice setting, e.g., after changing synth using NVDA settings or voice using speech param ring
@@ -217,15 +237,24 @@ class VoiceToggle:
 		self.voiceSettings = [json.loads(voiceSetting) for voiceSetting in self.getConfig("voiceSettings")]
 		self.profilesVoiceSettingsIndices = json.loads(self.getConfig("profilesVoiceSettingsIndices"))
 		self.isCheckUpdateOnStart = self.getConfig("checkUpdateOnStart")
+		
+		# Create index for naormal profile if not exists
 		voiceSettingsLength = len(self.voiceSettings)
 		if not (consts.NORMAL_PROFILE_NAME in self.profilesVoiceSettingsIndices):
 			if voiceSettingsLength > 0:
 				self.profilesVoiceSettingsIndices[consts.NORMAL_PROFILE_NAME] = 0
 			else:
 				self.profilesVoiceSettingsIndices[consts.NORMAL_PROFILE_NAME] = -1
+
 		if voiceSettingsLength == 0:
+			# Set negative index for all profiles if there are no voice settings
 			for profileName in self.profilesVoiceSettingsIndices:
 				self.profilesVoiceSettingsIndices[profileName] = -1
+		else:
+			# Set index to 0 if index is out of voice settings bounds for each profile
+			for profileName in self.profilesVoiceSettingsIndices:
+				if self.profilesVoiceSettingsIndices[profileName] < 0 or self.profilesVoiceSettingsIndices[profileName] >= len(self.voiceSettings):
+					self.profilesVoiceSettingsIndices[profileName] = 0
 
 	def saveSettingsTOConfig(self):
 		voiceSettingsJson = [json.dumps(voiceSetting) for voiceSetting in self.voiceSettings]
@@ -309,7 +338,8 @@ class VoiceToggle:
 		self.updateSynthsWithVoices()
 		newIndex = self.deleteInvalidVoiceSettings(startIndex=newIndex, dontChangeVoice=True)
 		self.addDefaultVoiceSetting()
-		if len(self.voiceSettings) == 0:
+		voiceSettingsLength = len(self.voiceSettings)
+		if voiceSettingsLength == 0:
 			# If after deleting all invalid voice settings there were no voice settings and we did not add a default one, return -1
 			return -1
 		elif newIndex == -1:
@@ -332,7 +362,18 @@ class VoiceToggle:
 			if newVoiceSetting["synthId"] == SilenceSynthDriver.name:
 				setSynth(None)
 			else:
-				setSynth(newVoiceSetting["synthId"])
+				if False and newVoiceSetting["synthId"] == consts.ONECORE_SYNTH_ID:
+					# setSynth("espeak")
+					# ui.message("one core")
+					# timer = Timer(3, self.switchToOneCore, [])
+					# timer.start()k
+					print("testing before")
+					getSynthInstance("oneCore").terminate()
+					print("testing terminate")
+					setSynth(newVoiceSetting["synthId"])
+					# return newIndex
+				else:
+					setSynth(newVoiceSetting["synthId"])
 				synth = getSynth()
 		
 		# Apply new voice setting
@@ -369,7 +410,7 @@ class VoiceToggle:
 
 	def getFreshVoiceSetting(self):
 		synth = getSynth()
-		if synth.name == consts.ONECORE_SYNTH_ID:
+		if False and synth.name == consts.ONECORE_SYNTH_ID:
 			if len(self.voiceSettings) == 0:
 				return None
 			currentVoiceSetting = self.voiceSettings[self.currentVoiceSettingsIndex]
@@ -380,7 +421,7 @@ class VoiceToggle:
 		if synthId == SilenceSynthDriver.name:
 			voiceId = SilenceSynthDriver.name
 		else:
-			if synth.name == consts.ONECORE_SYNTH_ID:
+			if False and synth.name == consts.ONECORE_SYNTH_ID:
 				voiceId = currentVoiceSetting["voiceId"]
 			else:
 				voiceId = synth.voice
