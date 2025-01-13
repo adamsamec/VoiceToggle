@@ -178,25 +178,30 @@ class VoiceToggle:
 			if synthWithVoices["id"] == synthId:
 				if synthWithVoices["voices"] == None:
 					try:
-						currentSynthId = getSynth().name
-						isGettingOneCoreAndIsCurrent = synthId == consts.ONECORE_SYNTH_ID and currentSynthId == consts.ONECORE_SYNTH_ID
-						if isGettingOneCoreAndIsCurrent:
-							setSynth("espeak")
-						print("testing: " + currentSynthId)
+						activeSynthId = getSynth().name
+						isActiveRequested = activeSynthId== synthId
+						# isGettingOneCoreAndIsCurrent = synthId == consts.ONECORE_SYNTH_ID and currentSynthId == consts.ONECORE_SYNTH_ID
+						# if isGettingOneCoreAndIsCurrent:
+						if isActiveRequested:
+							# Temporarily set synth to silent if active synth is same as requested synth
+							# For some synths, e.g., OneCore, this fixes voice error when calling getSynthInstance() if active
+							setSynth(None)
+						print("testing: " + activeSynthId)
 						print("getting: " + synthId)
 						instance = getSynthInstance(synthId)
 						print("after instancing")
 						voices = instance.availableVoices
 						synthWithVoices["voices"] = [{"id": id, "name": voices[id].displayName} for id in voices]
 						print("voicing: " + str(synthWithVoices["voices"]))
-						if instance.name != currentSynthId or isGettingOneCoreAndIsCurrent:
+						# if instance.name != currentSynthId or isGettingOneCoreAndIsCurrent:
+						if True:
 							instance.terminate()
 							del instance
 							if False and currentSynthId == consts.ONECORE_SYNTH_ID:
 								timer = Timer(3, self.switchToOneCore, [])
 								timer.start()
 							else:
-								setSynth(currentSynthId)
+								setSynth(activeSynthId)
 					except:
 						return None
 				return synthWithVoices["voices"]
