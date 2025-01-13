@@ -29,6 +29,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	@scriptHandler.script(
 		gesture="kb:NVDA+Alt+V",
+		# Translators: Gesture description for the Input gestures settings dialog
 		description=_("Toggles to the next voice."),
 	)
 	def script_toggleVoice(self, gesture):

@@ -37,13 +37,13 @@ class UpdateAvailableDialog(wx.Dialog):
 		# Buttons group
 		buttons = gui.guiHelper.ButtonHelper(wx.VERTICAL)
 
-		# Update button
+		# Translators: Label for the update button in the update available dialog
 		self.updateButton = buttons.addButton(self, label=_("Update"))
 		self.updateButton.Bind(wx.EVT_BUTTON, self.onUpdateButtonClick)
 		self.updateButton.SetDefault()
 		self.updateButton.SetFocus()
 
-		# Close button
+		# Translators: Label for the close button in the update available dialog
 		closeButton = buttons.addButton(self, label=_("Close"))
 		closeButton.Bind(wx.EVT_BUTTON, self.onCloseButtonClick)
 		
@@ -89,6 +89,7 @@ class UpToDateDialog(wx.Dialog):
 		upToDateLabel = _("VoiceToggle version {currentVersion} is up to date.").format(currentVersion=currentVersion)
 		upToDateText = sHelper.addItem(wx.StaticText(self, label=upToDateLabel))
 
+		# Translators: Label for the close button in the up to date dialog
 		closeButton = sHelper.addItem(wx.Button(self, label=_("Close")))
 		closeButton.Bind(wx.EVT_BUTTON, self.onCloseButtonClick)
 		closeButton.SetDefault()
@@ -122,10 +123,10 @@ class UpdateCheckErrorDialog(wx.Dialog):
 		mainSizer = wx.BoxSizer(wx.VERTICAL)
 		sHelper = gui.guiHelper.BoxSizerHelper(self, wx.VERTICAL)
 
-		# Update check error text
 		errorLabel = _("Check for update for the VoiceToggle add-on was not successful. Please verify that you are connected to the Internet.")
 		errorText = sHelper.addItem(wx.StaticText(self, label=errorLabel))
 
+		# Translators: Label for the close button in the update check error dialog
 		closeButton = sHelper.addItem(wx.Button(self, label=_("Close")))
 		closeButton.Bind(wx.EVT_BUTTON, self.onCloseButtonClick)
 		closeButton.SetDefault()

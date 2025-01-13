@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 'voiceToggle' '1.3.3'\n"
-"POT-Creation-Date: 2025-01-04 17:29+0100\n"
-"PO-Revision-Date: 2025-01-04 17:29+0100\n"
+"POT-Creation-Date: 2025-01-13 16:58+0100\n"
+"PO-Revision-Date: 2025-01-13 16:58+0100\n"
 "Last-Translator: Adam Samec <adam.samec@gmail.com>\n"
 "Language-Team: Czech <adam.samec@gmail.com>\n"
 "Language: cs\n"
@@ -15,56 +15,61 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#. Translators: Gesture description for the Input gestures settings dialog
 msgid "Toggles to the next voice."
 msgstr "Přepne na následující hlas"
 
+#. Translators: Label for the silence synthesizer in the voices listbox or synthesizers and voices comboboxes
+msgid "Silence"
+msgstr "Bez mluvení"
+
+#. Translators: Add-on settings panel title
 #. Add-on summary, usually the user visible name of the addon.
 #. Translators: Summary for this add-on
 #. to be shown on installation and add-on information found in Add-ons Manager.
 msgid "VoiceToggle"
 msgstr ""
 
-#. Voices listbox
+#. Translators: Label for the voices listbox in the add-on settings
 msgid "Voices"
 msgstr "Hlasy"
 
-#. Add voice button
+#. Translators: Label for the add voice button in the add-on settings
 msgid "Add voice"
 msgstr "Přidat hlas"
 
-#. Remove voice button
+#. Translators: Label for the remove voice button in the add-on settings
 msgid "Remove voice"
 msgstr "Odstranit hlas"
 
-#. Check for update button
+#. Translators: Label for the check for update button in the add-on settings
 msgid "Check for update"
 msgstr "Zkontrolovat aktualizaci"
 
-#. Check for update on NVDA start checkbox
+#. Translators: Label for the check for update on NVDA start checkbox
 msgid "Automatically check for update on NVDA start"
 msgstr "Automaticky kontrolvat aktualizaci při startu NVDA"
 
+#. Translators: Message when no voices have been added yet in the voices listbox
 msgid "No voices added yet"
 msgstr "Žádné hlasy zatím nebyly přidány"
 
-msgid "Default"
-msgstr "Výchozí"
+msgid "The last remaining voice cannot be removed"
+msgstr "Poslední zbývající hlas nelze odstranit"
 
-msgid "Default voice cannot be removed"
-msgstr "Výchozí hlas nelze odstranit"
-
+#. Translators: Label for the synthesizers combobox in the add voice dialog
 msgid "Synthesizer"
 msgstr "Hlasový výstup"
 
-#. Voice combobox
+#. Translators: Label for the voices combobox in the add voice dialog
 msgid "Voice"
 msgstr "Hlas"
 
-#. Add button
+#. Translators: Label for the add button in the add voice dialog
 msgid "Add"
 msgstr "Přidat"
 
-#. Cancel button
+#. Translators: Label for the cancel button in the add voice dialog
 msgid "Cancel"
 msgstr "Zrušit"
 
@@ -76,11 +81,13 @@ msgid ""
 "{currentVersion}. Do you want to download and install the update now?"
 msgstr "Je dostupná aktualizace doplňku VoiceToggle verze {latestVersion} pro NVDA, vaše verze je {currentVersion}. Přejete si stáhnout a nainstalovat aktualizaci nyní?"
 
-#. Update button
+#. Translators: Label for the update button in the update available dialog
 msgid "Update"
 msgstr "Aktualizovat"
 
-#. Close button
+#. Translators: Label for the close button in the update available dialog
+#. Translators: Label for the close button in the up to date dialog
+#. Translators: Label for the close button in the update check error dialog
 msgid "Close"
 msgstr "Zavřít"
 
@@ -93,14 +100,10 @@ msgstr "VoiceToggle verze {currentVersion} je aktuální."
 msgid "Check for update failed for VoiceToggle"
 msgstr "Kontrola aktualizace VoiceToggle selhala"
 
-#. Update check error text
 msgid ""
 "Check for update for the VoiceToggle add-on was not successful. Please "
 "verify that you are connected to the Internet."
 msgstr "Kontrola aktualizace doplňku VoiceToggle nebyla úspěšná. Prosím, zkontrolujte, zda jste připojeni k Internetu."
-
-msgid "Silence"
-msgstr "Bez mluvení"
 
 #. Add-on description
 #. Translators: Long description to be shown for this add-on on add-on information from add-ons manager

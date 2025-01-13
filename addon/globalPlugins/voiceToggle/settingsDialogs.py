@@ -16,6 +16,7 @@ from .updateDialogs import UpdateAvailableDialog, UpToDateDialog, UpdateCheckErr
 addonHandler.initTranslation()
 
 class OptionsPanel(SettingsPanel):
+	# Translators: Add-on settings panel title
 	title = _("VoiceToggle")
 
 	def makeSettings(self, settingsSizer):
@@ -24,29 +25,29 @@ class OptionsPanel(SettingsPanel):
 
 		sHelper = gui.guiHelper.BoxSizerHelper(self, sizer=settingsSizer)
 
-		# Voices listbox
+		# Translators: Label for the voices listbox in the add-on settings
 		self.voicesListBox = sHelper.addLabeledControl(_("Voices"), wx.ListBox, choices=[])
 		self.updateVoicesListBox()
 		
 		# Buttons group
 		buttons = gui.guiHelper.ButtonHelper(wx.VERTICAL)
 
-		# Add voice button
+		# Translators: Label for the add voice button in the add-on settings
 		self.addVoiceButton = buttons.addButton(self, label=_("Add voice"))
 		self.addVoiceButton.Bind(wx.EVT_BUTTON, self.onAddVoiceButtonClick)
 
-		# Remove voice button
+		# Translators: Label for the remove voice button in the add-on settings
 		self.removeVoiceButton = buttons.addButton(self, label=_("Remove voice"))
 		self.removeVoiceButton.Bind(wx.EVT_BUTTON, self.onRemoveVoiceButtonClick)
 		self.updateRemoveButtonState()
 
 		sHelper.addItem(buttons)
 
-		# Check for update button
+		# Translators: Label for the check for update button in the add-on settings
 		checkForUpdateButton = sHelper.addItem(wx.Button(self, label=_("Check for update")))
 		checkForUpdateButton.Bind(wx.EVT_BUTTON, self.onCheckForUpdateButtonClick)
 
-		# Check for update on NVDA start checkbox
+		# Translators: Label for the check for update on NVDA start checkbox
 		self.checkUpdateOnStartCheckbox = sHelper.addItem(wx.CheckBox(self, label=_("Automatically check for update on NVDA start")))
 		self.checkUpdateOnStartCheckbox.SetValue(voiceToggle.isCheckUpdateOnStart)
 
@@ -58,6 +59,7 @@ class OptionsPanel(SettingsPanel):
 	def updateVoicesListBox(self, selectionIndex=0):
 		self.voicesListBox.Clear()
 		if len(self.voiceSettings) == 0:
+			# Translators: Message when no voices have been added yet in the voices listbox
 			self.voicesListBox.Append(_("No voices added yet"))
 			self.voicesListBox.SetSelection(0)
 			return
@@ -132,24 +134,25 @@ class AddVoiceDialog(wx.Dialog):
 		synthsWithVoices = voiceToggle.getSynthsWithVoices()
 		self.synthsIds = [synthWithVoices["id"] for synthWithVoices in synthsWithVoices]
 		synthsNames = [synthWithVoices["name"] for synthWithVoices in synthsWithVoices]
-		self.synthComboBox = sHelper.addLabeledControl(_("Synthesizer"), wx.Choice, choices=synthsNames)
-		self.synthComboBox.Select(0)
-		self.synthComboBox.Bind(wx.EVT_CHOICE, self.onSynthChange)
-		self.synthComboBox.SetFocus()
+		# Translators: Label for the synthesizers combobox in the add voice dialog
+		self.synthsComboBox = sHelper.addLabeledControl(_("Synthesizer"), wx.Choice, choices=synthsNames)
+		self.synthsComboBox.Select(0)
+		self.synthsComboBox.Bind(wx.EVT_CHOICE, self.onSynthChange)
+		self.synthsComboBox.SetFocus()
 
-		# Voice combobox
-		self.voiceComboBox = sHelper.addLabeledControl(_("Voice"), wx.Choice, choices=[])
+		# Translators: Label for the voices combobox in the add voice dialog
+		self.voicesComboBox = sHelper.addLabeledControl(_("Voice"), wx.Choice, choices=[])
 		self.updateVoiceComboBox()
 
 		# Buttons group
 		buttons = gui.guiHelper.ButtonHelper(wx.VERTICAL)
 
-		# Add button
+		# Translators: Label for the add button in the add voice dialog
 		addButton = buttons.addButton(self, label=_("Add"))
 		addButton.Bind(wx.EVT_BUTTON, self.onAddButtonClick)
 		addButton.SetDefault()
 
-		# Cancel button
+		# Translators: Label for the cancel button in the add voice dialog
 		cancelButton = buttons.addButton(self, label=_("Cancel"))
 		cancelButton.Bind(wx.EVT_BUTTON, self.onCancelButtonClick)
 		
@@ -162,20 +165,20 @@ class AddVoiceDialog(wx.Dialog):
 		self.updateVoiceComboBox()
 
 	def updateVoiceComboBox(self):
-		self.voiceComboBox.Clear()
-		synthSelection = self.synthComboBox.GetSelection()
+		self.voicesComboBox.Clear()
+		synthSelection = self.synthsComboBox.GetSelection()
 		synthId = self.synthsIds[synthSelection]		
 		self.voicesIds = []
 		if synthId == SilenceSynthDriver.name:
 		# Special treatment for silence synth
 			self.voicesIds.append(SilenceSynthDriver.name)
-			self.voiceComboBox.Append(consts.SILENCE_VOICE_NAME)
+			self.voicesComboBox.Append(consts.SILENCE_VOICE_NAME)
 		else:
 			voices = voiceToggle.getVoicesForSynth(synthId)
 			for voice in voices:
 				self.voicesIds.append(voice["id"])
-				self.voiceComboBox.Append(voice["name"])
-		self.voiceComboBox.Select(0)
+				self.voicesComboBox.Append(voice["name"])
+		self.voicesComboBox.Select(0)
 
 	def charHook(self, event):
 		key = event.GetKeyCode()
@@ -186,8 +189,8 @@ class AddVoiceDialog(wx.Dialog):
 
 	def onAddButtonClick(self, event):
 		voiceSetting = {
-			"synthId": self.synthsIds[self.synthComboBox.GetSelection()],
-			"voiceId": self.voicesIds[self.voiceComboBox.GetSelection()],
+			"synthId": self.synthsIds[self.synthsComboBox.GetSelection()],
+			"voiceId": self.voicesIds[self.voicesComboBox.GetSelection()],
 		}
 		self.plugin.addVoiceSetting(voiceSetting)
 		self.close()

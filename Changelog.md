@@ -1,5 +1,10 @@
 # VoiceToggle - Changelog
 
+## Version 1.4.0
+* Allow adding Microsoft OneCore voices.
+* Fixed crashing with some synthesizers.
+* Performance improvements and bug fixes.
+
 ## Version 1.3.3
 * Fixed broken check for update feature.
 * Added documentation.
