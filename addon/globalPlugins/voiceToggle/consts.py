@@ -10,7 +10,6 @@ UPDATE_API_URL = "http://api.adamsamec.cz/nvda/VoiceToggle/Update.json"
 TEMP_DIR = "..\\..\\temp\\"
 
 SILENCE_VOICE_NAME = _("Silence")
-ONECORE_SYNTH_ID = "oneCore"
 
 NORMAL_PROFILE_NAME = "[normal]"
 CONFIG_SPEC = {

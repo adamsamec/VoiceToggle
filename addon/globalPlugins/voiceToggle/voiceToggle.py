@@ -30,6 +30,7 @@ class VoiceToggle:
 		self.synthsWithVoices = []
 
 		self.loadSettingsFromConfig()
+		self.addDefaultVoiceSetting()
 		self.alignCurrentVoiceSettingsIndex()
 		self.checkForUpdateOnStart()
 
@@ -146,18 +147,13 @@ class VoiceToggle:
 		for synthInfo in synthsInfos:
 			synthId = synthInfo[0]
 			try:
-				# Try finding existing synth and voices dict and appending it
+				# Try finding existing synth with voices dict and appending it
 				existingSynthWithVoices = next(synthWithVoices for synthWithVoices in self.synthsWithVoices if synthWithVoices["id"] == synthId)
 				newSynthsWithVoices.append(existingSynthWithVoices)
 			except StopIteration:
-				# If not already exists, append the new synth and voices dict
+				# If not already exists, append the new synth with voices dict
 				isSilence = synthId == SilenceSynthDriver.name
 				synthName = consts.SILENCE_VOICE_NAME if isSilence else synthInfo[1]
-				
-				# setSynth("oneCore") throws strange error, so skip it
-				# if synthId == consts.ONECORE_SYNTH_ID:
-					# continue
-
 				newSynthsWithVoices.append({
 					"id": synthId,
 					"name": synthName,
@@ -168,9 +164,6 @@ class VoiceToggle:
 	def getSynthsWithVoices(self):
 		return self.synthsWithVoices.copy()
 
-	def switchToOneCore(self):
-		setSynth(consts.ONECORE_SYNTH_ID)
-
 	def getVoicesForSynth(self, synthId):
 		if synthId == SilenceSynthDriver.name:
 			return None
@@ -180,28 +173,16 @@ class VoiceToggle:
 					try:
 						activeSynthId = getSynth().name
 						isActiveRequested = activeSynthId== synthId
-						# isGettingOneCoreAndIsCurrent = synthId == consts.ONECORE_SYNTH_ID and currentSynthId == consts.ONECORE_SYNTH_ID
-						# if isGettingOneCoreAndIsCurrent:
 						if isActiveRequested:
 							# Temporarily set synth to silent if active synth is same as requested synth
 							# For some synths, e.g., OneCore, this fixes voice error when calling getSynthInstance() if active
 							setSynth(None)
-						print("testing: " + activeSynthId)
-						print("getting: " + synthId)
 						instance = getSynthInstance(synthId)
-						print("after instancing")
 						voices = instance.availableVoices
 						synthWithVoices["voices"] = [{"id": id, "name": voices[id].displayName} for id in voices]
-						print("voicing: " + str(synthWithVoices["voices"]))
-						# if instance.name != currentSynthId or isGettingOneCoreAndIsCurrent:
-						if True:
-							instance.terminate()
-							del instance
-							if False and currentSynthId == consts.ONECORE_SYNTH_ID:
-								timer = Timer(3, self.switchToOneCore, [])
-								timer.start()
-							else:
-								setSynth(activeSynthId)
+						instance.terminate()
+						del instance
+						setSynth(activeSynthId)
 					except:
 						return None
 				return synthWithVoices["voices"]
@@ -293,7 +274,7 @@ class VoiceToggle:
 		return False
 
 	def addDefaultVoiceSetting(self):
-		# Create and add the default voice setting if does not exist, but only for other than OneCore synths
+		# Create and add the default voice setting if does not exist
 		if len(self.voiceSettings) == 0:
 			self.currentVoiceSettingsIndex = 0
 			voiceSetting = self.getFreshVoiceSetting()
@@ -362,23 +343,12 @@ class VoiceToggle:
 			self.alignCurrentVoiceSettingsIndex()
 			currentVoiceSetting = self.updateVoiceSetting()
 		
-		# Only apply new synth if voice settings have been modified in add-on settings, if changed from previous one, or if is OneCore voice and new is not
-		if (currentVoiceSetting == None) or (newVoiceSetting["synthId"] != currentVoiceSetting["synthId"]) or (newVoiceSetting["synthId"] != consts.ONECORE_SYNTH_ID and synth.name == consts.ONECORE_SYNTH_ID):
+		# Only apply new synth if voice settings have been modified in add-on settings, or if changed from previous one
+		if currentVoiceSetting == None or newVoiceSetting["synthId"] != synth.name:
 			if newVoiceSetting["synthId"] == SilenceSynthDriver.name:
 				setSynth(None)
 			else:
-				if False and newVoiceSetting["synthId"] == consts.ONECORE_SYNTH_ID:
-					# setSynth("espeak")
-					# ui.message("one core")
-					# timer = Timer(3, self.switchToOneCore, [])
-					# timer.start()k
-					print("testing before")
-					getSynthInstance("oneCore").terminate()
-					print("testing terminate")
-					setSynth(newVoiceSetting["synthId"])
-					# return newIndex
-				else:
-					setSynth(newVoiceSetting["synthId"])
+				setSynth(newVoiceSetting["synthId"])
 				synth = getSynth()
 		
 		# Apply new voice setting
@@ -415,21 +385,12 @@ class VoiceToggle:
 
 	def getFreshVoiceSetting(self):
 		synth = getSynth()
-		if False and synth.name == consts.ONECORE_SYNTH_ID:
-			if len(self.voiceSettings) == 0:
-				return None
-			currentVoiceSetting = self.voiceSettings[self.currentVoiceSettingsIndex]
-			synthId = currentVoiceSetting["synthId"]
-		else:
-			currentVoiceSetting = None
-			synthId = SilenceSynthDriver.name if synth == None else synth.name
-		if synthId == SilenceSynthDriver.name:
+		if synth == None:
+			synthId = SilenceSynthDriver.name
 			voiceId = SilenceSynthDriver.name
 		else:
-			if False and synth.name == consts.ONECORE_SYNTH_ID:
-				voiceId = currentVoiceSetting["voiceId"]
-			else:
-				voiceId = synth.voice
+			synthId = synth.name
+			voiceId = synth.voice
 		voiceSetting = {
 			"synthId": synthId,
 			"voiceId": voiceId,
@@ -472,6 +433,8 @@ class VoiceToggle:
 		return False
 
 	def deleteTempFiles(self):
+		if not os.path.isdir(self.tempDirPath):
+			return True
 		for filename in os.listdir(self.tempDirPath):
 			path = os.path.join(self.tempDirPath, filename)
 			try:
