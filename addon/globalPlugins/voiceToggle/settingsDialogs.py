@@ -61,15 +61,10 @@ class OptionsPanel(SettingsPanel):
 			self.voicesListBox.Append(_("No voices added yet"))
 			self.voicesListBox.SetSelection(0)
 			return
-		for index, voiceSetting in enumerate(self.voiceSettings):
+		for voiceSetting in self.voiceSettings:
 			synthName = voiceToggle.getSynthNameById(voiceSetting["synthId"])
 			voiceName = voiceToggle.getVoiceNameById(voiceSetting["synthId"], voiceSetting["voiceId"])
 			choice = synthName if voiceSetting["synthId"] == SilenceSynthDriver.name else f"{voiceName} ({synthName})"
-
-			# First voice is the default one
-			if index == 0:
-				# Translators: Default text prepended to the voice and synth name in listbox
-				choice = _("Default") + ": " + choice
 			self.voicesListBox.Append(choice)
 		self.voicesListBox.SetSelection(selectionIndex)
 
@@ -85,14 +80,13 @@ class OptionsPanel(SettingsPanel):
 		addVoiceDialog.ShowModal()
 
 	def onRemoveVoiceButtonClick(self, event):
-		selectionIndex = self.voicesListBox.GetSelection()
-		if selectionIndex == 0:
-			ui.message(_("Default voice cannot be removed"))
+		if len(self.voiceSettings) == 1:
+			ui.message(_("The last remaining voice cannot be removed"))
 			return
+		selectionIndex = self.voicesListBox.GetSelection()
 		del self.voiceSettings[selectionIndex]
 		newSelectionIndex = max(0, min(selectionIndex, len(self.voiceSettings) - 1))
 		self.updateVoicesListBox(newSelectionIndex)
-		self.updateRemoveButtonState()
 		self.isVoiceSettingsModified = True
 
 	def onCheckForUpdateButtonClick(self, event):
