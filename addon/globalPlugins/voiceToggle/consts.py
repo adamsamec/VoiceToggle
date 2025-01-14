@@ -6,9 +6,6 @@ import addonHandler
 addonHandler.initTranslation()
 
 # Constants
-UPDATE_API_URL = "http://api.adamsamec.cz/nvda/VoiceToggle/Update.json"
-TEMP_DIR = "..\\..\\temp\\"
-
 # Translators: Label for the silence synthesizer in the voices listbox or synthesizers and voices comboboxes
 SILENCE_VOICE_NAME = _("Silence")
 
@@ -16,6 +13,5 @@ NORMAL_PROFILE_NAME = "[normal]"
 CONFIG_SPEC = {
 	"voiceSettings": "string_list(default=list())",
 	"profilesVoiceSettingsIndices": "string(default='{}')",
-	"checkUpdateOnStart": "boolean(default=True)",
 }
 SAVED_PARAMS = ["volume", "rate", "pitch"]

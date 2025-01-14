@@ -1,10 +1,13 @@
 # VoiceToggle - Changelog
 
+## Version 1.5.0
+* Removed the custom add-on update feature as this version is intended to be published in the NVDA add-on store which takes care for update itself.
+
 ## Version 1.4.1
 * Added Vietnamese translation.
 
 ## Version 1.4.0
-* Allow adding Microsoft OneCore voices.
+* Allowed adding Microsoft OneCore voices.
 * Fixed crashing with some synthesizers.
 * Performance improvements and bug fixes.
 
@@ -24,7 +27,7 @@
 * Small bug fixes.
 
 ## Version 1.2.0
-* Added the check for update feature.
+* Added the add-on update feature.
 
 ## Version 1.1.0
 * Apart from speech rate, remembers also speech volume and pitch when toggling between saved voices.

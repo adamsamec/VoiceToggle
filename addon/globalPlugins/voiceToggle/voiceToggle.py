@@ -8,12 +8,8 @@ import config
 import ui
 
 import json
-import os
-import shutil
-from urllib.request import urlopen, urlretrieve, URLError
 
 import globalPlugins.voiceToggle.consts as consts
-from .updateDialogs import UpdateAvailableDialog
 
 addonHandler.initTranslation()
 
@@ -22,8 +18,6 @@ class VoiceToggle:
 	def __init__(self):
 		config.conf.spec["VoiceToggle"] = consts.CONFIG_SPEC
 
-		currentDir = os.path.dirname(os.path.realpath(__file__))
-		self.tempDirPath = os.path.join(currentDir, consts.TEMP_DIR)
 		self.isVoiceSettingsModified = False
 		self.currentProfileName = consts.NORMAL_PROFILE_NAME
 		self.synthsWithVoices = []
@@ -31,7 +25,6 @@ class VoiceToggle:
 		self.loadSettingsFromConfig()
 		self.addDefaultVoiceSetting()
 		self.alignCurrentVoiceSettingsIndex()
-		self.checkForUpdateOnStart()
 
 	@property
 	def currentVoiceSettingsIndex(self):
@@ -221,7 +214,6 @@ class VoiceToggle:
 	def loadSettingsFromConfig(self):
 		self.voiceSettings = [json.loads(voiceSetting) for voiceSetting in self.getConfig("voiceSettings")]
 		self.profilesVoiceSettingsIndices = json.loads(self.getConfig("profilesVoiceSettingsIndices"))
-		self.isCheckUpdateOnStart = self.getConfig("checkUpdateOnStart")
 		
 		# Create index for naormal profile if not exists
 		voiceSettingsLength = len(self.voiceSettings)
@@ -245,32 +237,6 @@ class VoiceToggle:
 		voiceSettingsJson = [json.dumps(voiceSetting) for voiceSetting in self.voiceSettings]
 		self.setConfig("voiceSettings", voiceSettingsJson)
 		self.setConfig("profilesVoiceSettingsIndices", json.dumps(self.profilesVoiceSettingsIndices))
-		self.setConfig("checkUpdateOnStart", self.isCheckUpdateOnStart)
-
-	def checkForUpdateOnStart(self):
-		if self.isCheckUpdateOnStart:
-			update = self.checkForUpdate()
-			if isinstance(update, dict):
-				updateAvailableDialog = UpdateAvailableDialog(self, update, displayCheckOnStartCheckbox=True)
-				updateAvailableDialog.Show()
-				updateAvailableDialog.Raise()
-
-	def checkForUpdate(self):
-		try:
-			response = urlopen(consts.UPDATE_API_URL)
-			update = json.loads(response.read())
-
-			# Compare the latest version with the current version
-			if self.isUpdateAvailable(update["version"]):
-				return update
-
-			# True means we are up to date
-			return True
-		except URLError:
-			pass
-			
-		# False means a request error occurred, such as no Internet
-		return False
 
 	def addDefaultVoiceSetting(self):
 		# Create and add the default voice setting if does not exist
@@ -402,53 +368,8 @@ class VoiceToggle:
 	def setConfig(self, key, value):
 		config.conf["VoiceToggle"][key] = value
 
-	def isUpdateAvailable(self, latestVersion):
-		currentVersion = addonHandler.getCodeAddon().version
-		current = [int(part) for part in currentVersion.split(".")]
-		latest = [int(part) for part in latestVersion.split(".")]
-		isAvailable = latest[0] > current[0] or latest[1] > current[1] or latest[2] > current[2]
-		return isAvailable
-
-	def downloadAndRunUpdate(self, url):
-		try:
-			response = urlopen(url)
-
-			# Get the filename from URL after redirect
-			newFilename = os.path.basename(response.geturl())
-
-			response = urlretrieve(url)
-
-			# Copy the downloaded file from download directory to plugin temp directory
-			downloadPath = response[0]
-			os.makedirs(os.path.dirname(self.tempDirPath), exist_ok=True)
-			newPath = os.path.join(self.tempDirPath, newFilename)
-			shutil.move(downloadPath, newPath)
-			
-			# Run the file
-			os.startfile(newPath)
-			return True
-		except Exception:
-			pass
-		return False
-
-	def deleteTempFiles(self):
-		if not os.path.isdir(self.tempDirPath):
-			return True
-		for filename in os.listdir(self.tempDirPath):
-			path = os.path.join(self.tempDirPath, filename)
-			try:
-				if os.path.isfile(path) or os.path.islink(path):
-					os.unlink(path)
-				elif os.path.isdir(path):
-					shutil.rmtree(path)
-					return True
-			except Exception:
-				pass
-		return False
-
 	def terminate(self):
 		self.saveSettingsTOConfig()
-		self.deleteTempFiles()
 
 # Create the app
 voiceToggle = VoiceToggle()

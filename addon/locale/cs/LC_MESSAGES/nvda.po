@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 'voiceToggle' '1.4.1'\n"
-"POT-Creation-Date: 2025-01-13 16:58+0100\n"
-"PO-Revision-Date: 2025-01-13 16:58+0100\n"
+"Project-Id-Version: 'voiceToggle' '1.5.0'\n"
+"POT-Creation-Date: 2025-01-14 17:07+0100\n"
+"PO-Revision-Date: 2025-01-14 17:07+0100\n"
 "Last-Translator: Adam Samec <adam.samec@gmail.com>\n"
 "Language-Team: Czech <adam.samec@gmail.com>\n"
 "Language: cs\n"
@@ -42,14 +42,6 @@ msgstr "Přidat hlas"
 msgid "Remove voice"
 msgstr "Odstranit hlas"
 
-#. Translators: Label for the check for update button in the add-on settings
-msgid "Check for update"
-msgstr "Zkontrolovat aktualizaci"
-
-#. Translators: Label for the check for update on NVDA start checkbox
-msgid "Automatically check for update on NVDA start"
-msgstr "Automaticky kontrolvat aktualizaci při startu NVDA"
-
 #. Translators: Message when no voices have been added yet in the voices listbox
 msgid "No voices added yet"
 msgstr "Žádné hlasy zatím nebyly přidány"
@@ -72,38 +64,6 @@ msgstr "Přidat"
 #. Translators: Label for the cancel button in the add voice dialog
 msgid "Cancel"
 msgstr "Zrušit"
-
-msgid "VoiceToggle add-on update available"
-msgstr "Dostupná aktualizace doplňku VoiceToggle"
-
-msgid ""
-"VoiceToggle add-on for NVDA version {latestVersion} is available, you have "
-"{currentVersion}. Do you want to download and install the update now?"
-msgstr "Je dostupná aktualizace doplňku VoiceToggle verze {latestVersion} pro NVDA, vaše verze je {currentVersion}. Přejete si stáhnout a nainstalovat aktualizaci nyní?"
-
-#. Translators: Label for the update button in the update available dialog
-msgid "Update"
-msgstr "Aktualizovat"
-
-#. Translators: Label for the close button in the update available dialog
-#. Translators: Label for the close button in the up to date dialog
-#. Translators: Label for the close button in the update check error dialog
-msgid "Close"
-msgstr "Zavřít"
-
-msgid "VoiceToggle is up to date"
-msgstr "VoiceToggle je aktuální"
-
-msgid "VoiceToggle version {currentVersion} is up to date."
-msgstr "VoiceToggle verze {currentVersion} je aktuální."
-
-msgid "Check for update failed for VoiceToggle"
-msgstr "Kontrola aktualizace VoiceToggle selhala"
-
-msgid ""
-"Check for update for the VoiceToggle add-on was not successful. Please "
-"verify that you are connected to the Internet."
-msgstr "Kontrola aktualizace doplňku VoiceToggle nebyla úspěšná. Prosím, zkontrolujte, zda jste připojeni k Internetu."
 
 #. Add-on description
 #. Translators: Long description to be shown for this add-on on add-on information from add-ons manager

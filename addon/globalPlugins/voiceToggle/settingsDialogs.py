@@ -11,7 +11,6 @@ import wx
 
 import globalPlugins.voiceToggle.consts as consts
 from .voiceToggle import voiceToggle
-from .updateDialogs import UpdateAvailableDialog, UpToDateDialog, UpdateCheckErrorDialog
 
 addonHandler.initTranslation()
 
@@ -42,14 +41,6 @@ class OptionsPanel(SettingsPanel):
 		self.updateRemoveButtonState()
 
 		sHelper.addItem(buttons)
-
-		# Translators: Label for the check for update button in the add-on settings
-		checkForUpdateButton = sHelper.addItem(wx.Button(self, label=_("Check for update")))
-		checkForUpdateButton.Bind(wx.EVT_BUTTON, self.onCheckForUpdateButtonClick)
-
-		# Translators: Label for the check for update on NVDA start checkbox
-		self.checkUpdateOnStartCheckbox = sHelper.addItem(wx.CheckBox(self, label=_("Automatically check for update on NVDA start")))
-		self.checkUpdateOnStartCheckbox.SetValue(voiceToggle.isCheckUpdateOnStart)
 
 	def loadVoiceSettings(self):
 		voiceToggle.cleanUpVoiceSettings()
@@ -90,18 +81,6 @@ class OptionsPanel(SettingsPanel):
 		self.updateVoicesListBox(newSelectionIndex)
 		self.isVoiceSettingsModified = True
 
-	def onCheckForUpdateButtonClick(self, event):
-		update = voiceToggle.checkForUpdate()
-		if isinstance(update, dict):
-			updateAvailableDialog = UpdateAvailableDialog(voiceToggle, update)
-			updateAvailableDialog.Show()
-		elif update == True:
-			upToDateDialog = UpToDateDialog()
-			upToDateDialog.Show()
-		elif update == False:
-			updateCheckErrorDialog = UpdateCheckErrorDialog()
-			updateCheckErrorDialog.Show()
-
 	def updateRemoveButtonState(self):
 		if len(self.voiceSettings) > 0:
 			self.removeVoiceButton.Enable()
@@ -113,7 +92,6 @@ class OptionsPanel(SettingsPanel):
 			voiceToggle.markVoiceSettingsAsModified()
 			self.isVoiceSettingsModified = False
 		voiceToggle.setVoiceSettings(self.voiceSettings)
-		voiceToggle.isCheckUpdateOnStart = self.checkUpdateOnStartCheckbox.GetValue()
 
 class AddVoiceDialog(wx.Dialog):
 
