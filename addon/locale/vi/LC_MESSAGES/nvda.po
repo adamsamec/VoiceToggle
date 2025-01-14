@@ -1,31 +1,31 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+    # VoiceToggle - NVDA add-on for easy voice toggling.
+# Copyright (C) 2025 Adam Samec
 # This file is distributed under the same license as the 'voiceToggle' package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Adam Samec <adam.samec@gmail.com>, 2025.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: 'voiceToggle' '1.4.1'\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@groups.io'\n"
-"POT-Creation-Date: 2025-01-14 14:42+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"POT-Creation-Date: 2025-01-13 16:58+0100\n"
+"PO-Revision-Date: 2025-01-14 15:39+0700\n"
+"Last-Translator: \n"
+"Language-Team: Vietnamese\n"
+"Language: vi_VN\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.5\n"
 
 #. Translators: Gesture description for the Input gestures settings dialog
 #: addon\globalPlugins\voiceToggle\__init__.py:33
 msgid "Toggles to the next voice."
-msgstr ""
+msgstr "Chuyển sang giọng nói tiếp theo."
 
 #. Translators: Label for the silence synthesizer in the voices listbox or synthesizers and voices comboboxes
 #: addon\globalPlugins\voiceToggle\consts.py:13
 msgid "Silence"
-msgstr ""
+msgstr "Silence"
 
 #. Translators: Add-on settings panel title
 #. Add-on summary, usually the user visible name of the addon.
@@ -33,67 +33,67 @@ msgstr ""
 #. to be shown on installation and add-on information found in Add-ons Manager.
 #: addon\globalPlugins\voiceToggle\settingsDialogs.py:20 buildVars.py:23
 msgid "VoiceToggle"
-msgstr ""
+msgstr "VoiceToggle"
 
 #. Translators: Label for the voices listbox in the add-on settings
 #: addon\globalPlugins\voiceToggle\settingsDialogs.py:29
 msgid "Voices"
-msgstr ""
+msgstr "Giọng nói"
 
 #. Translators: Label for the add voice button in the add-on settings
 #: addon\globalPlugins\voiceToggle\settingsDialogs.py:36
 #: addon\globalPlugins\voiceToggle\settingsDialogs.py:122
 msgid "Add voice"
-msgstr ""
+msgstr "Thêm giọng nói"
 
 #. Translators: Label for the remove voice button in the add-on settings
 #: addon\globalPlugins\voiceToggle\settingsDialogs.py:40
 msgid "Remove voice"
-msgstr ""
+msgstr "Loại bỏ giọng nói"
 
 #. Translators: Label for the check for update button in the add-on settings
 #: addon\globalPlugins\voiceToggle\settingsDialogs.py:47
 msgid "Check for update"
-msgstr ""
+msgstr "Kiểm tra cập nhật"
 
 #. Translators: Label for the check for update on NVDA start checkbox
 #: addon\globalPlugins\voiceToggle\settingsDialogs.py:51
 #: addon\globalPlugins\voiceToggle\updateDialogs.py:33
 msgid "Automatically check for update on NVDA start"
-msgstr ""
+msgstr "Tự động kiểm tra cập nhật khi khởi động NVDA"
 
 #. Translators: Message when no voices have been added yet in the voices listbox
 #: addon\globalPlugins\voiceToggle\settingsDialogs.py:63
 msgid "No voices added yet"
-msgstr ""
+msgstr "Chưa có giọng nói nào được thêm vào"
 
 #: addon\globalPlugins\voiceToggle\settingsDialogs.py:86
 msgid "The last remaining voice cannot be removed"
-msgstr ""
+msgstr "Giọng nói cuối cùng còn lại không thể xóa bỏ"
 
 #. Translators: Label for the synthesizers combobox in the add voice dialog
 #: addon\globalPlugins\voiceToggle\settingsDialogs.py:138
 msgid "Synthesizer"
-msgstr ""
+msgstr "Bộ đọc"
 
 #. Translators: Label for the voices combobox in the add voice dialog
 #: addon\globalPlugins\voiceToggle\settingsDialogs.py:144
 msgid "Voice"
-msgstr ""
+msgstr "Giọng nói"
 
 #. Translators: Label for the add button in the add voice dialog
 #: addon\globalPlugins\voiceToggle\settingsDialogs.py:151
 msgid "Add"
-msgstr ""
+msgstr "Thêm"
 
 #. Translators: Label for the cancel button in the add voice dialog
 #: addon\globalPlugins\voiceToggle\settingsDialogs.py:156
 msgid "Cancel"
-msgstr ""
+msgstr "Hủy bỏ"
 
 #: addon\globalPlugins\voiceToggle\updateDialogs.py:14
 msgid "VoiceToggle add-on update available"
-msgstr ""
+msgstr "Đã có bản cập nhật tiện ích bổ sung VoiceToggle"
 
 #: addon\globalPlugins\voiceToggle\updateDialogs.py:28
 #, python-brace-format
@@ -101,11 +101,14 @@ msgid ""
 "VoiceToggle add-on for NVDA version {latestVersion} is available, you have "
 "{currentVersion}. Do you want to download and install the update now?"
 msgstr ""
+"Tiện ích bổ sung VoiceToggle dành cho NVDA phiên bản {latestVersion} đã có "
+"sẵn, bạn đang sử dụng phiên bản {currentVersion}. Bạn có muốn tải xuống và "
+"cài đặt bản cập nhật bây giờ không?"
 
 #. Translators: Label for the update button in the update available dialog
 #: addon\globalPlugins\voiceToggle\updateDialogs.py:41
 msgid "Update"
-msgstr ""
+msgstr "Cập nhật"
 
 #. Translators: Label for the close button in the update available dialog
 #. Translators: Label for the close button in the up to date dialog
@@ -114,26 +117,28 @@ msgstr ""
 #: addon\globalPlugins\voiceToggle\updateDialogs.py:93
 #: addon\globalPlugins\voiceToggle\updateDialogs.py:130
 msgid "Close"
-msgstr ""
+msgstr "Đóng"
 
 #: addon\globalPlugins\voiceToggle\updateDialogs.py:78
 msgid "VoiceToggle is up to date"
-msgstr ""
+msgstr "VoiceToggle đã được cập nhật"
 
 #: addon\globalPlugins\voiceToggle\updateDialogs.py:89
 #, python-brace-format
 msgid "VoiceToggle version {currentVersion} is up to date."
-msgstr ""
+msgstr "Phiên bản VoiceToggle {currentVersion} đã được cập nhật."
 
 #: addon\globalPlugins\voiceToggle\updateDialogs.py:117
 msgid "Check for update failed for VoiceToggle"
-msgstr ""
+msgstr "Kiểm tra cập nhật cho VoiceToggle không thành công"
 
 #: addon\globalPlugins\voiceToggle\updateDialogs.py:126
 msgid ""
 "Check for update for the VoiceToggle add-on was not successful. Please "
 "verify that you are connected to the Internet."
 msgstr ""
+"Kiểm tra cập nhật cho tiện ích bổ sung VoiceToggle không thành công. Vui "
+"lòng kiểm tra xem bạn đã kết nối internet chưa."
 
 #. Add-on description
 #. Translators: Long description to be shown for this add-on on add-on information from add-ons manager
@@ -143,3 +148,6 @@ msgid ""
 "Define voices in NVDA settings, then use NVDA + Alt + V anytime to toggle to "
 "the next voice."
 msgstr ""
+"Cho phép dễ dàng chuyển đổi giữa các giọng nói đã xác định.\n"
+"Xác định giọng nói trong cấu hình NVDA, sau đó sử dụng NVDA + Alt + V bất cứ "
+"lúc nào để chuyển sang giọng nói tiếp theo."

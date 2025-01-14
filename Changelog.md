@@ -1,5 +1,8 @@
 # VoiceToggle - Changelog
 
+## Version 1.4.1
+* Added Vietnamese translation.
+
 ## Version 1.4.0
 * Allow adding Microsoft OneCore voices.
 * Fixed crashing with some synthesizers.
