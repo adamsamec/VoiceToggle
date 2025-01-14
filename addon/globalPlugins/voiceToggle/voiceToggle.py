@@ -11,7 +11,6 @@ import json
 import os
 import shutil
 from urllib.request import urlopen, urlretrieve, URLError
-from threading import Timer
 
 import globalPlugins.voiceToggle.consts as consts
 from .updateDialogs import UpdateAvailableDialog

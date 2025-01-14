@@ -53,7 +53,6 @@ class OptionsPanel(SettingsPanel):
 
 	def loadVoiceSettings(self):
 		voiceToggle.cleanUpVoiceSettings()
-		# voiceToggle.updateVoiceSetting()
 		self.voiceSettings = voiceToggle.getVoiceSettings()
 
 	def updateVoicesListBox(self, selectionIndex=0):
