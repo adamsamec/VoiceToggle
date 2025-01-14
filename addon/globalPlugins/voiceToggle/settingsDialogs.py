@@ -1,5 +1,5 @@
 # Copyright 2025 Adam Samec <adam.samec@gmail.com>
-# This add-on is free software, licensed under the terms of the GNU General Public License (version 2). see <https://www.gnu.org/licenses/>.
+# This add-on is free software, licensed under the terms of the GNU General Public License (version 2). see <https://www.gnu.org/licenses/gpl-2.0.html>.
 
 import addonHandler
 from synthDrivers.silence import SynthDriver as SilenceSynthDriver
