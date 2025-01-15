@@ -15,6 +15,6 @@ If you have suggestions for VoiceToggle improvement, problems with its functiona
 ## Licence
 VoiceToggle is available under the GNU General Public License version 2.
 
-[VoiceToggle-download]: https://files.adamsamec.cz/apps/nvda/VoiceToggle-1.5.0.nvda-addon
+[VoiceToggle-download]: https://files.adamsamec.cz/apps/nvda/VoiceToggle.nvda-addon
 [VoiceToggle-download-nvda-2023-1]: https://files.adamsamec.cz/apps/nvda/VoiceToggle-1.4.1.nvda-addon
 [changelog]: https://github.com/adamsamec/VoiceToggle/blob/main/Changelog.md
