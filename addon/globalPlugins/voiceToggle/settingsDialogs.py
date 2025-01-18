@@ -47,18 +47,15 @@ class OptionsPanel(SettingsPanel):
 		self.voiceSettings = voiceToggle.getVoiceSettings()
 
 	def updateVoicesListBox(self, selectionIndex=0):
-		self.voicesListBox.Clear()
-		if len(self.voiceSettings) == 0:
-			# Translators: Message when no voices have been added yet in the voices listbox
-			self.voicesListBox.Append(_("No voices added yet"))
-			self.voicesListBox.SetSelection(0)
-			return
+		listBoxItems = []
 		for voiceSetting in self.voiceSettings:
 			synthName = voiceToggle.getSynthNameById(voiceSetting["synthId"])
 			voiceName = voiceToggle.getVoiceNameById(voiceSetting["synthId"], voiceSetting["voiceId"])
 			choice = synthName if voiceSetting["synthId"] == SilenceSynthDriver.name else f"{voiceName} ({synthName})"
-			self.voicesListBox.Append(choice)
-		self.voicesListBox.SetSelection(selectionIndex)
+			listBoxItems.append(choice)
+		self.voicesListBox.SetItems(listBoxItems)
+		if len(listBoxItems) > 0:
+			self.voicesListBox.SetSelection(selectionIndex)
 
 	def addVoiceSetting(self, setting):
 		insertIndex = 0 if len(self.voiceSettings) == 0 else self.voicesListBox.GetSelection() + 1
@@ -142,19 +139,20 @@ class AddVoiceDialog(wx.Dialog):
 		self.updateVoiceComboBox()
 
 	def updateVoiceComboBox(self):
-		self.voicesComboBox.Clear()
+		comboBoxItems = []
 		synthSelection = self.synthsComboBox.GetSelection()
 		synthId = self.synthsIds[synthSelection]		
 		self.voicesIds = []
 		if synthId == SilenceSynthDriver.name:
 		# Special treatment for silence synth
-			self.voicesIds.append(SilenceSynthDriver.name)
-			self.voicesComboBox.Append(consts.SILENCE_VOICE_NAME)
+			self.voicesIds = [SilenceSynthDriver.name]
+			comboBoxItems = [consts.SILENCE_VOICE_NAME]
 		else:
 			voices = voiceToggle.getVoicesForSynth(synthId)
 			for voice in voices:
 				self.voicesIds.append(voice["id"])
-				self.voicesComboBox.Append(voice["name"])
+				comboBoxItems.append(voice["name"])
+		self.voicesComboBox.SetItems(comboBoxItems)
 		self.voicesComboBox.Select(0)
 
 	def charHook(self, event):

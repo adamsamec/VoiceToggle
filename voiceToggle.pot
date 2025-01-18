@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: 'voiceToggle' '1.5.0'\n"
+"Project-Id-Version: 'voiceToggle' '1.5.1'\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@groups.io'\n"
-"POT-Creation-Date: 2025-01-14 17:07+0100\n"
+"POT-Creation-Date: 2025-01-18 21:59+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -43,7 +43,7 @@ msgstr ""
 
 #. Translators: Label for the add voice button in the add-on settings
 #: addon\globalPlugins\voiceToggle\settingsDialogs.py:35
-#: addon\globalPlugins\voiceToggle\settingsDialogs.py:99
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:96
 msgid "Add voice"
 msgstr ""
 
@@ -52,32 +52,27 @@ msgstr ""
 msgid "Remove voice"
 msgstr ""
 
-#. Translators: Message when no voices have been added yet in the voices listbox
-#: addon\globalPlugins\voiceToggle\settingsDialogs.py:53
-msgid "No voices added yet"
-msgstr ""
-
-#: addon\globalPlugins\voiceToggle\settingsDialogs.py:76
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:73
 msgid "The last remaining voice cannot be removed"
 msgstr ""
 
 #. Translators: Label for the synthesizers combobox in the add voice dialog
-#: addon\globalPlugins\voiceToggle\settingsDialogs.py:115
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:112
 msgid "Synthesizer"
 msgstr ""
 
 #. Translators: Label for the voices combobox in the add voice dialog
-#: addon\globalPlugins\voiceToggle\settingsDialogs.py:121
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:118
 msgid "Voice"
 msgstr ""
 
 #. Translators: Label for the add button in the add voice dialog
-#: addon\globalPlugins\voiceToggle\settingsDialogs.py:128
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:125
 msgid "Add"
 msgstr ""
 
 #. Translators: Label for the cancel button in the add voice dialog
-#: addon\globalPlugins\voiceToggle\settingsDialogs.py:133
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:130
 msgid "Cancel"
 msgstr ""
 

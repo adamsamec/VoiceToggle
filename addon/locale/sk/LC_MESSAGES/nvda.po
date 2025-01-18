@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 'voiceToggle' '1.5.0'\n"
-"POT-Creation-Date: 2025-01-14 17:07+0100\n"
-"PO-Revision-Date: 2025-01-14 17:07+0100\n"
+"Project-Id-Version: 'voiceToggle' '1.5.1'\n"
+"POT-Creation-Date: 2025-01-18 21:59+0100\n"
+"PO-Revision-Date: 2025-01-18 21:59+0100\n"
 "Last-Translator: Adam Samec <adam.samec@gmail.com>\n"
 "Language-Team: Slovak <adam.samec@gmail.com>\n"
 "Language: sk\n"
@@ -41,10 +41,6 @@ msgstr "Pridať hlas"
 #. Translators: Label for the remove voice button in the add-on settings
 msgid "Remove voice"
 msgstr "Odstrániť hlas"
-
-#. Translators: Message when no voices have been added yet in the voices listbox
-msgid "No voices added yet"
-msgstr "Žiadne hlasy zatiaľ neboli pridané"
 
 msgid "The last remaining voice cannot be removed"
 msgstr "Posledný zostávajúci hlas nie je možné odstrániť"
