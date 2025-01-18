@@ -162,21 +162,19 @@ class VoiceToggle:
 		for synthWithVoices in self.synthsWithVoices:
 			if synthWithVoices["id"] == synthId:
 				if synthWithVoices["voices"] == None:
-					try:
-						activeSynthId = getSynth().name
-						isActiveRequested = activeSynthId== synthId
-						if isActiveRequested:
-							# Temporarily set synth to silent if active synth is same as requested synth
-							# For some synths, e.g., OneCore, this fixes voice error when calling getSynthInstance() if active
-							setSynth(None)
-						instance = getSynthInstance(synthId)
-						voices = instance.availableVoices
+					synth = getSynth()
+					if synth.name== synthId:
+						voices = synth.availableVoices
 						synthWithVoices["voices"] = [{"id": id, "name": voices[id].displayName} for id in voices]
-						instance.terminate()
-						del instance
-						setSynth(activeSynthId)
-					except:
-						return None
+					else:
+						try:
+							instance = getSynthInstance(synthId)
+							voices = instance.availableVoices
+							synthWithVoices["voices"] = [{"id": id, "name": voices[id].displayName} for id in voices]
+							instance.terminate()
+							del instance
+						except:
+							return None
 				return synthWithVoices["voices"]
 		return None
 
