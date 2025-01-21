@@ -86,9 +86,8 @@ class OptionsPanel(SettingsPanel):
 
 	def onSave(self):
 		if self.isVoiceSettingsModified:
-			voiceToggle.markVoiceSettingsAsModified()
+			voiceToggle.setVoiceSettings(self.voiceSettings)
 			self.isVoiceSettingsModified = False
-		voiceToggle.setVoiceSettings(self.voiceSettings)
 
 class AddVoiceDialog(wx.Dialog):
 

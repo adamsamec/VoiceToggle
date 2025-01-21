@@ -5,6 +5,7 @@ import addonHandler
 import globalPluginHandler
 import scriptHandler
 from synthDriverHandler import synthDoneSpeaking
+import config
 import gui
 
 from .settingsDialogs import OptionsPanel
@@ -18,6 +19,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		super(GlobalPlugin, self).__init__()
 		gui.settingsDialogs.NVDASettingsDialog.categoryClasses.append(OptionsPanel)
 
+		config.post_configProfileSwitch.register(voiceToggle.handleProfileSwitch)
 		self.isSynthDoneSpeakingRegistered = False
 
 	def terminate(self):

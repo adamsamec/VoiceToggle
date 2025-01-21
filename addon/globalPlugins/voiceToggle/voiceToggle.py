@@ -8,6 +8,7 @@ import config
 import ui
 
 import json
+import wx
 
 import globalPlugins.voiceToggle.consts as consts
 
@@ -24,7 +25,6 @@ class VoiceToggle:
 
 		self.loadSettingsFromConfig()
 		self.addDefaultVoiceSetting()
-		self.alignCurrentVoiceSettingsIndex()
 
 	@property
 	def currentVoiceSettingsIndex(self):
@@ -34,21 +34,22 @@ class VoiceToggle:
 	def currentVoiceSettingsIndex(self, value):
 		self.profilesVoiceSettingsIndices[self.currentProfileName] = value
 
-	def handleDoneSpeaking(self):
+	def handleProfileSwitch(self):
 		newProfileName = config.conf.profiles[-1].name
 		if not newProfileName:
 			newProfileName = consts.NORMAL_PROFILE_NAME
 		if not (newProfileName in self.profilesVoiceSettingsIndices):
 			self.profilesVoiceSettingsIndices[newProfileName] = self.currentVoiceSettingsIndex
 		self.currentProfileName = newProfileName
-		self.alignCurrentVoiceSettingsIndex()
-		self.updateVoiceSetting()
+		self.changeVoice(self.currentVoiceSettingsIndex, announceChange=False)
+
+	def handleDoneSpeaking(self):
+		wx.CallAfter(self.updateVoiceSetting)
 
 	def cleanUpVoiceSettings(self):
 		self.updateSynthsWithVoices()
 		self.currentVoiceSettingsIndex = self.deleteInvalidVoiceSettings(startIndex=self.currentVoiceSettingsIndex)
 		self.addDefaultVoiceSetting()
-		self.alignCurrentVoiceSettingsIndex()
 
 	def deleteInvalidVoiceSettings(self, startIndex=0, dontChangeVoice=False):
 		newValidIndex = startIndex
@@ -195,20 +196,6 @@ class VoiceToggle:
 		except StopIteration:
 			return None
 
-	def alignCurrentVoiceSettingsIndex(self):
-		voiceSettingsLength = len(self.voiceSettings)
-		if voiceSettingsLength == 0 or self.currentVoiceSettingsIndex < -1 or self.currentVoiceSettingsIndex >= voiceSettingsLength:
-			return
-
-		# This is an imperfect fix for cases when the current synth and voice does not match the current voice setting, e.g., after changing synth using NVDA settings or voice using speech param ring
-		synth = getSynth()
-		currentVoiceSetting = self.voiceSettings[self.currentVoiceSettingsIndex]
-		if currentVoiceSetting["synthId"] != synth.name or currentVoiceSetting["voiceId"] != synth.voice:
-			for index, voiceSetting in enumerate(self.voiceSettings):
-				if voiceSetting["synthId"] == synth.name and voiceSetting["voiceId"] == synth.voice:
-					self.currentVoiceSettingsIndex = index
-					break
-
 	def loadSettingsFromConfig(self):
 		self.voiceSettings = [json.loads(voiceSetting) for voiceSetting in self.getConfig("voiceSettings")]
 		self.profilesVoiceSettingsIndices = json.loads(self.getConfig("profilesVoiceSettingsIndices"))
@@ -250,9 +237,8 @@ class VoiceToggle:
 	def setVoiceSettings(self, settings):
 		self.voiceSettings = settings.copy()
 		self.saveSettingsTOConfig()
-
-	def markVoiceSettingsAsModified(self):
 		self.isVoiceSettingsModified = True
+		self.changeVoice(self.currentVoiceSettingsIndex, announceChange=False)
 
 	def toggleVoice(self):
 		if len(self.voiceSettings) == 0:
@@ -303,7 +289,6 @@ class VoiceToggle:
 		if self.isVoiceSettingsModified:
 			currentVoiceSetting = None
 		else:
-			self.alignCurrentVoiceSettingsIndex()
 			currentVoiceSetting = self.updateVoiceSetting()
 		
 		# Only apply new synth if voice settings have been modified in add-on settings, or if changed from previous one
