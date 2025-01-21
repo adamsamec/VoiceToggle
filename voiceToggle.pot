@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 'voiceToggle' '1.5.1'\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@groups.io'\n"
-"POT-Creation-Date: 2025-01-18 21:59+0100\n"
+"POT-Creation-Date: 2025-01-21 12:47+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #. Translators: Gesture description for the Input gestures settings dialog
-#: addon\globalPlugins\voiceToggle\__init__.py:33
+#: addon\globalPlugins\voiceToggle\__init__.py:36
 msgid "Toggles to the next voice."
 msgstr ""
 
@@ -32,47 +32,47 @@ msgstr ""
 #. Add-on summary, usually the user visible name of the addon.
 #. Translators: Summary for this add-on
 #. to be shown on installation and add-on information found in Add-ons Manager.
-#: addon\globalPlugins\voiceToggle\settingsDialogs.py:19 buildVars.py:23
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:21 buildVars.py:23
 msgid "VoiceToggle"
 msgstr ""
 
 #. Translators: Label for the voices listbox in the add-on settings
-#: addon\globalPlugins\voiceToggle\settingsDialogs.py:28
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:49
 msgid "Voices"
 msgstr ""
 
 #. Translators: Label for the add voice button in the add-on settings
-#: addon\globalPlugins\voiceToggle\settingsDialogs.py:35
-#: addon\globalPlugins\voiceToggle\settingsDialogs.py:96
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:56
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:116
 msgid "Add voice"
 msgstr ""
 
 #. Translators: Label for the remove voice button in the add-on settings
-#: addon\globalPlugins\voiceToggle\settingsDialogs.py:39
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:60
 msgid "Remove voice"
 msgstr ""
 
-#: addon\globalPlugins\voiceToggle\settingsDialogs.py:73
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:94
 msgid "The last remaining voice cannot be removed"
 msgstr ""
 
 #. Translators: Label for the synthesizers combobox in the add voice dialog
-#: addon\globalPlugins\voiceToggle\settingsDialogs.py:112
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:133
 msgid "Synthesizer"
 msgstr ""
 
 #. Translators: Label for the voices combobox in the add voice dialog
-#: addon\globalPlugins\voiceToggle\settingsDialogs.py:118
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:139
 msgid "Voice"
 msgstr ""
 
 #. Translators: Label for the add button in the add voice dialog
-#: addon\globalPlugins\voiceToggle\settingsDialogs.py:125
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:146
 msgid "Add"
 msgstr ""
 
 #. Translators: Label for the cancel button in the add voice dialog
-#: addon\globalPlugins\voiceToggle\settingsDialogs.py:130
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:151
 msgid "Cancel"
 msgstr ""
 

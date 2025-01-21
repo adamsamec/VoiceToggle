@@ -11,12 +11,14 @@ import json
 import wx
 
 import globalPlugins.voiceToggle.consts as consts
+from .settingsDialogs import OptionsPanel
 
 addonHandler.initTranslation()
 
 class VoiceToggle:
 
 	def __init__(self):
+		OptionsPanel.setAppInstance(self)
 		config.conf.spec["VoiceToggle"] = consts.CONFIG_SPEC
 
 		self.isVoiceSettingsModified = False
@@ -353,6 +355,3 @@ class VoiceToggle:
 
 	def terminate(self):
 		self.saveSettingsTOConfig()
-
-# Create the app
-voiceToggle = VoiceToggle()

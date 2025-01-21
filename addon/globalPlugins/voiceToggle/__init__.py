@@ -9,7 +9,7 @@ import config
 import gui
 
 from .settingsDialogs import OptionsPanel
-from .voiceToggle import voiceToggle
+from .voiceToggle import VoiceToggle
 
 addonHandler.initTranslation()
 
@@ -17,13 +17,14 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	def __init__(self):
 		super(GlobalPlugin, self).__init__()
-		gui.settingsDialogs.NVDASettingsDialog.categoryClasses.append(OptionsPanel)
 
-		config.post_configProfileSwitch.register(voiceToggle.handleProfileSwitch)
+		gui.settingsDialogs.NVDASettingsDialog.categoryClasses.append(OptionsPanel)
+		self.app = VoiceToggle()
 		self.isSynthDoneSpeakingRegistered = False
+		config.post_configProfileSwitch.register(self.app.handleProfileSwitch)
 
 	def terminate(self):
-		voiceToggle.terminate()
+		self.app.terminate()
 
 	def __terminate__(self):
 		super(GlobalPlugin, self).__terminate__()
@@ -36,6 +37,6 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	)
 	def script_toggleVoice(self, gesture):
 		if not self.isSynthDoneSpeakingRegistered:
-			synthDoneSpeaking.register(voiceToggle.handleDoneSpeaking)
+			synthDoneSpeaking.register(self.app.handleDoneSpeaking)
 			self.isSynthDoneSpeakingRegistered = True
-		voiceToggle.toggleVoice()
+		self.app.toggleVoice()

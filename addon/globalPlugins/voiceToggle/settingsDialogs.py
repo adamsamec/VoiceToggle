@@ -7,16 +7,37 @@ import ui
 import gui
 from gui.settingsDialogs import SettingsPanel
 
+import weakref
 import wx
 
 import globalPlugins.voiceToggle.consts as consts
-from .voiceToggle import voiceToggle
 
 addonHandler.initTranslation()
 
 class OptionsPanel(SettingsPanel):
+	_app = None
+
 	# Translators: Add-on settings panel title
 	title = _("VoiceToggle")
+
+	def __init__ (self, *args, **kwargs):
+		self.app = self._app()
+		SettingsPanel.__init__(self, *args, **kwargs)
+
+		self.Bind(wx.EVT_WINDOW_DESTROY, self.Cleanup)
+
+	def Cleanup (self, event=None):
+		if hasattr(self, "app"):
+			del self.app
+		if event != None:
+			event.Skip()
+
+	def __del__ (self):
+		self.Cleanup()
+
+	@classmethod
+	def setAppInstance (cls, instance):
+		cls._app = weakref.ref(instance)
 
 	def makeSettings(self, settingsSizer):
 		self.loadVoiceSettings()
@@ -43,14 +64,14 @@ class OptionsPanel(SettingsPanel):
 		sHelper.addItem(buttons)
 
 	def loadVoiceSettings(self):
-		voiceToggle.cleanUpVoiceSettings()
-		self.voiceSettings = voiceToggle.getVoiceSettings()
+		self.app.cleanUpVoiceSettings()
+		self.voiceSettings = self.app.getVoiceSettings()
 
 	def updateVoicesListBox(self, selectionIndex=0):
 		listBoxItems = []
 		for voiceSetting in self.voiceSettings:
-			synthName = voiceToggle.getSynthNameById(voiceSetting["synthId"])
-			voiceName = voiceToggle.getVoiceNameById(voiceSetting["synthId"], voiceSetting["voiceId"])
+			synthName = self.app.getSynthNameById(voiceSetting["synthId"])
+			voiceName = self.app.getVoiceNameById(voiceSetting["synthId"], voiceSetting["voiceId"])
 			choice = synthName if voiceSetting["synthId"] == SilenceSynthDriver.name else f"{voiceName} ({synthName})"
 			listBoxItems.append(choice)
 		self.voicesListBox.SetItems(listBoxItems)
@@ -65,7 +86,7 @@ class OptionsPanel(SettingsPanel):
 		self.isVoiceSettingsModified = True
 
 	def onAddVoiceButtonClick(self, event):
-		addVoiceDialog = AddVoiceDialog(self)
+		addVoiceDialog = AddVoiceDialog(self, self.app)
 		addVoiceDialog.ShowModal()
 
 	def onRemoveVoiceButtonClick(self, event):
@@ -86,14 +107,15 @@ class OptionsPanel(SettingsPanel):
 
 	def onSave(self):
 		if self.isVoiceSettingsModified:
-			voiceToggle.setVoiceSettings(self.voiceSettings)
+			self.app.setVoiceSettings(self.voiceSettings)
 			self.isVoiceSettingsModified = False
 
 class AddVoiceDialog(wx.Dialog):
 
-	def __init__(self, parent):
+	def __init__(self, parent, app):
 		super().__init__(parent, title=_("Add voice"))
 		self.plugin = parent
+		self.app = app
 
 		self.Bind(wx.EVT_CHAR_HOOK, self.charHook)
 		self.addWidgets()
@@ -103,8 +125,8 @@ class AddVoiceDialog(wx.Dialog):
 		sHelper = gui.guiHelper.BoxSizerHelper(self, wx.VERTICAL)
 
 		# Synth combobox
-		voiceToggle.updateSynthsWithVoices()
-		synthsWithVoices = voiceToggle.getSynthsWithVoices()
+		self.app.updateSynthsWithVoices()
+		synthsWithVoices = self.app.getSynthsWithVoices()
 		self.synthsIds = [synthWithVoices["id"] for synthWithVoices in synthsWithVoices]
 		synthsNames = [synthWithVoices["name"] for synthWithVoices in synthsWithVoices]
 		# Translators: Label for the synthesizers combobox in the add voice dialog
@@ -147,7 +169,7 @@ class AddVoiceDialog(wx.Dialog):
 			self.voicesIds = [SilenceSynthDriver.name]
 			comboBoxItems = [consts.SILENCE_VOICE_NAME]
 		else:
-			voices = voiceToggle.getVoicesForSynth(synthId)
+			voices = self.app.getVoicesForSynth(synthId)
 			for voice in voices:
 				self.voicesIds.append(voice["id"])
 				comboBoxItems.append(voice["name"])

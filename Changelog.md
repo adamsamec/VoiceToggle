@@ -1,5 +1,9 @@
 # VoiceToggle - Changelog
 
+## Version 1.5.1
+* Bug fix that correct voice is now set after switching to different profile.
+* Performance improvements, mainly that the delay before first toggle is reduced.
+
 ## Version 1.5.0
 * Removed the custom add-on update feature as this version is intended to be published in the NVDA add-on store which takes care for update itself.
 
