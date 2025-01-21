@@ -1,7 +1,7 @@
 # VoiceToggle - Changelog
 
 ## Version 1.5.1
-* Bug fixes. Mainly that the correct voice is now set after changing voices via NvDA settings or speech ring, and then switching to different NVDA configuration profile.
+* Bug fixes. Mainly that the correct voice is now set after changing voice via the NvDA settings dialog in the "Speech" category or via the speech ring, and then switching to different NVDA configuration profile.
 * Performance improvements. Mainly that the delay before the first voice toggle is significantly reduced, and faster display of the VoiceToggle settings and add voice dialogs.
 
 ## Version 1.5.0
