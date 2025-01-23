@@ -23,10 +23,10 @@ addon_info = {
 	"addon_summary": _("VoiceToggle"),
 	# Add-on description
 	# Translators: Long description to be shown for this add-on on add-on information from add-ons manager
-	"addon_description": _("""Allows easy toggling between defined voices.
+	"addon_description": _("""Allows easy toggling between predefined voices.
 Define voices in NVDA settings, then use NVDA + Alt + V anytime to toggle to the next voice."""),
 	# version
-	"addon_version": "1.5.1",
+	"addon_version": "1.5.2",
 	# Author(s)
 	"addon_author": "Adam Samec <adam.samec@gmail.com>",
 	# URL for the add-on documentation support
