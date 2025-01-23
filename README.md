@@ -47,8 +47,7 @@ The NVDA + Alt + V keyboard shortcut for voice toggling can be changed to anothe
 
 ## Download
 
-- The latest version of [VoiceToggle for NVDA 2023.2 and newer can be downloaded here][VoiceToggle-download] and is also available thrugh NVDA Add-on Store.
-- The old [VoiceToggle 1.4.1 for NVDA 2023.1 and older can be downloaded here][VoiceToggle-download-nvda-2023-1], but this version is no longer maintained and does not have the latest updates.
+VoiceToggle for NVDA is available thrugh NVDA Add-on Store, or can be [downloaded here][VoiceToggle-download].
 
 ## Changelog
 
