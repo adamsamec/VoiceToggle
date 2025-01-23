@@ -15,7 +15,7 @@ The voices to toggle between using VoiceToggle can be preconfigured by following
 1. PressNVDA + N to open the NVDA menu.
 2. Choose the "Preferences" submenu.
 3. Choose the "Settings" menu item.
-4. Navigate to the "VoiceToggle" category. The VoiceToggle settings panel opens, and the "Voices" list will be populated with only the current voice.
+4. Navigate to the "VoiceToggle" category. The VoiceToggle property page opens, and the voices list will be populated with only the current voice.
 5. TO add another voice to the list, open the "Add voice" dialog using the "Add voice" button.
 6. Using the first combo box, Select the desired synthesizer first, then using the second combo box, select the synthesizer's desired voice which you want to add, and press the "Add" button. The just added voice will appear in the "Voices" list after the currently selected item in the list.
 7. Don't forgot to save the settings made by pressing the "OK" or "Apply" button of the NVDA settings dialog.
