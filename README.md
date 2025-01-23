@@ -6,7 +6,7 @@ The VoiceToggle add-on for NVDA screen reader allows you to preconfigure an arbi
 
 ## Example usage
 
-Let's say you speak English and French, then you can add two voices in the VoiceToggle settings as described below, one with English and the other with French pronunciation. Anytime later you can toggle between those two voices using only the NVDA + Alt + V simple and comfortable keyboard shortcut instead of messing with the NVDA speech setting ring or with the NVDA settings dialog in the Speech category.
+Let's say you speak English and French, then you can add two voices in the VoiceToggle settings as described below, one with English and the other with French pronunciation. Anytime later you can toggle between those two voices using only the NVDA + Alt + V simple and comfortable keyboard shortcut instead of messing with the NVDA synth settings ring, NVDA synthesizer selection dialog, or with the NVDA settings dialog in the Speech category.
 
 ## Configuring the voices
 
