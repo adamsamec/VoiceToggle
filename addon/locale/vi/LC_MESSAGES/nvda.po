@@ -5,7 +5,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 'voiceToggle' '1.5.2'\n"
+"Project-Id-Version: 'voiceToggle' '1.5.3'\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@groups.io'\n"
 "POT-Creation-Date: 2025-01-23 20:09+0100\n"
 "PO-Revision-Date: 2025-01-23 20:09+0100\n"

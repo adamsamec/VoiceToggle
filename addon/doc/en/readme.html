@@ -4,27 +4,27 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" type="text/css" href="../style.css" media="screen">
-<title>VoiceToggle 1.5.2</title>
+<title>VoiceToggle 1.5.3</title>
 </head>
 <body>
 <h1>VoiceToggle</h1>
 <h2>Introduction</h2>
-<p>The VoiceToggle add-on for NVDA screen reader allows you to preconfigure an arbitrary number of voices in its settings , so that you can later toggle between those voices in circle anytime using the simple NVDA + Alt + V keyboard shortcut.</p>
+<p>The VoiceToggle add-on for NVDA screen reader allows you to preconfigure an arbitrary number of voices in its settings , so that you can later quickly toggle between those voices in circle anytime using the simple NVDA + Alt + V keyboard shortcut.</p>
 <h2>Example usage</h2>
-<p>Let's say you speak English and French, then you can add two voices in the VoiceToggle settings as described below, one with English and the other with French pronunciation. Anytime later you can toggle between those two voices using only the NVDA + Alt + V simple and comfortable keyboard shortcut instead of messing with the NVDA speech setting ring or with the NVDA settings dialog in the Speech category.</p>
+<p>Let's say you speak English and French, then you can add two voices in the VoiceToggle settings as described below, one with English and the other with French pronunciation. Anytime later you can toggle between those two voices using only the NVDA + Alt + V simple and comfortable keyboard shortcut instead of messing with the NVDA synth settings ring, NVDA synthesizer selection dialog, or with the NVDA settings dialog in the Speech category.</p>
 <h2>Configuring the voices</h2>
 <p>The voices to toggle between using VoiceToggle can be preconfigured by following these steps:</p>
 <ol>
 <li>PressNVDA + N to open the NVDA menu.</li>
 <li>Choose the "Preferences" submenu.</li>
 <li>Choose the "Settings" menu item.</li>
-<li>Navigate to the "VoiceToggle" category. The VoiceToggle settings panel opens, and the "Voices" list will be populated with only the current voice.</li>
-<li>TO add another voice to the list, open the "Add voice" dialog using the "Add voice" button.</li>
-<li>Using the first combo box, Select the desired synthesizer first, then using the second combo box, select the synthesizer's desired voice which you want to add, and press the "Add" button. The just added voice will appear in the "Voices" list after the currently selected item in the list.</li>
-<li>Don't forgot to save the settings made by pressing the "OK" or "Apply" button of the NVDA settings dialog.</li>
+<li>Navigate to the "VoiceToggle" category. The VoiceToggle property page opens, and the voices list will be populated with only the current voice.</li>
+<li>TO add another voice to the list, open the dialog for adding a new voice using the "Add voice" button.</li>
+<li>Using the first combo box, Select the desired synthesizer first, then using the second combo box, select the synthesizer's desired voice which you want to add, and press the "Add" button. The just added voice will appear in the voices list after the currently selected item in the list.</li>
+<li>Don't forgot to save the settings just made by pressing the "OK" or "Apply" button at the end of the NVDA settings dialog.</li>
 </ol>
 <h2>Remembering voices for individual applications</h2>
-<p>Let's say you want to browse the web in English, but want to make notes and all other work in French. Then you can have last used voice remembered by selected applications. For example, when you switch to Google Chrome, the voice automatically switches to the last used voice in that application, perhaps English. Then when you go back to another application, for example to Microsoft Word to make notes in French, the voice switches back to that default voice. This is enabled thanks to the NVDA configuration profiles feature.</p>
+<p>Let's say you want to browse the web in English, but want to make notes and all other work in French. Then you can have last used voice remembered in certain applications. For example, when you switch to Google Chrome, the voice automatically switches to the last used voice in that application, perhaps English. Then when you go back to another application, for example to Microsoft Word to make notes in French, the voice switches back to that default French voice. This is enabled thanks to the NVDA configuration profiles feature.</p>
 <p>TO configure certain application so that it remembers the last used voice, follow these steps:</p>
 <ol>
 <li>Switch to that application, for example to Google Chrome.</li>
@@ -32,29 +32,26 @@
 <li>Choose the "Configuration profiles" menu item.</li>
 <li>Press the "New" button.</li>
 <li>"Navigate to the radio button labelled as "Manual activation" under the "Use this profile for" grouping, and switch it to "Current application" using the Down arrow key.</li>
-<li>Confirm the changes using the "OK" button.</li>
+<li>Confirm the creation of a new configuration profile using the "OK" button.</li>
 </ol>
 <h2>Changing the voice toggle shortcut</h2>
-<p>The NVDA + Alt + V keyboard shortcut for voice toggling can be changed to another shortcut using the "Input gestures" dialog as follows:</p>
+<p>The default NVDA + Alt + V keyboard shortcut for voice toggling can be changed to another shortcut using the "Input gestures" dialog as follows:</p>
 <ol>
 <li>PressNVDA + N to open the NVDA menu.</li>
 <li>Choose the "Preferences" submenu.</li>
 <li>Choose the "Input gestures" menu item.</li>
 <li>Type "voice toggle" into the "Filter by" edit field, including the space between the two words.</li>
-<li>In the tree, navigate to the "Toggles to the next voice" tree node under the "Miscellaneous" category.</li>
+<li>In the tree, navigate to the "Toggles to the next voice" item under the "Miscellaneous" category.</li>
 <li>Activate the "Add" button, then press the desired keyboard shortcut, and confirm with Enter.</li>
-<li>Confirm the changes using the "OK" button.</li>
+<li>Confirm the change using the "OK" button.</li>
 </ol>
 <h2>Download</h2>
-<ul>
-<li>The latest version of <a href="https://files.adamsamec.cz/apps/nvda/VoiceToggle.nvda-addon">VoiceToggle for NVDA 2023.2 and newer can be downloaded here</a> and is also available thrugh NVDA Add-on Store.</li>
-<li>The old <a href="https://files.adamsamec.cz/apps/nvda/VoiceToggle-1.4.1.nvda-addon">VoiceToggle 1.4.1 for NVDA 2023.1 and older can be downloaded here</a>, but this version is no longer maintained and does not have the latest updates.</li>
-</ul>
+<p>VoiceToggle for NVDA is available thrugh NVDA Add-on Store, or can be <a href="https://files.adamsamec.cz/apps/nvda/VoiceToggle.nvda-addon">downloaded here</a>.</p>
 <h2>Changelog</h2>
 <p><a href="https://github.com/adamsamec/VoiceToggle/blob/main/Changelog.md">The changelog can be viewed here</a>.</p>
 <h2>Contact and feedback</h2>
 <p>If you have suggestions for VoiceToggle improvement, problems with its functionality or other comments, you can drop me an email to <a href="mailto:adam.samec@gmail.com">adam.samec@gmail.com</a></p>
 <h2>Licence</h2>
-<p>VoiceToggle is available under the GNU General Public License version 2.</p>
+<p>VoiceToggle is available under the GNU General Public License version 2.0.</p>
 </body>
 </html>
