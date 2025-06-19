@@ -1,6 +1,8 @@
 # VoiceToggle - Changelog
 
 ## Version 1.5.3
+* Added support for NVDA 2025.
+* Added Ukrainnian translation.
 * Small corrections in the VoiceToggle help documentation.
 
 ## Version 1.5.2
