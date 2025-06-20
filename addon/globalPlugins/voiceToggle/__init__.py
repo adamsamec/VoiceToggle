@@ -31,12 +31,31 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		gui.settingsDialogs.NVDASettingsDialog.categoryClasses.remove(OptionsPanel)
 
 	@scriptHandler.script(
-		gesture="kb:NVDA+Alt+V",
 		# Translators: Gesture description for the Input gestures settings dialog
-		description=_("Toggles to the next voice."),
+		description=_("Switches to the next voice."),
+		category = _("Voice Toggle"),
 	)
 	def script_toggleVoice(self, gesture):
 		if not self.isSynthDoneSpeakingRegistered:
 			synthDoneSpeaking.register(self.app.handleDoneSpeaking)
 			self.isSynthDoneSpeakingRegistered = True
-		self.app.toggleVoice()
+		if len(self.app.voiceSettings) == 0:
+			return
+		nextIndex = self.app.getNextVoiceSettingsIndex(self.app.currentVoiceSettingsIndex)
+		newIndex = self.app.changeVoice(nextIndex)
+		self.app.currentVoiceSettingsIndex = newIndex
+
+	@scriptHandler.script(
+		# Translators: Gesture description for the Input gestures settings dialog
+		description=_("Switches to the previous voice."),
+		category = _("Voice Toggle"),
+	)
+	def script_previousVoice(self, gesture):
+		if not self.isSynthDoneSpeakingRegistered:
+			synthDoneSpeaking.register(self.app.handleDoneSpeaking)
+		self.isSynthDoneSpeakingRegistered = True
+		if len(self.app.voiceSettings) == 0:
+			return
+		previousIndex = self.app.getPreviousVoiceSettingsIndex(self.app.currentVoiceSettingsIndex)
+		newIndex = self.app.changeVoice(previousIndex)
+		self.app.currentVoiceSettingsIndex = newIndex

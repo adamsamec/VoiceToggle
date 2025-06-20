@@ -260,6 +260,17 @@ class VoiceToggle:
 		newIndex = (index + 1) % voiceSettingsLength
 		return newIndex
 
+	def getPreviousVoiceSettingsIndex(self, index):
+		voiceSettingsLength = len(self.voiceSettings)
+		if voiceSettingsLength == 0:
+			return -1
+		
+		# If index is out of list bounds and list is not empty, return zero
+		if index < 0 or index >= voiceSettingsLength:
+			return 0
+		newIndex = (index - 1) % voiceSettingsLength
+		return newIndex
+
 	def changeVoice(self, newIndex, announceChange=True):
 		voiceSettingsLength = len(self.voiceSettings)
 		if (newIndex >= voiceSettingsLength) or (newIndex < 0):
