@@ -1,5 +1,8 @@
 # VoiceToggle - Changelog
 
+## Version 1.5.5
+* Added Simplified Chinese translation.
+
 ## Version 1.5.4
 * Added support for NVDA 2025.
 * Added Ukrainnian translation.
