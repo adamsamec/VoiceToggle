@@ -1,0 +1,89 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the 'voiceToggle' package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: 'voiceToggle' '1.5.4'\n"
+"Report-Msgid-Bugs-To: 'nvda-translations@groups.io'\n"
+"POT-Creation-Date: 2025-06-20 06:05+0800\n"
+"PO-Revision-Date: 2025-06-20 22:49+0800\n"
+"Last-Translator: Alan <alanzhangmw@outlook.com>\n"
+"Language-Team: \n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.6\n"
+
+#. Translators: Gesture description for the Input gestures settings dialog
+#: addon\globalPlugins\voiceToggle\__init__.py:36
+msgid "Toggles to the next voice."
+msgstr "切换到下一个语音。"
+
+#. Constants
+#. Translators: Label for the silence synthesizer in the voices listbox or synthesizers and voices comboboxes
+#: addon\globalPlugins\voiceToggle\consts.py:10
+msgid "Silence"
+msgstr "静音"
+
+#. Translators: Add-on settings panel title
+#. Add-on summary, usually the user visible name of the addon.
+#. Translators: Summary for this add-on
+#. to be shown on installation and add-on information found in Add-ons Manager.
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:21 buildVars.py:23
+msgid "VoiceToggle"
+msgstr "VoiceToggle_语音切换器"
+
+#. Translators: Label for the voices listbox in the add-on settings
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:49
+msgid "Voices"
+msgstr "语音"
+
+#. Translators: Label for the add voice button in the add-on settings
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:56
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:116
+msgid "Add voice"
+msgstr "添加语音(&A)"
+
+#. Translators: Label for the remove voice button in the add-on settings
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:60
+msgid "Remove voice"
+msgstr "移除语音(&R)"
+
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:94
+msgid "The last remaining voice cannot be removed"
+msgstr "无法删除剩余的最后一个语音"
+
+#. Translators: Label for the synthesizers combobox in the add voice dialog
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:133
+msgid "Synthesizer"
+msgstr "合成器(&S)"
+
+#. Translators: Label for the voices combobox in the add voice dialog
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:139
+msgid "Voice"
+msgstr "语音(&V)"
+
+#. Translators: Label for the add button in the add voice dialog
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:146
+msgid "Add"
+msgstr "添加(&A)"
+
+#. Translators: Label for the cancel button in the add voice dialog
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:151
+msgid "Cancel"
+msgstr "取消(&C)"
+
+#. Add-on description
+#. Translators: Long description to be shown for this add-on on add-on information from add-ons manager
+#: buildVars.py:26
+msgid ""
+"Allows easy toggling between predefined voices.\n"
+"Define voices in NVDA settings, then use NVDA + Alt + V anytime to toggle to "
+"the next voice."
+msgstr ""
+"允许在预定义的声音之间轻松切换。\n"
+"在NVDA设置中定义语音，然后随时使用NVDA+Alt+V切换到下一个语音。"
