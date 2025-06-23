@@ -26,7 +26,7 @@ addon_info = {
 	"addon_description": _("""Allows easy toggling between predefined voices.
 Define voices in NVDA settings, then use NVDA + Alt + V anytime to toggle to the next voice."""),
 	# version
-	"addon_version": "1.5.5",
+	"addon_version": "1.6.0",
 	# Author(s)
 	"addon_author": "Adam Samec <adam.samec@gmail.com>",
 	# URL for the add-on documentation support
@@ -38,7 +38,7 @@ Define voices in NVDA settings, then use NVDA + Alt + V anytime to toggle to the
 	# Minimum NVDA version supported (e.g. "2018.3.0", minor version is optional)
 	"addon_minimumNVDAVersion": "2023.2.0",
 	# Last NVDA version supported/tested (e.g. "2018.4.0", ideally more recent than minimum version)
-	"addon_lastTestedNVDAVersion": "2025.1.1",
+	"addon_lastTestedNVDAVersion": "2025.1.2",
 	# Add-on update channel (default is None, denoting stable releases,
 	# and for development releases, use "dev".)
 	# Do not change unless you know what you are doing!

@@ -4,7 +4,6 @@
 import addonHandler
 import globalPluginHandler
 import scriptHandler
-from synthDriverHandler import synthDoneSpeaking
 import config
 import gui
 
@@ -20,13 +19,13 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 		gui.settingsDialogs.NVDASettingsDialog.categoryClasses.append(OptionsPanel)
 		self.app = VoiceToggle()
-		self.isSynthDoneSpeakingRegistered = False
 		config.post_configProfileSwitch.register(self.app.handleProfileSwitch)
 
 	def terminate(self):
 		self.app.terminate()
 
 	def __terminate__(self):
+		self.terminate()
 		super(GlobalPlugin, self).__terminate__()
 		gui.settingsDialogs.NVDASettingsDialog.categoryClasses.remove(OptionsPanel)
 
@@ -36,7 +35,4 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		description=_("Toggles to the next voice."),
 	)
 	def script_toggleVoice(self, gesture):
-		if not self.isSynthDoneSpeakingRegistered:
-			synthDoneSpeaking.register(self.app.handleDoneSpeaking)
-			self.isSynthDoneSpeakingRegistered = True
 		self.app.toggleVoice()

@@ -1,13 +1,16 @@
 # Copyright 2025 Adam Samec <adam.samec@gmail.com>
 # This add-on is free software, licensed under the terms of the GNU General Public License (version 2). see <https://www.gnu.org/licenses/gpl-2.0.html>.
 
+from synthSettingsRing import SynthSettingsRing
 import addonHandler
+import synthDriverHandler
 from synthDriverHandler import getSynth, setSynth, getSynthList, getSynthInstance
 from synthDrivers.silence import SynthDriver as SilenceSynthDriver
 import config
 import ui
 
 import json
+from threading import Timer
 import wx
 
 import globalPlugins.voiceToggle.consts as consts
@@ -21,12 +24,16 @@ class VoiceToggle:
 		OptionsPanel.setAppInstance(self)
 		config.conf.spec["VoiceToggle"] = consts.CONFIG_SPEC
 
+		self.preventVoiceSettingsUpdate = False
+		self.hasProfileSwitchedPreviously = False
+		self.voiceSettingsToRevert = None
 		self.isVoiceSettingsModified = False
 		self.currentProfileName = consts.NORMAL_PROFILE_NAME
 		self.synthsWithVoices = []
 
 		self.loadSettingsFromConfig()
 		self.addDefaultVoiceSetting()
+		self.monkeyPatch()
 
 	@property
 	def currentVoiceSettingsIndex(self):
@@ -36,17 +43,71 @@ class VoiceToggle:
 	def currentVoiceSettingsIndex(self, value):
 		self.profilesVoiceSettingsIndices[self.currentProfileName] = value
 
+
+	def monkeyPatch(self):
+		synthDriverHandler.changeVoice = self.mpChangeVoice(synthDriverHandler.changeVoice)
+		for methodName in ["first", "last", "increase", "increaseLarge", "decrease", "decreaseLarge"]:
+			setattr(SynthSettingsRing, methodName, self.mpRingChangeValue(getattr(SynthSettingsRing, methodName)))
+
+	def resetVoiceSettingsToRevert(self):
+		if not self.hasProfileSwitchedPreviously:
+			self.voiceSettingsToRevert = None
+
+
+	def mpChangeVoice(self, func):
+		def orig(synth, voiceId):
+			ret = func(synth, voiceId)
+
+			# We don't want synth and voice settings to be updated when getting synth instance or when setting new synth during toggle
+			if self.preventVoiceSettingsUpdate:
+				return ret
+			if self.voiceSettingsToRevert == None:
+				currentVoiceSettings = self.voiceSettings[self.currentVoiceSettingsIndex]
+				self.voiceSettingsToRevert = {
+					"synthId": currentVoiceSettings["synthId"],
+					"voiceId": currentVoiceSettings["voiceId"]
+				}
+			synthId = SilenceSynthDriver.name if synth == None else synth.name
+			if synth == None:
+				voiceId = SilenceSynthDriver.name
+			self.updateVoiceSettingSynthAndVoice(synthId, voiceId)
+			self.hasProfileSwitchedPreviously = False
+
+			# After some delay, consider the synth and voice change not to be caused by profile switching
+			timer = Timer(0.2, self.resetVoiceSettingsToRevert)
+			timer.start()
+			
+			return ret
+		return orig
+	
+	def mpRingChangeValue(self, method):
+		def orig(origSelf):
+			param = origSelf.currentSettingName.lower()
+			ret = method(origSelf)
+			if not param in consts.SAVED_PARAMS:
+				return ret
+			self.updateVoiceSettingParam(param, int(ret))
+			return ret
+		return orig
+
 	def handleProfileSwitch(self):
+		self.hasProfileSwitchedPreviously = True
 		newProfileName = config.conf.profiles[-1].name
 		if not newProfileName:
 			newProfileName = consts.NORMAL_PROFILE_NAME
+
+		# Reverting hack is necessarybecause NVDA is missing a pre profile switch extension point 
+		if self.voiceSettingsToRevert != None:
+			self.updateVoiceSettingSynthAndVoice(self.voiceSettingsToRevert["synthId"], self.voiceSettingsToRevert["voiceId"])
+			
 		if not (newProfileName in self.profilesVoiceSettingsIndices):
 			self.profilesVoiceSettingsIndices[newProfileName] = self.currentVoiceSettingsIndex
 		self.currentProfileName = newProfileName
-		self.changeVoice(self.currentVoiceSettingsIndex, announceChange=False)
+		if self.voiceSettingsToRevert != None:
+			self.voiceSettingsToRevert = None
 
-	def handleDoneSpeaking(self):
-		wx.CallAfter(self.updateVoiceSetting)
+		# Ignore the synth and voice settings saved in the profile and switch to the VoiceToggle settings instead
+		self.changeVoice(self.currentVoiceSettingsIndex, announceChange=False)
 
 	def cleanUpVoiceSettings(self):
 		self.updateSynthsWithVoices()
@@ -166,12 +227,16 @@ class VoiceToggle:
 			if synthWithVoices["id"] == synthId:
 				if synthWithVoices["voices"] == None:
 					synth = getSynth()
+					if synth == None:
+						return None
 					if synth.name== synthId:
 						voices = synth.availableVoices
 						synthWithVoices["voices"] = [{"id": id, "name": voices[id].displayName} for id in voices]
 					else:
 						try:
+							self.preventVoiceSettingsUpdate = True
 							instance = getSynthInstance(synthId)
+							self.preventVoiceSettingsUpdate = False
 							voices = instance.availableVoices
 							synthWithVoices["voices"] = [{"id": id, "name": voices[id].displayName} for id in voices]
 							instance.terminate()
@@ -284,21 +349,17 @@ class VoiceToggle:
 			newIndex = 0
 
 		newVoiceSetting = self.voiceSettings[newIndex]
-
 		synth = getSynth()
 
-		# To prevent mismatch, don't update current synth, voice and speech params if voice settings have been modified in NVDA settings, or if changed voice settings due to invalidation
-		if self.isVoiceSettingsModified:
-			currentVoiceSetting = None
-		else:
-			currentVoiceSetting = self.updateVoiceSetting()
-		
-		# Only apply new synth if voice settings have been modified in add-on settings, or if changed from previous one
-		if currentVoiceSetting == None or newVoiceSetting["synthId"] != synth.name:
+		# Only apply new synth if voice settings have been modified in add-on settings or changed due to invalidation, or if changed from previous one
+		if self.isVoiceSettingsModified or synth == None or newVoiceSetting["synthId"] != synth.name:
 			if newVoiceSetting["synthId"] == SilenceSynthDriver.name:
-				setSynth(None)
+				if synth != None:
+					setSynth(None)
 			else:
+				self.preventVoiceSettingsUpdate = True
 				setSynth(newVoiceSetting["synthId"])
+				self.preventVoiceSettingsUpdate = False
 				synth = getSynth()
 		
 		# Apply new voice setting
@@ -315,23 +376,18 @@ class VoiceToggle:
 		self.isVoiceSettingsModified = False
 		return newIndex
 
-	def updateVoiceSetting(self):
+	def updateVoiceSettingParam(self, param, value):
 		if self.currentVoiceSettingsIndex < 0 or len(self.voiceSettings) <= self.currentVoiceSettingsIndex:
 			return None
 		currentVoiceSetting = self.voiceSettings[self.currentVoiceSettingsIndex]
-		synth = getSynth()
-		isSilenceFresh = synth == None
-		if not isSilenceFresh:
-			for param in consts.SAVED_PARAMS:
-				currentVoiceSetting[param] = getattr(synth, param)
+		currentVoiceSetting[param] = value
 
-		# Determine and update fresh synth and voice IDs and names only when synth or voice ID changed
-		isChangeToSilence = isSilenceFresh and currentVoiceSetting["synthId"] != SilenceSynthDriver.name
-		isSynthOrVoiceChange = not isSilenceFresh and (synth.name != currentVoiceSetting["synthId"] or synth.voice != currentVoiceSetting["voiceId"])
-		if isChangeToSilence or isSynthOrVoiceChange:
-			freshVoiceSetting = self.getFreshVoiceSetting()
-			self.voiceSettings[self.currentVoiceSettingsIndex] = {**currentVoiceSetting, **freshVoiceSetting}
-		return currentVoiceSetting
+	def updateVoiceSettingSynthAndVoice(self, synthId, voiceId):
+		if self.currentVoiceSettingsIndex < 0 or len(self.voiceSettings) <= self.currentVoiceSettingsIndex:
+			return
+		currentVoiceSetting = self.voiceSettings[self.currentVoiceSettingsIndex]
+		currentVoiceSetting["synthId"] = synthId
+		currentVoiceSetting["voiceId"] = voiceId
 
 	def getFreshVoiceSetting(self):
 		synth = getSynth()
@@ -345,6 +401,9 @@ class VoiceToggle:
 			"synthId": synthId,
 			"voiceId": voiceId,
 		}
+		for param in consts.SAVED_PARAMS:
+			if hasattr(synth, param):
+				voiceSetting[param] = getattr(synth, param)
 		return voiceSetting
 
 	def getConfig(self, key):

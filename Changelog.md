@@ -1,5 +1,8 @@
 # VoiceToggle - Changelog
 
+## Version 1.6.0
+* Improved reliability of voice toggling.
+
 ## Version 1.5.5
 * Added Simplified Chinese translation.
 
