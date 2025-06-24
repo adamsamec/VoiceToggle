@@ -1,7 +1,7 @@
 # VoiceToggle - Changelog
 
 ## Version 1.6.0
-* Improved reliability of voice toggling.
+* Fixed sometimes incorrect voice beeing switched to when toggling or changing NVDA configuration profile.
 
 ## Version 1.5.5
 * Added Simplified Chinese translation.
