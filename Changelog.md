@@ -1,5 +1,8 @@
 # VoiceToggle - Changelog
 
+## Version 1.6.1
+* Added Brazilian Portuguese translation.
+
 ## Version 1.6.0
 * Fixed sometimes incorrect voice beeing switched to when toggling or changing NVDA configuration profile.
 
