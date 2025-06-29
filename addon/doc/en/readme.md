@@ -22,7 +22,7 @@ The voices to toggle between using VoiceToggle can be preconfigured in the Voice
 
 ## Other settings
 
-You can control whether changes of the current voice using the synth settings ring or NVDA speech settings dialog also accordingly update the voices configured in the VoiceToggle settings. This can be configured in the VoiceToggle settings using the "Update voice by synth settings ring and speech settings dialog" checkbox.
+You can control whether changes of the current voice using the synth settings ring or NVDA speech settings dialog also accordingly update the voices configured in the VoiceToggle settings. This can be configured in the VoiceToggle settings using the "Update voice when changed using the synth settings ring or speech settings dialog" checkbox.
 
 ## Remembering voices for individual applications
 
