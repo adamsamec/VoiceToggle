@@ -53,7 +53,6 @@ class VoiceToggle:
 		if not self.hasProfileSwitchedPreviously:
 			self.voiceSettingsToRevert = None
 
-
 	def mpChangeVoice(self, func):
 		def orig(synth, voiceId):
 			ret = func(synth, voiceId)
@@ -61,6 +60,17 @@ class VoiceToggle:
 			# We don't want synth and voice settings to be updated when getting synth instance or when setting new synth during toggle
 			if self.preventVoiceSettingsUpdate:
 				return ret
+
+			self.hasProfileSwitchedPreviously = False
+
+			# After some delay, consider the synth and voice change not to be caused by profile switching
+			timer = Timer(0.2, self.resetVoiceSettingsToRevert)
+			timer.start()
+
+			# Skip voice update if configured so
+			if not self.otherSettings["enableVoiceUpdateByRingAndSpeechSettings"]:
+				return ret
+
 			if self.voiceSettingsToRevert == None:
 				currentVoiceSettings = self.voiceSettings[self.currentVoiceSettingsIndex]
 				self.voiceSettingsToRevert = {
@@ -71,12 +81,6 @@ class VoiceToggle:
 			if synth == None:
 				voiceId = SilenceSynthDriver.name
 			self.updateVoiceSettingSynthAndVoice(synthId, voiceId)
-			self.hasProfileSwitchedPreviously = False
-
-			# After some delay, consider the synth and voice change not to be caused by profile switching
-			timer = Timer(0.2, self.resetVoiceSettingsToRevert)
-			timer.start()
-			
 			return ret
 		return orig
 	
@@ -266,6 +270,9 @@ class VoiceToggle:
 	def loadSettingsFromConfig(self):
 		self.voiceSettings = [json.loads(voiceSetting) for voiceSetting in self.getConfig("voiceSettings")]
 		self.profilesVoiceSettingsIndices = json.loads(self.getConfig("profilesVoiceSettingsIndices"))
+		self.otherSettings = {
+			"enableVoiceUpdateByRingAndSpeechSettings": self.getConfig("enableVoiceUpdateByRingAndSpeechSettings")
+		}
 		
 		# Create index for naormal profile if not exists
 		voiceSettingsLength = len(self.voiceSettings)
@@ -289,6 +296,7 @@ class VoiceToggle:
 		voiceSettingsJson = [json.dumps(voiceSetting) for voiceSetting in self.voiceSettings]
 		self.setConfig("voiceSettings", voiceSettingsJson)
 		self.setConfig("profilesVoiceSettingsIndices", json.dumps(self.profilesVoiceSettingsIndices))
+		self.setConfig("enableVoiceUpdateByRingAndSpeechSettings", self.otherSettings["enableVoiceUpdateByRingAndSpeechSettings"])
 
 	def addDefaultVoiceSetting(self):
 		# Create and add the default voice setting if does not exist
@@ -301,11 +309,17 @@ class VoiceToggle:
 	def getVoiceSettings(self):
 		return self.voiceSettings.copy()
 
-	def setVoiceSettings(self, settings):
-		self.voiceSettings = settings.copy()
-		self.saveSettingsTOConfig()
+	def getOtherSettings(self):
+		return self.otherSettings.copy()
+
+	def applyVoiceSettings(self, voiceSettings):
+		self.voiceSettings = voiceSettings.copy()
 		self.isVoiceSettingsModified = True
 		self.changeVoice(self.currentVoiceSettingsIndex, announceChange=False)
+
+	def applyOtherSettingsAndSave(self, otherSettings):
+		self.otherSettings = otherSettings.copy()
+		self.saveSettingsTOConfig()
 
 	def toggleVoice(self):
 		if len(self.voiceSettings) == 0:

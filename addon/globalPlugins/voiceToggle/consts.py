@@ -13,5 +13,6 @@ NORMAL_PROFILE_NAME = "[normal]"
 CONFIG_SPEC = {
 	"voiceSettings": "string_list(default=list())",
 	"profilesVoiceSettingsIndices": "string(default='{}')",
+	"enableVoiceUpdateByRingAndSpeechSettings": "boolean(default=True)",
 }
 SAVED_PARAMS = ["volume", "rate", "pitch"]

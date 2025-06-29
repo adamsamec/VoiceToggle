@@ -10,7 +10,7 @@ Let's say you speak English and French, then you can add two voices in the Voice
 
 ## Configuring the voices
 
-The voices to toggle between using VoiceToggle can be preconfigured by following these steps:
+The voices to toggle between using VoiceToggle can be preconfigured in the VoiceToggle settings by following these steps:
 
 1. PressNVDA + N to open the NVDA menu.
 2. Choose the "Preferences" submenu.
@@ -19,6 +19,10 @@ The voices to toggle between using VoiceToggle can be preconfigured by following
 5. TO add another voice to the list, open the dialog for adding a new voice using the "Add voice" button.
 6. Using the first combo box, Select the desired synthesizer first, then using the second combo box, select the synthesizer's desired voice which you want to add, and press the "Add" button. The just added voice will appear in the voices list after the currently selected item in the list.
 7. Don't forgot to save the settings just made by pressing the "OK" or "Apply" button at the end of the NVDA settings dialog.
+
+## Other settings
+
+You can control whether changes of the current voice using the synth settings ring or NVDA speech settings dialog also accordingly update the voices configured in the VoiceToggle settings. This can be configured in the VoiceToggle settings using the "Update voice by synth settings ring and speech settings dialog" checkbox.
 
 ## Remembering voices for individual applications
 

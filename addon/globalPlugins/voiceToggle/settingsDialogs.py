@@ -40,7 +40,7 @@ class OptionsPanel(SettingsPanel):
 		cls._app = weakref.ref(instance)
 
 	def makeSettings(self, settingsSizer):
-		self.loadVoiceSettings()
+		self.loadSettings()
 		self.isVoiceSettingsModified = False
 
 		sHelper = gui.guiHelper.BoxSizerHelper(self, sizer=settingsSizer)
@@ -63,9 +63,14 @@ class OptionsPanel(SettingsPanel):
 
 		sHelper.addItem(buttons)
 
-	def loadVoiceSettings(self):
+		# Translators: Label for the update voice by synth settings ring and speech settings dialog checkbox in the add-on settings
+		self.updateVoicesCheckbox = sHelper.addItem(wx.CheckBox(self, label=_("Update voice by synth settings ring and speech settings dialog")))
+		self.updateVoicesCheckbox.SetValue(self.otherSettings["enableVoiceUpdateByRingAndSpeechSettings"])
+
+	def loadSettings(self):
 		self.app.cleanUpVoiceSettings()
 		self.voiceSettings = self.app.getVoiceSettings()
+		self.otherSettings = self.app.getOtherSettings()
 
 	def updateVoicesListBox(self, selectionIndex=0):
 		listBoxItems = []
@@ -107,8 +112,11 @@ class OptionsPanel(SettingsPanel):
 
 	def onSave(self):
 		if self.isVoiceSettingsModified:
-			self.app.setVoiceSettings(self.voiceSettings)
+			self.app.applySettings(self.voiceSettings)
 			self.isVoiceSettingsModified = False
+
+		self.otherSettings["enableVoiceUpdateByRingAndSpeechSettings"] = self.updateVoicesCheckbox.GetValue()
+		self.app.applyOtherSettingsAndSave(self.otherSettings)
 
 class AddVoiceDialog(wx.Dialog):
 
