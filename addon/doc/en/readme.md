@@ -6,7 +6,7 @@ The VoiceToggle add-on for NVDA screen reader allows you to preconfigure an arbi
 
 ## Example usage
 
-Let's say you speak English and French, then you can add two voices in the VoiceToggle settings as described below, one with English and the other with French pronunciation. Anytime later you can toggle between those two voices using only the NVDA + Alt + V simple and comfortable keyboard shortcut instead of messing with the NVDA synth settings ring, NVDA synthesizer selection dialog, or with the NVDA settings dialog in the Speech category.
+Let's say you speak English and French, then you can add two voices in the VoiceToggle settings as described below, one with English and the other with French pronunciation. Anytime later you can toggle between those two voices using only the NVDA + Alt + V simple and comfortable keyboard shortcut instead of messing with the NVDA synth settings ring, NVDA synthesizer selection dialog, or with the speech category of the NVDA settings dialog.
 
 ## Configuring the voices
 
@@ -22,7 +22,7 @@ The voices to toggle between using VoiceToggle can be preconfigured in the Voice
 
 ## Other settings
 
-You can control whether changes of the current voice using the synth settings ring or NVDA speech settings dialog also accordingly update the voices configured in the VoiceToggle settings. This can be configured in the VoiceToggle settings using the "Update voice when changed using the synth settings ring or speech settings dialog" checkbox.
+You can control whether changes of the current voice using the synth settings ring, select synthesizer dialog, or via the speech category of the NVDA settings dialog also accordingly update the voices configured in the VoiceToggle settings. This can be controlled in the VoiceToggle settings using the "Update voice when changed using the synth settings ring, select synthesizer dialog, or via the speech category of the NVDA settings dialog" checkbox.
 
 ## Remembering voices for individual applications
 
@@ -55,13 +55,13 @@ VoiceToggle for NVDA is available thrugh NVDA Add-on Store, or can be [downloade
 
 ## Changelog
 
-[The changelog can be viewed here][changelog].
+[The VoiceToggle changelog can be viewed here][changelog].
 
 ## Contact and feedback
 
 If you have suggestions for VoiceToggle improvement, problems with its functionality or other comments, you can drop me an email to [adam.samec@gmail.com](mailto:adam.samec@gmail.com)
 
-## Licence
+## License
 
 VoiceToggle is available under the GNU General Public License version 2.0.
 

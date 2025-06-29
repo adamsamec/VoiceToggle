@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 'voiceToggle' '1.7.0'\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@groups.io'\n"
-"POT-Creation-Date: 2025-06-29 19:31+0200\n"
+"POT-Creation-Date: 2025-06-29 21:44+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -55,8 +55,8 @@ msgstr ""
 #. Translators: Label for the update voice by synth settings ring and speech settings dialog checkbox in the add-on settings
 #: addon\globalPlugins\voiceToggle\settingsDialogs.py:67
 msgid ""
-"Update voice when changed using the synth settings ring or speech settings "
-"dialog"
+"Update voice when changed using the synth settings ring, select synthesizer "
+"dialog, or via the speech category of the NVDA settings dialog"
 msgstr ""
 
 #: addon\globalPlugins\voiceToggle\settingsDialogs.py:99
