@@ -63,9 +63,9 @@ class OptionsPanel(SettingsPanel):
 
 		sHelper.addItem(buttons)
 
-		# Translators: Label for the update voice by synth settings ring and speech settings dialog checkbox in the add-on settings
-		self.updateVoicesCheckbox = sHelper.addItem(wx.CheckBox(self, label=_("Update voice when changed using the synth settings ring, select synthesizer dialog, or via the speech category of the NVDA settings dialog")))
-		self.updateVoicesCheckbox.SetValue(self.otherSettings["enableVoiceUpdateByRingAndSpeechSettings"])
+		# Translators: Label for the update voice when NVDA's own speech settings change checkbox in the add-on settings
+		self.updateVoiceCheckbox = sHelper.addItem(wx.CheckBox(self, label=_("Update voice when NVDA's own speech settings change")))
+		self.updateVoiceCheckbox.SetValue(self.otherSettings["enableVoiceUpdateWhenNVDAsettingsChange"])
 
 	def loadSettings(self):
 		self.app.cleanUpVoiceSettings()
@@ -115,7 +115,7 @@ class OptionsPanel(SettingsPanel):
 			self.app.applySettings(self.voiceSettings)
 			self.isVoiceSettingsModified = False
 
-		self.otherSettings["enableVoiceUpdateByRingAndSpeechSettings"] = self.updateVoicesCheckbox.GetValue()
+		self.otherSettings["enableVoiceUpdateWhenNVDAsettingsChange"] = self.updateVoiceCheckbox.GetValue()
 		self.app.applyOtherSettingsAndSave(self.otherSettings)
 
 class AddVoiceDialog(wx.Dialog):

@@ -13,16 +13,16 @@ Doplněk VoiceToggle pro odečítač obrazovky NVDA umožňuje předvolit si lib
 Následujícím postupem můžete přes nastavení VoiceToggle předvolit hlasy, mezi kterými se má VoiceToggle přepínat:
 
 1. Stisknutím kláves NVDA + N otevřete nabídku NVDA.
-2. Zvolte podnabídku „Možnosti“.
-3. Zvolte položku „Nastavení“.
-4. Přejděte do kategorie „VoiceToggle“. Otevře se karta nastavení doplňku VoiceToggle a seznam hlasů  bude obsahovat pouze aktuální hlas.
-5. Chcete-li do seznamu hlasů přidat další hlas, otevřete dialogové okno pro přidání hlasu  pomocí tlačítka „Přidat hlas”.
-6. Pomocí prvního rozbalovacího políčka vyberte nejprve požadovaný hlasový výstup, a poté pomocí druhého rozbalovacího políčka vyberte požadovaný hlas v rámci zvoleného hlasového výstupu, který chcete přidat, a stiskněte tlačítko „Přidat“. Právě přidaný hlas se objeví v seznamu hlasů za aktuálně vybranou položkou v seznamu.
-7. Nezapomeňte provedené nastavení uložit stisknutím tlačítka „OK“ nebo „Použít“ na konci dialogového okna nastavení NVDA.
+2. Zvolte podnabídku "Možnosti".
+3. Zvolte položku "Nastavení".
+4. Přejděte do kategorie "VoiceToggle". Otevře se karta nastavení doplňku VoiceToggle a seznam hlasů  bude obsahovat pouze aktuální hlas.
+5. Chcete-li do seznamu hlasů přidat další hlas, otevřete dialogové okno pro přidání hlasu  pomocí tlačítka "Přidat hlas”.
+6. Pomocí prvního rozbalovacího políčka vyberte nejprve požadovaný hlasový výstup, a poté pomocí druhého rozbalovacího políčka vyberte požadovaný hlas v rámci zvoleného hlasového výstupu, který chcete přidat, a stiskněte tlačítko "Přidat". Právě přidaný hlas se objeví v seznamu hlasů za aktuálně vybranou položkou v seznamu.
+7. Nezapomeňte provedené nastavení uložit stisknutím tlačítka "OK" nebo "Použít" na konci dialogového okna nastavení NVDA.
 
 ## Další nastavení
 
-Můžete ovlivnit, jestli změna aktuálního hlasu prostřednictvím kruhu nastavení hlasového výstupu, dialogu nastavení hlasového výstupu nebo pomocí kategorie řeč v dialogu nastavení NVDA také odpovídajícím způsobem aktualizuje hlas předvolený v nastavení VoiceToggle. Toto lze ovlivnit v nastavení VoiceToggle přes zaškrtávací políčko "Aktualizovat hlas při jeho změně přes kruh nastavení hlasového výstupu, dialog nastavení hlasového výstupu nebo přes kategorii řeč v dialogu nastavení NVDA".
+Můžete ovlivnit, jestli změna aktuálního hlasu prostřednictvím kruhu nastavení hlasového výstupu, dialogu nastavení hlasového výstupu nebo pomocí kategorie řeč v dialogu nastavení NVDA také odpovídajícím způsobem aktualizuje hlas předvolený v nastavení VoiceToggle. Toto lze ovlivnit v nastavení VoiceToggle přes zaškrtávací políčko "Aktualizovat hlas při jeho změně přes nastavení řeči samotného NVDA".
 
 ## Zapamatování si hlasů pro jednotlivé aplikace
 
@@ -32,22 +32,22 @@ Chcete-li nastavit určitou aplikaci tak, aby si pamatovala v ní naposledy pou�
 
 1. Přepněte se do dané aplikace, například do prohlížeče Google Chrome.
 2. Stisknutím kláves NVDA + N otevřete nabídku NVDA.
-3. Vyberte položku „Konfigurační profily“.
-4. Stiskněte tlačítko „Nový“.
-5. Přejděte na přepínač pojmenovaný jako „Aktivace“ v seskupení „Použít tento profil pro“ a přepněte jej pomocí šipky dolů na hodnotu „Aktuální aplikace“.
-6. Vytvoření konfiguračního profilu potvrďte tlačítkem „OK“.
+3. Vyberte položku "Konfigurační profily".
+4. Stiskněte tlačítko "Nový".
+5. Přejděte na přepínač pojmenovaný jako "Aktivace" v seskupení "Použít tento profil pro" a přepněte jej pomocí šipky dolů na hodnotu "Aktuální aplikace".
+6. Vytvoření konfiguračního profilu potvrďte tlačítkem "OK".
 
 ## Změna klávesové zkratky pro přepínání hlasů
 
 Následujícím způsobem lze výchozí klávesovou zkratku NVDA + Alt + V pro přepínání hlasů případně změnit na jinou vámi více vyhovující zkratku:
 
 1. Stisknutím kláves NVDA + N otevřete nabídku NVDA.
-2. Zvolte podnabídku „Nastavení“.
-3. Vyberte položku „Klávesové příkazy“.
-4. Do editačního pole „Filtrovat podle“ zadejte „následující hlas“.
-5. Ve stromovém zobrazení přejděte na položku „Přepne na následující hlas” v kategorii „Různé“.
-6. Aktivujte tlačítko „Přidat“, poté stiskněte požadovanou klávesovou zkratku a potvrďte klávesou Enter.
-7. Přidání zkratky potvrďte tlačítkem „OK“.
+2. Zvolte podnabídku "Nastavení".
+3. Vyberte položku "Klávesové příkazy".
+4. Do editačního pole "Filtrovat podle" zadejte "následující hlas".
+5. Ve stromovém zobrazení přejděte na položku "Přepne na následující hlas” v kategorii "Různé".
+6. Aktivujte tlačítko "Přidat", poté stiskněte požadovanou klávesovou zkratku a potvrďte klávesou Enter.
+7. Přidání zkratky potvrďte tlačítkem "OK".
 
 ## Historie verzí
 

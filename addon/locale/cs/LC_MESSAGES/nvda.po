@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 'voiceToggle' '1.7.0'\n"
-"POT-Creation-Date: 2025-06-29 21:44+0100\n"
-"PO-Revision-Date: 2025-06-29 21:44+0100\n"
+"POT-Creation-Date: 2025-06-30 08:58+0100\n"
+"PO-Revision-Date: 2025-06-30 08:58+0100\n"
 "Last-Translator: Adam Samec <adam.samec@gmail.com>\n"
 "Language-Team: Czech <adam.samec@gmail.com>\n"
 "Language: cs\n"
@@ -42,12 +42,10 @@ msgstr "Přidat hlas"
 msgid "Remove voice"
 msgstr "Odstranit hlas"
 
-#. Translators: Label for the update voice by synth settings ring and speech settings dialog checkbox in the add-on settings
+#. Translators: Label for the update voice when NVDA's own speech settings change checkbox in the add-on settings
 #: addon\globalPlugins\voiceToggle\settingsDialogs.py:67
-msgid ""
-"Update voice when changed using the synth settings ring, select synthesizer "
-"dialog, or via the speech category of the NVDA settings dialog"
-msgstr "Aktualizovat hlas při jeho změně přes kruh nastavení hlasového výstupu, dialog nastavení hlasového výstupu nebo přes kategorii řeč v dialogu nastavení NVDA"
+msgid "Update voice when NVDA's own speech settings change"
+msgstr "Aktualizovat hlas při jeho změně přes nastavení řeči samotného NVDA"
 
 msgid "The last remaining voice cannot be removed"
 msgstr "Poslední zbývající hlas nelze odstranit"

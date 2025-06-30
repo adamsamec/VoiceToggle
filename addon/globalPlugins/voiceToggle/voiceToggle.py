@@ -68,7 +68,7 @@ class VoiceToggle:
 			timer.start()
 
 			# Skip voice update if configured so
-			if not self.otherSettings["enableVoiceUpdateByRingAndSpeechSettings"]:
+			if not self.otherSettings["enableVoiceUpdateWhenNVDAsettingsChange"]:
 				return ret
 
 			if self.voiceSettingsToRevert == None:
@@ -271,7 +271,7 @@ class VoiceToggle:
 		self.voiceSettings = [json.loads(voiceSetting) for voiceSetting in self.getConfig("voiceSettings")]
 		self.profilesVoiceSettingsIndices = json.loads(self.getConfig("profilesVoiceSettingsIndices"))
 		self.otherSettings = {
-			"enableVoiceUpdateByRingAndSpeechSettings": self.getConfig("enableVoiceUpdateByRingAndSpeechSettings")
+			"enableVoiceUpdateWhenNVDAsettingsChange": self.getConfig("enableVoiceUpdateWhenNVDAsettingsChange")
 		}
 		
 		# Create index for naormal profile if not exists
@@ -296,7 +296,7 @@ class VoiceToggle:
 		voiceSettingsJson = [json.dumps(voiceSetting) for voiceSetting in self.voiceSettings]
 		self.setConfig("voiceSettings", voiceSettingsJson)
 		self.setConfig("profilesVoiceSettingsIndices", json.dumps(self.profilesVoiceSettingsIndices))
-		self.setConfig("enableVoiceUpdateByRingAndSpeechSettings", self.otherSettings["enableVoiceUpdateByRingAndSpeechSettings"])
+		self.setConfig("enableVoiceUpdateWhenNVDAsettingsChange", self.otherSettings["enableVoiceUpdateWhenNVDAsettingsChange"])
 
 	def addDefaultVoiceSetting(self):
 		# Create and add the default voice setting if does not exist
