@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="../style.css" media="screen">
+<title>VoiceToggle 1.7.0</title>
+</head>
+<body>
+<h1>VoiceToggle</h1>
+<h2>Úvod</h2>
+<p>Doplnok VoiceToggle pre odčítač obrazovky NVDA umožňuje predvoliť si ľubovoľné množstvo hlasov v jeho nastavení, a potom sa medzi týmito hlasmi môžete kedykoľvek rýchlo prepínať v kruhu pomocou jednoduchej a jedinej klávesovej skratky NVDA + Alt + V .</p>
+<h2>Ukážkový príklad</h2>
+<p>Povedzme, že hovoríte po slovensky a anglicky. Potom si môžete v nastavení doplnku VoiceToggle pridať dva hlasy, ako je popísané nižšie, jeden s slovenskou a druhý s anglickou výslovnosťou. Potom sa môžete kedykoľvek prepínať medzi týmito dvoma hlasmi pomocou jedinej, jednoduchej a pohodlnej klávesovej skratky NVDA + Alt + V namiesto toho, aby ste museli pracne používať kruh nastavenia hlasového výstupu, dialóg nastavenia hlasového výstupu alebo meniť hlasový výstup v kategórii reč pomocou dialógu nastavenia NVDA.</p>
+<h2>Konfigurácia hlasov</h2>
+<p>Nasledujúcim postupom môžete cez nastavenie VoiceToggle predvoliť hlasy, medzi ktorými sa má VoiceToggle prepínať:</p>
+<ol>
+<li>Stlačením kláves NVDA + N otvorte ponuku NVDA.</li>
+<li>Zvoľte podponuku "Možnosti".</li>
+<li>Zvoľte položku "Nastavenia".</li>
+<li>Prejdite do kategórie "VoiceToggle". Otvorí sa strana nastavenia doplnku VoiceToggle a zoznam hlasov bude obsahovať iba aktuálny hlas.</li>
+<li>Ak chcete do zoznamu hlasov pridať ďalší hlas, otvorte dialógové okno pre pridanie hlasu pomocou tlačidla "Pridať hlas".</li>
+<li>Pomocou prvého zoznamového rámiku vyberte najprv požadovaný hlasový výstup, a potom pomocou druhého zoznamového rámiku vyberte požadovaný hlas v rámci zvoleného hlasového výstupu, ktorý chcete pridať, a stlačte tlačidlo "Pridať". Práve pridaný hlas sa objaví v zozname hlasov za aktuálne vybranou položkou v zozname.</li>
+<li>Nezabudnite vykonané nastavenie uložiť stlačením tlačidla "OK" alebo "Použiť" na konci dialógového okna nastavenia NVDA.</li>
+</ol>
+<h2>Ďalšie nastavenia</h2>
+<p>Môžete ovplyvniť, či zmena aktuálneho hlasu prostredníctvom kruhu nastavenia hlasového výstupu, dialógu nastavenia hlasového výstupu alebo pomocou kategórie reč v dialógu nastavenia NVDA tiež zodpovedajúcim spôsobom aktualizuje hlas predvolený v nastavení VoiceToggle. Toto je možné ovplyvniť v nastavení VoiceToggle cez začiarkavacie políčko "Aktualizovať hlas pri jeho zmene cez nastavenie reči samotného NVDA".</p>
+<h2>Zapamätanie si hlasov pre jednotlivé aplikácie</h2>
+<p>Povedzme, že chcete prechádzať webové stránky v angličtine, ale poznámky a všetku ďalšiu prácu chcete robiť v slovenčine. V takom prípade je možné docieliť zapamätanie si naposledy použitého hlasu pre vybrané aplikácie. Keď napríklad prepnete do prehliadača Google Chrome, hlas sa automaticky prepne na naposledy použitý hlas v tejto aplikácii, napríklad do angličtiny. Keď sa potom vrátite do inej aplikácie, napríklad do aplikácie Microsoft Word, aby ste si zapísali poznámky v slovenčine, tak sa hlas prepne späť na tento predvolený slovenský hlas. Toto správanie je umožnené vďaka funkcii konfiguračných profilov dostupné v NVDA.</p>
+<p>Ak chcete nastaviť určitú aplikáciu tak, aby si pamätala v nej naposledy použitý hlas, tak postupujte podľa nasledujúcich krokov:</p>
+<ol>
+<li>Prepnite sa do danej aplikácie, napríklad do prehliadača Google Chrome.</li>
+<li>Stlačením kláves NVDA + N otvorte ponuku NVDA.</li>
+<li>Vyberte položku "Konfiguračné profily".</li>
+<li>Stlačte tlačidlo "Nový".</li>
+<li>Prejdite na prepínač pomenovaný ako "Ručná aktivácia" v zoskupení "Aktivovať" a prepnite ho pomocou šípky dole na hodnotu "Aktuálna aplikácia".</li>
+<li>Vytvorenie konfiguračného profilu potvrďte tlačidlom "OK".</li>
+</ol>
+<h2>Zmena klávesovej skratky pre prepínanie hlasov</h2>
+<p>Nasledujúcim spôsobom je možné predvolenú klávesovú skratku NVDA + Alt + V pre prepínanie hlasov prípadne zmeniť na inú vami viac vyhovujúcu skratku:</p>
+<ol>
+<li>Stlačením kláves NVDA + N otvorte ponuku NVDA.</li>
+<li>Zvoľte podponuku "Možnosti".</li>
+<li>Vyberte položku "Klávesové skratky".</li>
+<li>Do editačného poľa "Filter" zadajte "nasledujúci hlas".</li>
+<li>V stromovom zobrazení prejdite na položku "Prepne na nasledujúci hlas” v kategórii "Ostatné".</li>
+<li>Aktivujte tlačidlo "Pridať", potom stlačte požadovanú klávesovú skratku a potvrďte klávesom Enter.</li>
+<li>Pridanie skratky potvrďte tlačidlom "OK".</li>
+</ol>
+<h2>História verzií</h2>
+<p><a href="https://github.com/adamsamec/VoiceToggle/blob/main/Changelog.md">Históriu verzií doplnku VoiceToggle je možné zobraziť v angličtine tu</a>.</p>
+<h2>Spätná väzba a kontakt</h2>
+<p>Ak zistíte nejaké nedostatky, prípadne ak máte nápady na zlepšenie doplnku VoiceToggle alebo iné komentáre, tak vám budem počúvať na emailovej adrese <a href="mailto:adam.samec@gmail.com">adam.samec@gmail.com</a></p>
+<p>Využiť môžete tiež možnosti <a href="https://github.com/adamsamec/VoiceToggle">repositára doplnku VoiceToggle na serveri GitHub</a>, napríklad tamojšie <a href="https://github.com/adamsamec/VoiceToggle/issues">nahlasovanie chýb</a>.</p>
+<h2>Licencia</h2>
+<p>Doplnok VoiceToggle je dostupný pod licenciou GNU General Public License verzie 2.0.</p>
+</body>
+</html>

@@ -2,7 +2,7 @@
 
 ## Version 1.7.0
 * Add a checkbox to the VoiceToggle settings for controlling whether changes of the current voice using the NVDA synth settings ring, NVDA synthesizer selection dialog, or with the speech category of the NVDA settings dialog also accordingly update the voices configured in the VoiceToggle settings.
-* Added help page for the Czech translation.
+* Added help pages for the Czech and Slovak translations.
 
 ## Version 1.6.1
 * Added Brazilian Portuguese translation.

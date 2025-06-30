@@ -42,7 +42,7 @@ Chcete-li nastavit určitou aplikaci tak, aby si pamatovala v ní naposledy pou�
 Následujícím způsobem lze výchozí klávesovou zkratku NVDA + Alt + V pro přepínání hlasů případně změnit na jinou vámi více vyhovující zkratku:
 
 1. Stisknutím kláves NVDA + N otevřete nabídku NVDA.
-2. Zvolte podnabídku "Nastavení".
+2. Zvolte podnabídku "Možnosti".
 3. Vyberte položku "Klávesové příkazy".
 4. Do editačního pole "Filtrovat podle" zadejte "následující hlas".
 5. Ve stromovém zobrazení přejděte na položku "Přepne na následující hlas” v kategorii "Různé".
@@ -61,7 +61,7 @@ Využít můžete také možností [repositáře doplňku VoiceToggle na serveru
 
 ## Licence
 
-Doplněk VoiceToggle je dostupný pod licencí GNU General Public License version 2.0.
+Doplněk VoiceToggle je dostupný pod licencí GNU General Public License verze 2.0.
 
 [changelog]: https://github.com/adamsamec/VoiceToggle/blob/main/Changelog.md
 [GitHub]: https://github.com/adamsamec/VoiceToggle
