@@ -112,7 +112,7 @@ class OptionsPanel(SettingsPanel):
 
 	def onSave(self):
 		if self.isVoiceSettingsModified:
-			self.app.applySettings(self.voiceSettings)
+			self.app.applyVoiceSettings(self.voiceSettings)
 			self.isVoiceSettingsModified = False
 
 		self.otherSettings["enableVoiceUpdateWhenNVDAsettingsChange"] = self.updateVoiceCheckbox.GetValue()

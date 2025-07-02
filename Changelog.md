@@ -1,5 +1,8 @@
 # VoiceToggle - Changelog
 
+## Version 1.7.1
+* Fixed the serious bug introduced in the previous version of not being able to save VoiceToggle settings.
+
 ## Version 1.7.0
 * Add a checkbox to the VoiceToggle settings for controlling whether changes of the current voice using the NVDA synth settings ring, NVDA synthesizer selection dialog, or with the speech category of the NVDA settings dialog also accordingly update the voices configured in the VoiceToggle settings.
 * Added help pages for the Czech and Slovak translations.
