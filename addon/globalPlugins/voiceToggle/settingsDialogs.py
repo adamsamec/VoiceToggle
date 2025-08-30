@@ -145,19 +145,20 @@ class AddVoiceDialog(wx.Dialog):
 
 		# Translators: Label for the voices combobox in the add voice dialog
 		self.voicesComboBox = sHelper.addLabeledControl(_("Voice"), wx.Choice, choices=[])
-		self.updateVoiceComboBox()
 
 		# Buttons group
 		buttons = gui.guiHelper.ButtonHelper(wx.VERTICAL)
 
 		# Translators: Label for the add button in the add voice dialog
-		addButton = buttons.addButton(self, label=_("Add"))
-		addButton.Bind(wx.EVT_BUTTON, self.onAddButtonClick)
-		addButton.SetDefault()
+		self.addButton = buttons.addButton(self, label=_("Add"))
+		self.addButton.Bind(wx.EVT_BUTTON, self.onAddButtonClick)
+		self.addButton.SetDefault()
 
 		# Translators: Label for the cancel button in the add voice dialog
 		cancelButton = buttons.addButton(self, label=_("Cancel"))
 		cancelButton.Bind(wx.EVT_BUTTON, self.onCancelButtonClick)
+		
+		self.updateVoiceComboBox()
 		
 		sHelper.addItem(buttons)
 		mainSizer.Add(sHelper.sizer, border=10, flag=wx.ALL)
@@ -178,9 +179,16 @@ class AddVoiceDialog(wx.Dialog):
 			comboBoxItems = [consts.SILENCE_VOICE_NAME]
 		else:
 			voices = self.app.getVoicesForSynth(synthId)
-			for voice in voices:
-				self.voicesIds.append(voice["id"])
-				comboBoxItems.append(voice["name"])
+			if voices == None:
+
+				# Translators: Value of the voices combobox in the add voice dialog when no voices are available
+				comboBoxItems.append(_("No voices available"))
+				self.addButton.Disable()
+			else:
+				for voice in voices:
+					self.voicesIds.append(voice["id"])
+					comboBoxItems.append(voice["name"])
+				self.addButton.Enable()
 		self.voicesComboBox.SetItems(comboBoxItems)
 		self.voicesComboBox.Select(0)
 

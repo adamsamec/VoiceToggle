@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 'voiceToggle' '1.7.0'\n"
-"POT-Creation-Date: 2025-06-30 08:58+0100\n"
-"PO-Revision-Date: 2025-06-30 08:58+0100\n"
+"Project-Id-Version: 'voiceToggle' '1.7.2'\n"
+"POT-Creation-Date: 2025-08-30 21:46+0200\n"
+"PO-Revision-Date: 2025-08-30 21:46+0200\n"
 "Last-Translator: Adam Samec <adam.samec@gmail.com>\n"
 "Language-Team: Slovak <adam.samec@gmail.com>\n"
 "Language: sk\n"
@@ -65,6 +65,11 @@ msgstr "Pridať"
 #. Translators: Label for the cancel button in the add voice dialog
 msgid "Cancel"
 msgstr "Zrušiť"
+
+#. Translators: Value of the voices combobox in the add voice dialog when no voices are available
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:185
+msgid "No voices available"
+msgstr "Žiadne hlasy nie sú dostupné"
 
 #. Add-on description
 #. Translators: Long description to be shown for this add-on on add-on information from add-ons manager
