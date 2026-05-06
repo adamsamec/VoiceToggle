@@ -6,10 +6,10 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: 'voiceToggle' '1.5.4'\n"
+"Project-Id-Version: 'voiceToggle' '1.7.3'\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@groups.io'\n"
-"POT-Creation-Date: 2025-06-20 06:05+0800\n"
-"PO-Revision-Date: 2025-06-20 22:49+0800\n"
+"POT-Creation-Date: 2025-12-22 12:48+0800\n"
+"PO-Revision-Date: 2026-02-27 16:40+0800\n"
 "Last-Translator: Alan <alanzhangmw@outlook.com>\n"
 "Language-Team: \n"
 "Language: zh_CN\n"
@@ -19,7 +19,7 @@ msgstr ""
 "X-Generator: Poedit 3.6\n"
 
 #. Translators: Gesture description for the Input gestures settings dialog
-#: addon\globalPlugins\voiceToggle\__init__.py:36
+#: addon\globalPlugins\voiceToggle\__init__.py:35
 msgid "Toggles to the next voice."
 msgstr "切换到下一个语音。"
 
@@ -44,7 +44,7 @@ msgstr "语音"
 
 #. Translators: Label for the add voice button in the add-on settings
 #: addon\globalPlugins\voiceToggle\settingsDialogs.py:56
-#: addon\globalPlugins\voiceToggle\settingsDialogs.py:116
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:124
 msgid "Add voice"
 msgstr "添加语音(&A)"
 
@@ -53,29 +53,39 @@ msgstr "添加语音(&A)"
 msgid "Remove voice"
 msgstr "移除语音(&R)"
 
-#: addon\globalPlugins\voiceToggle\settingsDialogs.py:94
+#. Translators: Label for the update voice when NVDA's own speech settings change checkbox in the add-on settings
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:67
+msgid "Update voice when NVDA's own speech settings change"
+msgstr "当 NVDA 自身的语音设置发生变化时，同步更新角色的声音。"
+
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:99
 msgid "The last remaining voice cannot be removed"
 msgstr "无法删除剩余的最后一个语音"
 
 #. Translators: Label for the synthesizers combobox in the add voice dialog
-#: addon\globalPlugins\voiceToggle\settingsDialogs.py:133
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:141
 msgid "Synthesizer"
 msgstr "合成器(&S)"
 
 #. Translators: Label for the voices combobox in the add voice dialog
-#: addon\globalPlugins\voiceToggle\settingsDialogs.py:139
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:147
 msgid "Voice"
 msgstr "语音(&V)"
 
 #. Translators: Label for the add button in the add voice dialog
-#: addon\globalPlugins\voiceToggle\settingsDialogs.py:146
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:153
 msgid "Add"
 msgstr "添加(&A)"
 
 #. Translators: Label for the cancel button in the add voice dialog
-#: addon\globalPlugins\voiceToggle\settingsDialogs.py:151
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:158
 msgid "Cancel"
 msgstr "取消(&C)"
+
+#. Translators: Value of the voices combobox in the add voice dialog when no voices are available
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:185
+msgid "No voices available"
+msgstr "没有可用的语音"
 
 #. Add-on description
 #. Translators: Long description to be shown for this add-on on add-on information from add-ons manager
