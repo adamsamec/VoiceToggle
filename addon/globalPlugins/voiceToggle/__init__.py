@@ -30,9 +30,17 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		gui.settingsDialogs.NVDASettingsDialog.categoryClasses.remove(OptionsPanel)
 
 	@scriptHandler.script(
-		gesture="kb:NVDA+Alt+V",
-		# Translators: Gesture description for the Input gestures settings dialog
+		gesture="kb:NVDA+Alt+L",
+		# Translators: Toggle voice gesture description for the Input gestures settings dialog
 		description=_("Toggles to the next voice."),
 	)
 	def script_toggleVoice(self, gesture):
 		self.app.toggleVoice()
+
+	@scriptHandler.script(
+		gesture="kb:NVDA+Alt+V",
+		# Translators: Choose voice gesture description for the Input gestures settings dialog
+		description=_("Shows the Choose voice dialog."),
+	)
+	def script_chooseVoice(self, gesture):
+		self.app.chooseVoice()

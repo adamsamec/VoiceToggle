@@ -15,6 +15,7 @@ import wx
 
 import globalPlugins.voiceToggle.consts as consts
 from .settingsDialogs import OptionsPanel
+from .chooseVoiceDialog import ChooseVoiceDialog
 
 addonHandler.initTranslation()
 
@@ -327,6 +328,10 @@ class VoiceToggle:
 		nextIndex = self.getNextVoiceSettingsIndex(self.currentVoiceSettingsIndex)
 		newIndex = self.changeVoice(nextIndex)
 		self.currentVoiceSettingsIndex = newIndex
+
+	def chooseVoice(self):
+		chooseVoiceDialog = ChooseVoiceDialog(self)
+		chooseVoiceDialog.ShowModal()
 
 	def getNextVoiceSettingsIndex(self, index):
 		voiceSettingsLength = len(self.voiceSettings)
