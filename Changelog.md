@@ -1,8 +1,8 @@
 # VoiceToggle - Changelog
 
 ## Version 1.8.0
-* Changed the keyboard shortcut for switching to the next voice to NVDA + Alt + L which is more comfortable.
-* Added a new keyboard shortcut for switching to the previous voice: NVDA + Alt + Shift + L.
+* Changed the keyboard shortcut for switching to the next voice to NVDA + Control + L which is more comfortable.
+* Added a new keyboard shortcut for switching to the previous voice: NVDA + Control + Shift + L.
 * Added "Select a voice" dialog for switching to a voice from the list of configured voices as another way of switching between voices.
 
 ## Version 1.7.4
