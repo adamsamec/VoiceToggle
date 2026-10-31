@@ -8,6 +8,7 @@ from synthDriverHandler import getSynth, setSynth, getSynthList, getSynthInstanc
 from synthDrivers.silence import SynthDriver as SilenceSynthDriver
 import config
 import ui
+import gui
 
 import json
 from threading import Timer
@@ -15,7 +16,7 @@ import wx
 
 import globalPlugins.voiceToggle.consts as consts
 from .settingsDialogs import OptionsPanel
-from .chooseVoiceDialog import ChooseVoiceDialog
+from .selectVoiceDialog import SelectVoiceDialog
 
 addonHandler.initTranslation()
 
@@ -112,7 +113,7 @@ class VoiceToggle:
 			self.voiceSettingsToRevert = None
 
 		# Ignore the synth and voice settings saved in the profile and switch to the VoiceToggle settings instead
-		self.changeVoice(self.currentVoiceSettingsIndex, announceChange=False)
+		self.changeVoiceOnly(self.currentVoiceSettingsIndex, announceChange=False)
 
 	def cleanUpVoiceSettings(self):
 		self.updateSynthsWithVoices()
@@ -153,7 +154,7 @@ class VoiceToggle:
 		
 		if doChangeVoice and not dontChangeVoice:
 			self.isVoiceSettingsModified = True
-			self.changeVoice(self.currentVoiceSettingsIndex, announceChange=False)
+			self.changeVoiceOnly(self.currentVoiceSettingsIndex, announceChange=False)
 
 		# If we deleted voice settings at the start index and after it, move index to 0
 		if newValidIndex >= voiceSettingsLength:
@@ -316,7 +317,7 @@ class VoiceToggle:
 	def applyVoiceSettings(self, voiceSettings):
 		self.voiceSettings = voiceSettings.copy()
 		self.isVoiceSettingsModified = True
-		self.changeVoice(self.currentVoiceSettingsIndex, announceChange=False)
+		self.changeVoiceOnly(self.currentVoiceSettingsIndex, announceChange=False)
 
 	def applyOtherSettingsAndSave(self, otherSettings):
 		self.otherSettings = otherSettings.copy()
@@ -326,12 +327,13 @@ class VoiceToggle:
 		if len(self.voiceSettings) == 0:
 			return
 		nextIndex = self.getNextVoiceSettingsIndex(self.currentVoiceSettingsIndex)
-		newIndex = self.changeVoice(nextIndex)
-		self.currentVoiceSettingsIndex = newIndex
+		self.changeVoice(nextIndex)
 
-	def chooseVoice(self):
-		chooseVoiceDialog = ChooseVoiceDialog(self)
-		chooseVoiceDialog.ShowModal()
+	def showSelectVoiceDialog(self):
+		gui.mainFrame.prePopup()
+		selectVoiceDialog = SelectVoiceDialog(gui.mainFrame, self)
+		selectVoiceDialog.Show()
+		gui.mainFrame.postPopup()
 
 	def getNextVoiceSettingsIndex(self, index):
 		voiceSettingsLength = len(self.voiceSettings)
@@ -344,7 +346,11 @@ class VoiceToggle:
 		newIndex = (index + 1) % voiceSettingsLength
 		return newIndex
 
-	def changeVoice(self, newIndex, announceChange=True):
+	def changeVoice(self, newIndex):
+		newIndex = self.changeVoiceOnly(newIndex)
+		self.currentVoiceSettingsIndex = newIndex
+
+	def changeVoiceOnly(self, newIndex, announceChange=True):
 		voiceSettingsLength = len(self.voiceSettings)
 		if (newIndex >= voiceSettingsLength) or (newIndex < 0):
 			if voiceSettingsLength > 0:
