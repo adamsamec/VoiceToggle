@@ -323,11 +323,17 @@ class VoiceToggle:
 		self.otherSettings = otherSettings.copy()
 		self.saveSettingsTOConfig()
 
-	def toggleVoice(self):
+	def switchToNextVoice(self):
 		if len(self.voiceSettings) == 0:
 			return
 		nextIndex = self.getNextVoiceSettingsIndex(self.currentVoiceSettingsIndex)
 		self.changeVoice(nextIndex)
+
+	def switchToPrevVoice(self):
+		if len(self.voiceSettings) == 0:
+			return
+		prevIndex = self.getPrevVoiceSettingsIndex(self.currentVoiceSettingsIndex)
+		self.changeVoice(prevIndex)
 
 	def showSelectVoiceDialog(self):
 		gui.mainFrame.prePopup()
@@ -336,15 +342,29 @@ class VoiceToggle:
 		gui.mainFrame.postPopup()
 
 	def getNextVoiceSettingsIndex(self, index):
+		verifyResult = self.verifyIndex(index)
+		if verifyResult <= 0:
+			return verifyResult
+		newIndex = (index + 1) % len(self.voiceSettings)
+		return newIndex
+
+	def getPrevVoiceSettingsIndex(self, index):
+		verifyResult = self.verifyIndex(index)
+		if verifyResult <= 0:
+			return verifyResult
+		newIndex = (index - 1) % len(self.voiceSettings)
+		return newIndex
+
+	def verifyIndex(self, index):
 		voiceSettingsLength = len(self.voiceSettings)
 		if voiceSettingsLength == 0:
 			return -1
-		
+
 		# If index is out of list bounds and list is not empty, return zero
 		if index < 0 or index >= voiceSettingsLength:
 			return 0
-		newIndex = (index + 1) % voiceSettingsLength
-		return newIndex
+
+		return 1
 
 	def changeVoice(self, newIndex):
 		newIndex = self.changeVoiceOnly(newIndex)
