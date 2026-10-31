@@ -48,7 +48,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	@scriptHandler.script(
 		gesture="kb:NVDA+Alt+V",
 		# Translators: Select a voice gesture description for the Input gestures settings dialog
-		description=_("Shows the Select a voice dialog."),
+		description=_("Shows the dialog for selecting a voice."),
 	)
 	def script_showSelectVoiceDialog(self, gesture):
 		self.app.showSelectVoiceDialog()

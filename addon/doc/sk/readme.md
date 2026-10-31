@@ -2,11 +2,11 @@
 
 ## Úvod
 
-Doplnok VoiceToggle pre odčítač obrazovky NVDA umožňuje predvoliť si ľubovoľné množstvo hlasov v jeho nastavení, a potom sa medzi týmito hlasmi môžete kedykoľvek rýchlo prepínať v kruhu pomocou jednoduchej a jedinej klávesovej skratky NVDA + Alt + V .
+Doplnok VoiceToggle pre čítačku obrazovky NVDA umožňuje v jej nastavení prednastaviť ľubovoľný počet hlasov a následne medzi týmito hlasmi kedykoľvek rýchlo prepínať dopredu pomocou jednoduchého klávesového skratky NVDA + Alt + L alebo späť pomocou NVDA + Alt + Shift + L. Predvolený hlas je možné prípadne vybrať a prepnúť sa naň zo zoznamu pomocou skratky NVDA + Alt + V.
 
 ## Ukážkový príklad
 
-Povedzme, že hovoríte po slovensky a anglicky. Potom si môžete v nastavení doplnku VoiceToggle pridať dva hlasy, ako je popísané nižšie, jeden s slovenskou a druhý s anglickou výslovnosťou. Potom sa môžete kedykoľvek prepínať medzi týmito dvoma hlasmi pomocou jedinej, jednoduchej a pohodlnej klávesovej skratky NVDA + Alt + V namiesto toho, aby ste museli pracne používať kruh nastavenia hlasového výstupu, dialóg nastavenia hlasového výstupu alebo meniť hlasový výstup v kategórii reč pomocou dialógu nastavenia NVDA.
+Povedzme, že hovoríte po slovensky a anglicky. Potom si môžete v nastavení doplnku VoiceToggle pridať dva hlasy, ako je popísané nižšie, jeden s slovenskou a druhý s anglickou výslovnosťou. Potom sa môžete kedykoľvek prepínať medzi týmito dvoma hlasmi pomocou jednoduchej a pohodlnej klávesovej skratky NVDA + Alt + L namiesto toho, aby ste museli pracne používať kruh nastavenia hlasového výstupu, dialóg nastavenia hlasového výstupu alebo meniť hlasový výstup v kategórii reč pomocou dialógu nastavenia NVDA.
 
 ## Konfigurácia hlasov
 
@@ -37,15 +37,15 @@ Ak chcete nastaviť určitú aplikáciu tak, aby si pamätala v nej naposledy po
 5. Prejdite na prepínač pomenovaný ako "Ručná aktivácia" v zoskupení "Aktivovať" a prepnite ho pomocou šípky dole na hodnotu "Aktuálna aplikácia".
 6. Vytvorenie konfiguračného profilu potvrďte tlačidlom "OK".
 
-## Zmena klávesovej skratky pre prepínanie hlasov
+## Zmena klávesových skratiek VoiceToggle
 
-Nasledujúcim spôsobom je možné predvolenú klávesovú skratku NVDA + Alt + V pre prepínanie hlasov prípadne zmeniť na inú vami viac vyhovujúcu skratku:
+Nasledujúcim spôsobom môžete predvolené klávesové skratky NVDA + Alt + L a NVDA + Alt + Shift + L na prepnutie na nasledujúci, respektíve predchádzajúci hlas, ako aj skratku NVDA + Alt + V na zobrazenie zoznamu prednastavených hlasov prípadne zmeniť na iné skratky, ktoré vám viac vyhovujú:
 
 1. Stlačením kláves NVDA + N otvorte ponuku NVDA.
 2. Zvoľte podponuku "Možnosti".
 3. Vyberte položku "Klávesové skratky".
-4. Do editačného poľa "Filter" zadajte "nasledujúci hlas".
-5. V stromovom zobrazení prejdite na položku "Prepne na nasledujúci hlas” v kategórii "Ostatné".
+4. Do editačného poľa "Filter" zadajte "hlas".
+5. V stromovom zobrazení v kategórii "Ostatné" prejdite na položku "Prepne na nasledujúci hlas", "Prepne na predchádzajúci hlas" nebo "Zobrazí dialóg pre výber hlasu" v závislosti od toho, ktorú skratku chcete zmeniť.
 6. Aktivujte tlačidlo "Pridať", potom stlačte požadovanú klávesovú skratku a potvrďte klávesom Enter.
 7. Pridanie skratky potvrďte tlačidlom "OK".
 

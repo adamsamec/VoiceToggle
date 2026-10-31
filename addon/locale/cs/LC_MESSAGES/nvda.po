@@ -1,13 +1,13 @@
-    # VoiceToggle - NVDA add-on for easy voice toggling.
-# Copyright (C) 2025 Adam Samec
+    # VoiceToggle - NVDA add-on for easy voice switching.
+# Copyright (C) 2026 Adam Samec
 # This file is distributed under the same license as the 'voiceToggle' package.
-# Adam Samec <adam.samec@gmail.com>, 2025.
+# Adam Samec <adam.samec@gmail.com>, 2026.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 'voiceToggle' '1.7.2'\n"
-"POT-Creation-Date: 2025-08-30 21:46+0200\n"
-"PO-Revision-Date: 2025-08-30 21:46+0200\n"
+"Project-Id-Version: 'voiceToggle' '1.8.0'\n"
+"POT-Creation-Date: 2026-10-31 13:41+0100\n"
+"PO-Revision-Date: 2026-10-31 13:41+0100\n"
 "Last-Translator: Adam Samec <adam.samec@gmail.com>\n"
 "Language-Team: Czech <adam.samec@gmail.com>\n"
 "Language: cs\n"
@@ -15,13 +15,47 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#. Translators: Gesture description for the Input gestures settings dialog
-msgid "Toggles to the next voice."
+#. Translators: Switch to the next voice gesture description for the Input gestures settings dialog
+#: addon\globalPlugins\voiceToggle\__init__.py:35
+msgid "Switches to the next voice."
 msgstr "Přepne na následující hlas"
+
+#. Translators: Switch to the previous voice gesture description for the Input gestures settings dialog
+#: addon\globalPlugins\voiceToggle\__init__.py:43
+msgid "Switches to the previous voice."
+msgstr "Přepne na předchozí hlas"
+
+#. Translators: Select a voice gesture description for the Input gestures settings dialog
+#: addon\globalPlugins\voiceToggle\__init__.py:51
+msgid "Shows the dialog for selecting a voice."
+msgstr "Zobrazí dialog pro výběr hlasu"
 
 #. Translators: Label for the silence synthesizer in the voices listbox or synthesizers and voices comboboxes
 msgid "Silence"
 msgstr "Bez mluvení"
+
+#: addon\globalPlugins\voiceToggle\selectVoiceDialog.py:25
+msgid "Select a voice"
+msgstr "Vyberte hlas"
+
+#. Translators: Label for the voices listbox in the Select a voice dialog
+#. Translators: Label for the voices listbox in the add-on settings
+#: addon\globalPlugins\voiceToggle\selectVoiceDialog.py:36
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:49
+msgid "Voices"
+msgstr "Hlasy"
+
+#. Translators: Label for the OK button in the select a voice dialog
+#: addon\globalPlugins\voiceToggle\selectVoiceDialog.py:43
+msgid "OK"
+msgstr "OK"
+
+#. Translators: Label for the cancel button in the select voice dialog
+#. Translators: Label for the cancel button in the add voice dialog
+#: addon\globalPlugins\voiceToggle\selectVoiceDialog.py:48
+#: addon\globalPlugins\voiceToggle\settingsDialogs.py:158
+msgid "Cancel"
+msgstr "Zrušit"
 
 #. Translators: Add-on settings panel title
 #. Add-on summary, usually the user visible name of the addon.
@@ -29,10 +63,6 @@ msgstr "Bez mluvení"
 #. to be shown on installation and add-on information found in Add-ons Manager.
 msgid "VoiceToggle"
 msgstr ""
-
-#. Translators: Label for the voices listbox in the add-on settings
-msgid "Voices"
-msgstr "Hlasy"
 
 #. Translators: Label for the add voice button in the add-on settings
 msgid "Add voice"
@@ -62,10 +92,6 @@ msgstr "Hlas"
 msgid "Add"
 msgstr "Přidat"
 
-#. Translators: Label for the cancel button in the add voice dialog
-msgid "Cancel"
-msgstr "Zrušit"
-
 #. Translators: Value of the voices combobox in the add voice dialog when no voices are available
 #: addon\globalPlugins\voiceToggle\settingsDialogs.py:185
 msgid "No voices available"
@@ -74,7 +100,7 @@ msgstr "Žádné hlasy nejsou dostupné"
 #. Add-on description
 #. Translators: Long description to be shown for this add-on on add-on information from add-ons manager
 msgid ""
-"Allows easy toggling between predefined voices.\n"
-"Define voices in NVDA settings, then use NVDA + Alt + V anytime to toggle to "
-"the next voice."
-msgstr "Umožňuje snadné přepínání mezi předvolenými hlasy.\nDefinujte požadované hlasy v nastavení NVDA, a poté kdykoliv použijte zkratku NVDA + Alt + V pro přepnutí na následující hlas."
+"Allows easy switching between predefined voices.\n"
+"Define voices in NVDA settings, then use NVDA + Alt + L anytime to switch to "
+"the next voice, or NVDA + Alt + V to select a voice from the list."
+msgstr "Umožňuje snadné přepínání mezi předvolenými hlasy.\nDefinujte požadované hlasy v nastavení NVDA, a poté kdykoliv použijte zkratku NVDA + Alt + L pro přepnutí na následující hlas nebo NVDA + Alt + V pro výběr hlasu ze seznamu."

@@ -1,5 +1,10 @@
 # VoiceToggle - Changelog
 
+## Version 1.8.0
+* Changed the keyboard shortcut for switching to the next voice to NVDA + Alt + L which is more comfortable.
+* Added a new keyboard shortcut for switching to the previous voice: NVDA + Alt + Shift + L.
+* Added "Select a voice" dialog for switching to a voice from the list of configured voices as another way of switching between voices.
+
 ## Version 1.7.4
 * Added support for NVDA 2026.
 * Updated Simplified Chinese translation.
@@ -38,7 +43,7 @@
 
 ## Version 1.5.1
 * Bug fixes. Mainly that the correct voice is now set after changing voice via the NvDA settings dialog in the "Speech" category or via the speech ring, and then switching to different NVDA configuration profile.
-* Performance improvements. Mainly that the delay before the first voice toggle is significantly reduced, and faster display of the VoiceToggle settings and add voice dialogs.
+* Performance improvements. Mainly that the delay before the first voice toggle is significantly reduced, and faster display of the VoiceToggle settings and "Add voice" dialogs.
 
 ## Version 1.5.0
 * Removed the custom add-on update feature as this version is intended to be published in the NVDA add-on store which takes care for update itself.
@@ -73,4 +78,4 @@
 * Apart from speech rate, remembers also speech volume and pitch when toggling between saved voices.
 * Small update to the Czech and Slovak translations.
 * Bug fixes mainly for cases when changed synthesizer or voice via NVDA settings or speech ring and then toggled the voice.
-* Improved performance when opening the add voice dialog.
+* Improved performance when opening the "Add voice" dialog.
