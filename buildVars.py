@@ -24,7 +24,7 @@ addon_info = {
 	# Add-on description
 	# Translators: Long description to be shown for this add-on on add-on information from add-ons manager
 	"addon_description": _("""Allows easy switching between predefined voices.
-Define voices in NVDA settings, then use NVDA + Alt + L anytime to switch to the next voice, or NVDA + Alt + V to select a voice from the list."""),
+Define voices in NVDA settings, then use NVDA + Control + L anytime to switch to the next voice, or NVDA + Alt + V to select a voice from the list."""),
 	# version
 	"addon_version": "1.8.0",
 	# Author(s)

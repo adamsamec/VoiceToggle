@@ -2,11 +2,11 @@
 
 ## Úvod
 
-Doplněk VoiceToggle pro odečítač obrazovky NVDA umožňuje předvolit si libovolné množství hlasů v jeho nastavení, a poté se mezi těmito hlasy můžete kdykoliv rychle přepínat v kruhu dopředně pomocí jednoduché klávesové zkratky NVDA + Alt + L či zpětně přes NVDA + Alt + Shift + L. Předvolený hlas lze případně také vybrat a přepnout se na něj ze seznamu přes zkratku NVDA + Alt + V.
+Doplněk VoiceToggle pro odečítač obrazovky NVDA umožňuje předvolit si libovolné množství hlasů v jeho nastavení, a poté se mezi těmito hlasy můžete kdykoliv rychle přepínat v kruhu dopředně pomocí jednoduché klávesové zkratky NVDA + Control + L či zpětně přes NVDA + Control + Shift + L. Předvolený hlas lze případně také vybrat a přepnout se na něj ze seznamu přes zkratku NVDA + Alt + V .
 
 ## Ukázkový příklad
 
-Řekněme, že mluvíte česky a anglicky. Pak si můžete v nastavení doplňku VoiceToggle přidat dva hlasy, jak je popsáno níže, jeden s českou a druhý s anglickou výslovností. Poté se můžete kdykoliv přepínat mezi těmito dvěma hlasy pomocí jednoduché a pohodlné klávesové zkratky NVDA + Alt + L místo toho, abyste museli pracně používat kruh nastavení hlasového výstupu, dialog nastavení hlasového výstupu nebo měnit hlasový výstup v kategorii řeč pomocí dialogu nastavení NVDA.
+Řekněme, že mluvíte česky a anglicky. Pak si můžete v nastavení doplňku VoiceToggle přidat dva hlasy, jak je popsáno níže, jeden s českou a druhý s anglickou výslovností. Poté se můžete kdykoliv přepínat mezi těmito dvěma hlasy pomocí jednoduché a pohodlné klávesové zkratky NVDA + Control + L místo toho, abyste museli pracně používat kruh nastavení hlasového výstupu, dialog nastavení hlasového výstupu nebo měnit hlasový výstup v kategorii řeč pomocí dialogu nastavení NVDA.
 
 ## Konfigurace hlasů
 
@@ -39,7 +39,7 @@ Chcete-li nastavit určitou aplikaci tak, aby si pamatovala v ní naposledy pou�
 
 ## Změna klávesových zkratek VoiceToggle
 
-Následujícím způsobem lze výchozí klávesové zkratky NVDA + Alt + L a NVDA + Alt + Shift + L pro přepínání na následující, respektive předchozí hlas, jakož i zkratku NVDA + alt + V pro zobrazení seznamu přednastavených hlasů, případně změnit na jiné vámi více vyhovující zkratky:
+Následujícím způsobem lze výchozí klávesové zkratky NVDA + Control + L a NVDA + Control + Shift + L pro přepínání na následující, respektive předchozí hlas, jakož i zkratku NVDA + alt + V pro zobrazení seznamu přednastavených hlasů, případně změnit na jiné vámi více vyhovující zkratky:
 
 1. Stisknutím kláves NVDA + N otevřete nabídku NVDA.
 2. Zvolte podnabídku "Možnosti".

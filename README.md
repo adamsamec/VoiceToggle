@@ -2,11 +2,11 @@
 
 ## Introduction
 
-The VoiceToggle add-on for NVDA screen reader allows you to preconfigure an arbitrary number of voices in its settings , so that you can later quickly switch between those voices in circle anytime in forward direction using the simple NVDA + Alt + L keyboard shortcut, or in the reverse direction using NVDA + Alt + Shift + L. Alternatively, a preconfigured voice can also be selected and switched to from a list using the NVDA + Alt + V shortcut.
+The VoiceToggle add-on for NVDA screen reader allows you to preconfigure an arbitrary number of voices in its settings , so that you can later quickly switch between those voices in circle anytime in forward direction using the simple NVDA + Control + L keyboard shortcut, or in the reverse direction using NVDA + Control + Shift + L. Alternatively, a preconfigured voice can also be selected and switched to from a list using the NVDA + Alt + V shortcut.
 
 ## Example usage
 
-Let's say you speak English and French, then you can add two voices in the VoiceToggle settings as described below, one with English and the other with French pronunciation. Anytime later you can switch between those two voices using only the NVDA + Alt + L simple and comfortable keyboard shortcut instead of messing with the NVDA synth settings ring, NVDA synthesizer selection dialog, or with the speech category of the NVDA settings dialog.
+Let's say you speak English and French, then you can add two voices in the VoiceToggle settings as described below, one with English and the other with French pronunciation. Anytime later you can switch between those two voices using only the NVDA + Control + L simple and comfortable keyboard shortcut instead of messing with the NVDA synth settings ring, NVDA synthesizer selection dialog, or with the speech category of the NVDA settings dialog.
 
 ## Configuring the voices
 
@@ -39,7 +39,7 @@ TO configure certain application so that it remembers the last used voice, follo
 
 ## Changing the voice toggle shortcuts
 
-The default NVDA + Alt + L and NVDA + Alt + Shift + L keyboard shortcuts for switching to the next or previous voice, respectively, as well as NVDA + Alt + V for showing the list of configured voices can be changed to another shortcuts using the "Input gestures" dialog as follows:
+The default NVDA + Control + L and NVDA + Control + Shift + L keyboard shortcuts for switching to the next or previous voice, respectively, as well as NVDA + Alt + V for showing the list of configured voices can be changed to another shortcuts using the "Input gestures" dialog as follows:
 
 1. PressNVDA + N to open the NVDA menu.
 2. Choose the "Preferences" submenu.
