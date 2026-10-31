@@ -336,6 +336,7 @@ class VoiceToggle:
 		self.changeVoice(prevIndex)
 
 	def showSelectVoiceDialog(self):
+		self.cleanUpVoiceSettings()
 		gui.mainFrame.prePopup()
 		selectVoiceDialog = SelectVoiceDialog(gui.mainFrame, self)
 		selectVoiceDialog.Show()

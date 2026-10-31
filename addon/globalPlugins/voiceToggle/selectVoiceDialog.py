@@ -55,7 +55,6 @@ class SelectVoiceDialog(wx.Dialog):
 
 	def initVoicesListBox(self):
 		listBoxItems = []
-		self.app.cleanUpVoiceSettings()
 		voiceSettings = self.app.getVoiceSettings()
 		for voiceSetting in voiceSettings:
 			synthName = self.app.getSynthNameById(voiceSetting["synthId"])

@@ -30,7 +30,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		gui.settingsDialogs.NVDASettingsDialog.categoryClasses.remove(OptionsPanel)
 
 	@scriptHandler.script(
-		gesture="kb:NVDA+Alt+L",
+		gesture="kb:NVDA+Control+L",
 		# Translators: Switch to the next voice gesture description for the Input gestures settings dialog
 		description=_("Switches to the next voice."),
 	)
@@ -38,7 +38,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		self.app.switchToNextVoice()
 
 	@scriptHandler.script(
-		gesture="kb:NVDA+Alt+Shift+L",
+		gesture="kb:NVDA+Control+Shift+L",
 		# Translators: Switch to the previous voice gesture description for the Input gestures settings dialog
 		description=_("Switches to the previous voice."),
 	)
