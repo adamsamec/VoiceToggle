@@ -367,8 +367,8 @@ class VoiceToggle:
 
 		return 1
 
-	def changeVoice(self, newIndex):
-		newIndex = self.changeVoiceOnly(newIndex)
+	def changeVoice(self, newIndex, announceChange=True):
+		newIndex = self.changeVoiceOnly(newIndex, announceChange)
 		self.currentVoiceSettingsIndex = newIndex
 
 	def changeVoiceOnly(self, newIndex, announceChange=True):

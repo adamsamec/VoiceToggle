@@ -86,4 +86,4 @@ class SelectVoiceDialog(wx.Dialog):
 
 	def onDestroy(self, event):
 		if self.doChangeVoice:
-			self.app.changeVoice(self.voicesListBox.GetSelection())
+			self.app.changeVoice(self.voicesListBox.GetSelection(), announceChange=False)
