@@ -24,8 +24,11 @@ class SelectVoiceDialog(wx.Dialog):
 
 		super(SelectVoiceDialog, self).__init__(parent, title=_("Select a voice"))
 		self.app = app
+		self.doChangeVoice = False
 
 		self.Bind(wx.EVT_CHAR_HOOK, self.charHook)
+		self.Bind(wx.EVT_WINDOW_DESTROY, self.onDestroy)
+
 		self.addWidgets()
 
 	def addWidgets(self):
@@ -71,7 +74,7 @@ class SelectVoiceDialog(wx.Dialog):
 			event.Skip()
 
 	def onOkButtonClick(self, event):
-		self.app.changeVoice(self.voicesListBox.GetSelection())
+		self.doChangeVoice = True
 		self.close()
 
 	def onCancelButtonClick(self, event):
@@ -80,3 +83,7 @@ class SelectVoiceDialog(wx.Dialog):
 	def close(self):
 		self.Destroy()
 		SelectVoiceDialog._instance = None
+
+	def onDestroy(self, event):
+		if self.doChangeVoice:
+			self.app.changeVoice(self.voicesListBox.GetSelection())
