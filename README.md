@@ -51,7 +51,7 @@ The default NVDA + Control + L and NVDA + Control + Shift + L keyboard shortcuts
 
 ## Download
 
-VoiceToggle for NVDA is available thrugh NVDA Add-on Store, or can be [downloaded here][VoiceToggle-download].
+VoiceToggle for NVDA is available through NVDA Add-on Store, or can be [downloaded here][VoiceToggle-download].
 
 ## Changelog
 

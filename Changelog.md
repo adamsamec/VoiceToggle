@@ -1,5 +1,8 @@
 # VoiceToggle - Changelog
 
+## Version 1.8.1
+* Fixed selecting a voice from dialog not working with application configuration profile.
+
 ## Version 1.8.0
 * Changed the keyboard shortcut for switching to the next voice to NVDA + Control + L which is more comfortable.
 * Added a new keyboard shortcut for switching to the previous voice: NVDA + Control + Shift + L.
