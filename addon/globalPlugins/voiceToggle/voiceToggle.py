@@ -1,7 +1,7 @@
 # Copyright 2025 Adam Samec <adam.samec@gmail.com>
 # This add-on is free software, licensed under the terms of the GNU General Public License (version 2). see <https://www.gnu.org/licenses/gpl-2.0.html>.
 
-from synthSettingsRing import SynthSettingsRing
+from synthSettingsRing import SynthSetting
 import addonHandler
 import synthDriverHandler
 from synthDriverHandler import getSynth, setSynth, getSynthList, getSynthInstance
@@ -49,7 +49,7 @@ class VoiceToggle:
 	def monkeyPatch(self):
 		synthDriverHandler.changeVoice = self.mpChangeVoice(synthDriverHandler.changeVoice)
 		for methodName in ["first", "last", "increase", "increaseLarge", "decrease", "decreaseLarge"]:
-			setattr(SynthSettingsRing, methodName, self.mpRingChangeValue(getattr(SynthSettingsRing, methodName)))
+			setattr(SynthSetting, methodName, self.mpRingChangeValue(getattr(SynthSetting, methodName)))
 
 	def resetVoiceSettingsToRevert(self):
 		if not self.hasProfileSwitchedPreviously:
@@ -88,7 +88,7 @@ class VoiceToggle:
 	
 	def mpRingChangeValue(self, method):
 		def orig(origSelf):
-			param = origSelf.currentSettingName.lower()
+			param = origSelf.setting.id
 			ret = method(origSelf)
 			if not param in consts.SAVED_PARAMS:
 				return ret
