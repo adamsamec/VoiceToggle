@@ -15,4 +15,9 @@ CONFIG_SPEC = {
 	"profilesVoiceSettingsIndices": "string(default='{}')",
 	"enableVoiceUpdateWhenNVDAsettingsChange": "boolean(default=True)",
 }
-SAVED_PARAMS = ["volume", "rate", "pitch"]
+SAVED_PARAMS = ["volume", "rate", "rateBoost"]
+DEFAULT_PARAMS_VALUES = {
+	"volume": 100,
+	"rate": 50,
+	"rateBoost": 0
+}

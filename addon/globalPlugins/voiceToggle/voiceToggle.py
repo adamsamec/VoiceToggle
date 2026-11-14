@@ -88,11 +88,12 @@ class VoiceToggle:
 	
 	def mpRingChangeValue(self, method):
 		def orig(origSelf):
-			param = origSelf.setting.id
 			ret = method(origSelf)
+			param = origSelf.setting.id
+			value = int(origSelf.value)
 			if not param in consts.SAVED_PARAMS:
 				return ret
-			self.updateVoiceSettingParam(param, int(ret))
+			self.updateVoiceSettingParam(param, value)
 			return ret
 		return orig
 
@@ -417,6 +418,8 @@ class VoiceToggle:
 			for param in consts.SAVED_PARAMS:
 				if param in newVoiceSetting:
 					setattr(synth, param, newVoiceSetting[param])
+				else:
+					setattr(synth, param, consts.DEFAULT_PARAMS_VALUES[param])
 			if synth != None:
 				synth.saveSettings()
 		if announceChange and newVoiceSetting["synthId"] != SilenceSynthDriver.name:
