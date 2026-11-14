@@ -120,6 +120,11 @@ class VoiceToggle:
 		self.currentVoiceSettingsIndex = self.deleteInvalidVoiceSettings(startIndex=self.currentVoiceSettingsIndex)
 		self.addDefaultVoiceSetting()
 
+		# Fix for broken speech settings ring after deleting voices for some synths (e.g., Microsoft OneCore)
+		synth = getSynth()
+		if synth != None:
+			setSynth(synth.name)
+
 	def deleteInvalidVoiceSettings(self, startIndex=0, dontChangeVoice=False):
 		newValidIndex = startIndex
 		doChangeVoice = False
@@ -397,16 +402,14 @@ class VoiceToggle:
 		newVoiceSetting = self.voiceSettings[newIndex]
 		synth = getSynth()
 
-		# Only apply new synth if voice settings have been modified in add-on settings or changed due to invalidation, or if changed from previous one
-		if self.isVoiceSettingsModified or synth == None or newVoiceSetting["synthId"] != synth.name:
-			if newVoiceSetting["synthId"] == SilenceSynthDriver.name:
-				if synth != None:
-					setSynth(None)
-			else:
-				self.preventVoiceSettingsUpdate = True
-				setSynth(newVoiceSetting["synthId"])
-				self.preventVoiceSettingsUpdate = False
-				synth = getSynth()
+		if newVoiceSetting["synthId"] == SilenceSynthDriver.name:
+			if synth != None:
+				setSynth(None)
+		else:
+			self.preventVoiceSettingsUpdate = True
+			setSynth(newVoiceSetting["synthId"])
+			self.preventVoiceSettingsUpdate = False
+			synth = getSynth()
 		
 		# Apply new voice setting
 		if newVoiceSetting["synthId"] != SilenceSynthDriver.name:
