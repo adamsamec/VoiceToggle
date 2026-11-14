@@ -1,5 +1,11 @@
 # VoiceToggle - Changelog
 
+## Version 1.9.0
+* The rate boost speech parameter is now also saved for voices together with the rate and volume speech parameters.
+* Fixed not working saving of speech parameters for certain non-English languages of NVDA.
+* Fixed broken NVDA synth settings ring after switching to some synths, e.g., Microsoft OneCore.
+* Improved compatibility with some synths, e.g., Tiflotecnia voices for NVDA.
+
 ## Version 1.8.1
 * Fixed selecting a voice from dialog not working with application configuration profile.
 
