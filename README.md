@@ -1,5 +1,9 @@
 # VoiceToggle
 
+## Important
+
+The VoiceToggle add-on has been depracated and is succeeded by the newer add-on called [Voice Profiles][Voice Profiles] which provides broader functionality.
+
 ## Introduction
 
 The VoiceToggle add-on for NVDA screen reader allows you to preconfigure an arbitrary number of voices in its settings , so that you can later quickly switch between those voices in circle anytime in forward direction using the simple NVDA + Control + L keyboard shortcut, or in the reverse direction using NVDA + Control + Shift + L. Alternatively, a preconfigured voice can also be selected and switched to from a list using the NVDA + Alt + V shortcut.
@@ -65,6 +69,7 @@ If you have suggestions for VoiceToggle improvement, problems with its functiona
 
 VoiceToggle is available under the GNU General Public License version 2.0.
 
+[Voice Profiles]: https://github.com/adamsamec/VoiceProfiles
 [VoiceToggle-download]: https://files.adamsamec.cz/apps/nvda/VoiceToggle.nvda-addon
 [VoiceToggle-download-nvda-2023-1]: https://files.adamsamec.cz/apps/nvda/VoiceToggle-1.4.1.nvda-addon
 [changelog]: https://github.com/adamsamec/VoiceToggle/blob/main/Changelog.md
